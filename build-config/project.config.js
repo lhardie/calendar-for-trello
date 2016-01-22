@@ -68,7 +68,8 @@ module.exports = {
           //Analytics:
 
           'angulartics/src/angulartics.js',
-          'angulartics/src/angulartics-ga.js'
+          'angulartics/src/angulartics-ga.js',
+          'angular-websocket/angular-websocket.js'
 
 
       ],

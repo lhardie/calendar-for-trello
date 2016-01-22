@@ -1,5 +1,5 @@
 'use strict';
-angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, webStorage, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey) {
+angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, webStorage, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey, $websocket) {
 
 
         /**
@@ -16,7 +16,54 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
         var autorefresh = true;
         var version = '0.1.41';
 
-        /**
+
+    ////////////////////////////////////////////////////////
+    var dataStream = $websocket('wss://api.trello.com/1/sessions/socket?token=' + token + '&key=' + key);
+    dataStream.onMessage(function (message) {
+        if (message.data === "") {
+            dataStream.send("");
+        }
+        else {
+            if (JSON.parse(message.data).notify !== undefined) {
+
+                if (JSON.parse(message.data).notify.typeName === "Card") {
+                    console.log("Card " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
+                }
+                if (JSON.parse(message.data).notify.typeName === "List") {
+                    console.log("List " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
+                }
+                if (JSON.parse(message.data).notify.typeName === "Board") {
+                    console.log("Board " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
+                }
+
+            }
+
+        }
+
+    });
+    dataStream.onOpenCallbacks = [];
+    dataStream.send(JSON.stringify({"type": "ping", "reqid": 0}));
+    dataStream.send(JSON.stringify({
+        "type": "subscribe",
+        "modelType": "Board",
+        "idModel": "5630a65dd04e4ec9152d4231",
+        "tags": ["clientActions", "updates"],
+        "invitationTokens": [],
+        "reqid": 2
+    }));
+    dataStream.send(JSON.stringify({
+        "type": "subscribe",
+        "modelType": "Member",
+        "idModel": "55e5649901ff4ffe8236142a",
+        "tags": ["messages", "updates"],
+        "invitationTokens": [],
+        "reqid": 1
+    }));
+
+    ////////////////////////////////////////////////////////
+
+
+    /**
          *firstInit pulls the userinformation and board colors
          * fields: fullName, id  fields: color,id,...
          * */
@@ -108,7 +155,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
             var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
             var temp = webStorage.get('TrelloCalendarStorage');
 
-            $http.get('https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key=' + key + '&token=' + token)
+            $http.get('https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs,dateLastActivity&filter=open&key=' + key + '&token=' + token)
                 .then(function (responses) {
 
                     _.forEach(responses.data, function (board) {
@@ -119,6 +166,22 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
                             TrelloCalendarStorage.boards[board.id].prefs = board.prefs;
                             TrelloCalendarStorage.boards[board.id].prefs.background = temp.boards[board.id].prefs.background;
                             TrelloCalendarStorage.boards[board.id].prefs.backgroundColor = temp.boards[board.id].prefs.backgroundColor;
+                            if (TrelloCalendarStorage.boards[board.id].dateLastActivity === undefined) {
+                                TrelloCalendarStorage.boards[board.id].dateLastActivity = board.dateLastActivity;
+                                TrelloCalendarStorage.boards[board.id].oldVersion = true;
+
+                            }
+                            else {
+                                if (TrelloCalendarStorage.boards[board.id].dateLastActivity < board.dateLastActivity) {
+                                    TrelloCalendarStorage.boards[board.id].dateLastActivity = board.dateLastActivity;
+                                    TrelloCalendarStorage.boards[board.id].oldVersion = true;
+                                    console.warn(board.name + " ist veraltet");
+                                }
+                                else {
+                                    TrelloCalendarStorage.boards[board.id].oldVersion = false;
+
+                                }
+                            }
                             if (TrelloCalendarStorage.boards[board.id].enabled === undefined) {
                                 TrelloCalendarStorage.boards[board.id].enabled = true;
                             }
@@ -146,8 +209,11 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
             var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
             var listRequests = [];
             var alllists = [];
+
             _.forEach(TrelloCalendarStorage.boards, function (board) {
-                listRequests.push($http.get('https://api.trello.com/1/boards/' + board.id + '/lists/?fields=name&filter=open&key=' + key + '&token=' + token));
+                if (board.oldVersion) {
+                    listRequests.push($http.get('https://api.trello.com/1/boards/' + board.id + '/lists/?fields=name&filter=open&key=' + key + '&token=' + token));
+                }
             });
             $q.all(listRequests).then(function (responses) {
                 _.forEach(responses, function (lists) {
@@ -233,7 +299,9 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
             var cardRequests = [];
             var allCards = [];
             _.forEach(TrelloCalendarStorage.boards, function (board) {
-                cardRequests.push($http.get('https://api.trello.com/1/boards/' + board.id + '/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=' + key + '&token=' + token));
+                if (board.oldVersion) {
+                    cardRequests.push($http.get('https://api.trello.com/1/boards/' + board.id + '/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=' + key + '&token=' + token));
+                }
             });
             $q.all(cardRequests).then(function (responses) {
                 _.forEach(responses, function (lists) {
@@ -254,7 +322,11 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
                         allCards[card].listName = (TrelloCalendarStorage.lists[allCards[card].idList]).name;
                     }
                 }
-                TrelloCalendarStorage.cards.all = _.indexBy(allCards, 'id');
+                _.forEach(allCards, function (card) {
+                    TrelloCalendarStorage.cards.all[card.id] = card;
+                    console.log("update");
+                });
+                // TrelloCalendarStorage.cards.all = _.indexBy(allCards, 'id');
                 webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
                 login.resolve('allCards');
                 deferred.resolve('allCards');

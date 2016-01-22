@@ -29,7 +29,8 @@
 
         'trelloCal.errorLogging',
         'trelloCal.analytics',
-        'w11k.angular-seo-header'
+        'w11k.angular-seo-header',
+        'ngWebSocket'
 
     ]);
 

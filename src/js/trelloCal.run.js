@@ -9,4 +9,6 @@ angular.module('trelloCal').run(/*ngInject*/ function ($location, $rootScope, we
 
         }
     }
+
+
 });

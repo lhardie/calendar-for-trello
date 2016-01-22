@@ -22,7 +22,8 @@
     "w11k.angular-seo-header": "*",
     "angular-webstorage": "0.14.0",
     "angular-toastr": "*",
-    "angular-dragdrop": "*"
+    "angular-dragdrop": "*",
+    "angular-websocket": "*"
 
   },
   "resolutions": {
