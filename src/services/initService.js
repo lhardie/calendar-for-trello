@@ -1,5 +1,5 @@
 'use strict';
-angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, webStorage, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey, $websocket) {
+angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, webStorage, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey, $websocket, toastr) {
 
 
         /**
@@ -15,8 +15,10 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
         var observer = false;
         var autorefresh = true;
         var version = '0.1.41';
+    var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
+    console.log(TrelloCalendarStorage);
 
-
+    ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
     var dataStream = $websocket('wss://api.trello.com/1/sessions/socket?token=' + token + '&key=' + key);
     dataStream.onMessage(function (message) {
@@ -25,20 +27,28 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
         }
         else {
             if (JSON.parse(message.data).notify !== undefined) {
-
+                var x;
+                var name;
                 if (JSON.parse(message.data).notify.typeName === "Card") {
-                    console.log("Card " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
+                    x = JSON.parse(message.data).notify.deltas[0].id;
+                    name = TrelloCalendarStorage.cards.all[x].name;
+                    toastr.warning("Card \"" + name + "\" changed!");
+
+                    console.log("Card \"" + name + "\" changed!");
                 }
                 if (JSON.parse(message.data).notify.typeName === "List") {
                     console.log("List " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
                 }
                 if (JSON.parse(message.data).notify.typeName === "Board") {
-                    console.log("Board " + JSON.parse(message.data).notify.deltas[0].id + " changed!");
+                    x = JSON.parse(message.data).notify.deltas[0].id;
+                    name = TrelloCalendarStorage.boards[x].name;
+
+                    console.log("Board \"" + name + "\" changed!");
+                }
+
                 }
 
             }
-
-        }
 
     });
     dataStream.onOpenCallbacks = [];
@@ -53,13 +63,29 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
     }));
     dataStream.send(JSON.stringify({
         "type": "subscribe",
+        "modelType": "Board",
+        "idModel": "559e3cb52efe3ea2f12144ed",
+        "tags": ["clientActions", "updates"],
+        "invitationTokens": [],
+        "reqid": 2
+    }));
+    dataStream.send(JSON.stringify({
+        "type": "subscribe",
+        "modelType": "Board",
+        "idModel": "55e5649901ff4ffe8236142e",
+        "tags": ["clientActions", "updates"],
+        "invitationTokens": [],
+        "reqid": 2
+    }));
+    dataStream.send(JSON.stringify({
+        "type": "subscribe",
         "modelType": "Member",
         "idModel": "55e5649901ff4ffe8236142a",
         "tags": ["messages", "updates"],
         "invitationTokens": [],
         "reqid": 1
     }));
-
+    ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
 
 
@@ -71,7 +97,6 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
             ngProgress.start();
             var deferred = $q.defer();
             token = webStorage.get('trello_token');
-            var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
             var cache = webStorage.get('TrelloCalendarStorage');
             me = $http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + key + '&token=' + token);
             colors = $http.get('https://api.trello.com/1/members/me/boardBackgrounds?key=' + key + '&token=' + token);
@@ -299,7 +324,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
             var cardRequests = [];
             var allCards = [];
             _.forEach(TrelloCalendarStorage.boards, function (board) {
-                if (board.oldVersion) {
+                if (true) {
                     cardRequests.push($http.get('https://api.trello.com/1/boards/' + board.id + '/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=' + key + '&token=' + token));
                 }
             });
