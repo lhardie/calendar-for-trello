@@ -1,0 +1,55 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "dependencies": {
+    "lodash": "^4.14.0"
+  },
+  "devDependencies": {
+    "bower": "^1.6.8",
+    "browser-sync": "latest",
+    "connect-livereload": "~0.2.0",
+    "del": "latest",
+    "grunt-google-cdn": "~0.2.0",
+    "grunt-ngmin": "~0.0.2",
+    "gulp": "latest",
+    "gulp-add-src": "latest",
+    "gulp-cached": "latest",
+    "gulp-concat": "latest",
+    "gulp-css-url-rebase": "latest",
+    "gulp-debug": "latest",
+    "gulp-htmlmin": "latest",
+    "gulp-inject": "latest",
+    "gulp-minify-css": "latest",
+    "gulp-ng-annotate": "latest",
+    "gulp-plumber": "latest",
+    "gulp-rev-all": "^0.8.22",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-tslint": "^6.0.0",
+    "tslint": "^3.13.0",
+    "gulp-typescript": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "gulp-watch": "latest",
+    "karma": "latest",
+    "lodash": "3.10.1",
+    "lodash.assign": "latest",
+    "matchdep": "~0.1.2",
+    "merge2": "latest",
+    "mkdirp": "latest",
+    "run-sequence": "latest",
+    "stream-series": "latest",
+    "systemjs": "0.18.4",
+    "systemjs-builder": "0.12.2",
+    "typescript": "^1.8.0",
+    "typings": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}

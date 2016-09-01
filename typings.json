@@ -1,0 +1,12 @@
+{
+  "name": "client",
+  "version": false,
+  "globalDependencies": {
+    "angular": "registry:dt/angular#1.5.0+20160829152510",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#43b6bf88758852b9ab713a9b011487f047f94f4e"
+  },
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
+  }
+}

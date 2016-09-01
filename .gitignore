@@ -1,0 +1,9 @@
+vendor
+node_modules
+.sass-cache
+build-output
+mobil/platforms
+.idea
+bower_components
+target
+typings

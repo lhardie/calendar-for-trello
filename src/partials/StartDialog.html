@@ -1,0 +1,65 @@
+<md-dialog aria-label="Calendar for Trello" style="max-width:500px;">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <div class="md-breadcrumb-page  md-title" style="margin-top:15px">Calendar for
+                        <img style="float:right;padding-left:10px;margin-top:-5px"
+                             src="https://d78fikflryjgj.cloudfront.net/images/50b4ebc64391dc394a38e73aed57f0e2/header-logo.png"/>
+                    </div>
+                </h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div style="float: left;white-space:normal;"><h1 class="md-headline">Calendar for Trello</h1>
+                <span style="padding-top:6px;">By&nbsp&nbsp</span>
+                <a href="http://www.w11k.de">
+                    <img style="padding-top:5px;height: 20px"
+                         src="http://www.w11k.de/2.0.7/assets/img/w11k_logo_navbar.png">
+                </a>
+                <span style="padding-top:6px;">&nbsp and &nbsp</span>
+                <a href="http://www.thecodecampus.de">
+                    <img style="height: 30px;filter: invert(1);-webkit-filter: invert(1);"
+                         src="http://www.thecodecampus.de/1.0.11/assets/thecodecampus_w.png">
+                </a><br><br>
+
+
+                Trello is a productivity tool that helps you to organize projects by creating individual
+                lists,
+                boards and cards.
+                Manage your projects in teams, get more flexible and improve your workflow.
+
+                Organize Trello cards across all boards in one amazing calendar view. Get the most out of Trello and
+                improve your workflow with our open source calendar!
+                Trello Calendar is Open Source and available at <a
+                        href="https://github.com/w11k/trello-calendar"
+                        rel="_blank">GitHub.</a>
+            </div>
+            <div style="float: left;">
+                <h1 class="md-headline">What's New</h1>
+                <h6>(vers.: 0.1.25)</h6>
+                <ul>
+                    <li>Bug-fix</li>
+                    <ul>
+                        <li>overdue Cards calculate by time <a
+                                href="https://github.com/w11k/calendar-for-trello/issues/36"
+                                rel="_blank">#36</a></li>
+                        <li>Board-filter in sidenav<a
+                                href="https://github.com/w11k/calendar-for-trello/issues/35"
+                                rel="_blank">#35</a></li>
+                        <li>hide overview if no overdued/no duedate Cards exist</li>
+                        <li>"Overdued Cards" contains Cards without Duedate<a
+                                href="https://github.com/w11k/calendar-for-trello/issues/35"
+                                rel="_blank">#37</a></li>
+                    </ul>
+                </ul>
+            </div>
+
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <md-button ng-click="answer('connect')" style="margin-right:20px;">
+                Connect to Trello
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

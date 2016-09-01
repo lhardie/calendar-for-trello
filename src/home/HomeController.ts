@@ -1,0 +1,21 @@
+import {HomeService} from "./HomeService";
+import {appModule} from "../app";
+
+class HomeController {
+
+    clicks = 0;
+    legacyMessage: string;
+
+    constructor(private homeService: HomeService, legacyService: any) {
+        "ngInject";
+        this.legacyMessage = legacyService.getMessage();
+        console.log('Hello');
+    }
+
+    click() {
+        this.clicks = this.homeService.getAndIncrement();
+    }
+
+}
+
+appModule.controller("HomeController", HomeController);
