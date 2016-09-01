@@ -119,7 +119,7 @@ class InitService {
      *pullBoards pulls open Boards from Trello
      *fields: name, shortUrl, id, prefs {background,backgroundColor,...}
      * */
-    private pullBoards = function () {
+    private pullBoards() {
         var deferred = this.$q.defer();
         var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
         var temp = this.webStorage.get("TrelloCalendarStorage");
@@ -127,7 +127,7 @@ class InitService {
         this.$http.get("https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key=" + this.AppKey + "&token=" + this.token)
             .then((responses) => {
 
-                _.forEach(responses.data, function (board) {
+                _.forEach(responses.data, (board) => {
                     if (TrelloCalendarStorage.boards[board.id]) {
                         TrelloCalendarStorage.boards[board.id].name = board.name;
                         TrelloCalendarStorage.boards[board.id].shortUrl = board.shortUrl;
@@ -321,16 +321,16 @@ class InitService {
                 this.$q.all([this.pullMyCards, this.pullAllCards]).then(() =>  {
                     this.ngProgress.complete();
                     deferred.resolve("update");
-                }, function (error) {
+                }, (error) => {
                     this.ngProgress.complete();
                     deferred.reject(error);
                 });
-            }, function (error) {
+            }, (error) => {
                 this.ngProgress.complete();
                 deferred.reject(error);
             });
 
-        }, function (error) {
+        }, (error) => {
             this.ngProgress.complete();
             console.log(error);
             deferred.reject(error);
@@ -369,11 +369,11 @@ class InitService {
             if (this.$rootScope.mobil) {
                 var redirect = this.baseUrl + "/app/token?do=settoken";
                 var ref = window.open("https://trello.com/1/authorize?response_type=token&scope=read,write&key=" + this.AppKey + "&redirect_uri=" + redirect + "&callback_method=fragment&expiration=never&name=Calendar+for+Trello", "_blank", "location=no", "toolbar=no");
-                ref.addEventListener("loadstart", function (event) {
+                ref.addEventListener("loadstart", (event) => {
                     if (event.url.indexOf("/#token=") > -1) {
                         this.token = event.url.substring((event.url.indexOf("/#token=") + 8));
                         ref.close();
-                        this.firstInit().then(function () {
+                        this.firstInit().then(() => {
                             this.updateAll();
                         });
                     }
@@ -387,9 +387,9 @@ class InitService {
             this.token = this.webStorage.get("trello_token");
             if (!this.webStorage.has("TrelloCalendarStorage")) {
                 this.webStorage.set("TrelloCalendarStorage", {});
-                this.firstInit().then(function () {
-                    this.firstInit().then(function () {
-                        this.updateAll().then(function () {
+                this.firstInit().then(() => {
+                    this.firstInit().then(() => {
+                        this.updateAll().then(() => {
                             this.ngProgress.complete();
                             this.login.resolve("not exist");
                         });
@@ -397,7 +397,7 @@ class InitService {
                 });
             }
             else {
-                this.updateAll().then(function () {
+                this.updateAll().then(() => {
                 });
                 this.login.resolve("exists");
 
