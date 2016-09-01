@@ -17,7 +17,7 @@
     "angular-toastr": "*",
     "angular-ui-router": "0.2.15",
     "angular-webstorage": "0.14.0",
-    "angulartics": "~1.1.0",
+    "angulartics": "~0.18.0",
     "moment": "~2.10.2",
     "ngprogress": "~1.0.7",
     "stacktrace-js": "~0.6.4",

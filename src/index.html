@@ -38,8 +38,8 @@
 
 <body layout="row" flex layout-fill style="overflow: hidden" ng-keypress="keyHandler()">
 <base href="/"/>
-<div ui-view style="overflow: auto;width:100%;height:100%;"></div>
-<!--<div ui-view="headerView" style="overflow: auto;width:100%;height:100%;"></div>-->
+<!--<div ui-view style="overflow: auto;width:100%;height:100%;"></div>-->
+<div ui-view="headerView" style="overflow: auto;width:100%;height:100%;"></div>
 <!--Each Element of the app will be injected here -->
 <!--
 enable before building as mobile app
@@ -123,7 +123,7 @@ enable before building as mobile app
 
 <script>
 
-    /*Raven.config('http://fa6a3d4a6b6f42cf8b66807942105932@sentry.w11k.de/2', {
+    Raven.config('http://fa6a3d4a6b6f42cf8b66807942105932@sentry.w11k.de/2', {
         logger: 'javascript',
         ignoreErrors: [
             // Random plugins/extensions
@@ -163,7 +163,7 @@ enable before building as mobile app
             /webappstoolbarba\.texthelp\.com\//i,
             /metrics\.itunes\.apple\.com\.edgesuite\.net\//i
         ]
-    }).install();*/
+    }).install();
 
 
     moment.locale("en", {week: {dow: 1}});

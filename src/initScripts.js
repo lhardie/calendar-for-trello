@@ -1,1 +1,16 @@
 require("./legacy/LegacyService");
+require("./js/trelloCal.run");
+require("./js/trelloCal.AppCtrl");
+// require("./js/trelloCal.config");
+require("./js/trelloCal.headerCtrl");
+require("./services/archiveCard");
+require("./services/buildCalService");
+require("./services/initService");
+require("./services/streamService");
+require("./error-logging/error-logging");
+require("./analytics/analytics");
+require("./route/stream/stream");
+require("./route/settings/settings");
+require("./route/month/month");
+require("./route/boards/boards");
+require("./route/about/about");

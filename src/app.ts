@@ -3,34 +3,40 @@ export var appModule = angular.module("trelloCal", [
     'ui.router',
     'ngMaterial',
     // Dependencies
-   /*
     "ngAnimate",
     'ngMdIcons',
     'ngSanitize',
     'ngProgress',
     'toastr',
-    'ui.select',
-    'angular-sortable-view',
-    'ui.sortable', // nicht da??
-    'LocalStorageappModule',
-    'webStorageappModule',
+
+    'webStorageModule',
+    'LocalStorageModule',
+
     // Route
 
     'trelloCal.month',
-    'trelloCal.stream',
     'trelloCal.boards',
     'trelloCal.settings',
+    'trelloCal.stream',
+
 
     // Other
 
 
-    'trelloCal.errorLogging',
     'trelloCal.analytics',
-    'w11k.angular-seo-header'*/
+    'trelloCal.errorLogging',
+    'w11k.angular-seo-header'
+
+   /*
+    'angular-sortable-view',
+    'ui.select',
+    'ui.sortable', // nicht da??
+
+    */
 
 ]);
 console.log('app.ts');
-/*
+
 
 
 // get current URL with IE FIX
@@ -107,5 +113,3 @@ appModule.factory('offlineInterceptor', function ($q) {
         }
     };
 });
-
-*/

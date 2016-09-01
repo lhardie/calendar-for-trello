@@ -3,6 +3,7 @@
   "version": false,
   "globalDependencies": {
     "angular": "registry:dt/angular#1.5.0+20160829152510",
+    "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160810191828",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#43b6bf88758852b9ab713a9b011487f047f94f4e"
   },

@@ -5,9 +5,11 @@ require("./initModules");
 require("./initScripts");
 
 
-/*function bootstrapAngular() {
+function bootstrapAngular() {
+	// Bootstrap Angular
 	var domElement = document.querySelector('html');
-	angular.bootstrap(domElement, ['<%= angular_module %>']);
+	angular.bootstrap(domElement, ["trelloCal"], {strictDi: true});
+
 }
 if (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1) {
 	// URL: Running in Cordova/PhoneGap
@@ -19,13 +21,7 @@ if (document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') =
 		localStorage.setItem('w11ktrello.startMonth', false)
 
 	}
-
-
 } else {
 	//URL: Running in browser
 	bootstrapAngular();
-}*/
-// Bootstrap Angular
-var domElement = document.querySelector('html');
-// angular.bootstrap(document, ["trelloCal"], {strictDi: true});
-angular.bootstrap(domElement, ["trelloCal"], {strictDi: true});
+}
