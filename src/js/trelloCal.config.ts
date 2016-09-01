@@ -2,7 +2,7 @@
 import {appModule} from "../app";
 import {SetTokenService} from "../services/setToken";
 
-appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $stateProvider: angular.ui.IStateProvider, $mdThemingProvider, $locationProvider: angular.ui.I) {
+appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider, $stateProvider: angular.ui.IStateProvider, $mdThemingProvider, $locationProvider) {
     $httpProvider.interceptors.push("offlineInterceptor");
 
 

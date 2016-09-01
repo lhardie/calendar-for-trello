@@ -6,7 +6,7 @@ class BoardsCtrl {
     colors = [];
 
     /* @ngInject */
-    constructor(private $scope, private webStorage, private initService) {
+    constructor(private $scope, private $rootScope, private webStorage, private initService) {
 
         this.storage = webStorage.get('TrelloCalendarStorage');
 

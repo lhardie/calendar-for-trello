@@ -33,4 +33,4 @@ export class ChangeDateService {
     }
 
 }
-appModule.factory('changeDate', ChangeDateService);
+appModule.service('changeDate', ChangeDateService);
