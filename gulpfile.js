@@ -22,6 +22,7 @@ var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 var htmlmin = require('gulp-htmlmin');
 var browsersync = require('browser-sync');
+var historyApiFallback = require('connect-history-api-fallback')
 var cache = require('gulp-cached');
 var addsrc = require('gulp-add-src');
 var RevAll = require('gulp-rev-all');

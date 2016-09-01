@@ -1,5 +1,7 @@
 'use strict';
 
+var historyApiFallback = require('connect-history-api-fallback')
+
 var GulpConfig = (function () {
     function GulpConfig() {
 
@@ -128,7 +130,8 @@ var GulpConfig = (function () {
             //},
             server: {
                 baseDir: this.targetApp,
-                directory: true
+                directory: true,
+								middleware: [ historyApiFallback() ]
             }//,
             //files: this.targetApp + '/**/*'
         };

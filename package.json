@@ -7,6 +7,7 @@
   "devDependencies": {
     "bower": "^1.6.8",
     "browser-sync": "latest",
+    "connect-history-api-fallback": "^1.3.0",
     "connect-livereload": "~0.2.0",
     "del": "latest",
     "grunt-google-cdn": "~0.2.0",
@@ -26,7 +27,6 @@
     "gulp-sass": "latest",
     "gulp-sourcemaps": "latest",
     "gulp-tslint": "^6.0.0",
-    "tslint": "^3.13.0",
     "gulp-typescript": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
@@ -41,6 +41,7 @@
     "stream-series": "latest",
     "systemjs": "0.18.4",
     "systemjs-builder": "0.12.2",
+    "tslint": "^3.13.0",
     "typescript": "^1.8.0",
     "typings": "latest",
     "vinyl-buffer": "latest",
