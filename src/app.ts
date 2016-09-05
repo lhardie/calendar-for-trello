@@ -35,8 +35,6 @@ export var appModule = angular.module("trelloCal", [
     */
 
 ]);
-console.log('app.ts');
-
 
 
 // get current URL with IE FIX

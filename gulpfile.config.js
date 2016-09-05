@@ -27,8 +27,8 @@ var GulpConfig = (function () {
             "bower_components/angular-webstorage/angular-webstorage.min.js",
             "bower_components/animate.css/animate.min.css",
 
-            "bower_components/lodash/lodash.min.js",
-            "bower_components/moment/moment.js",
+            // "bower_components/lodash/lodash.min.js",
+            "node_modules/moment/min/moment.min.js",
 
 
             "bower_components/moment/locales/en-gb.js",
@@ -106,7 +106,8 @@ var GulpConfig = (function () {
             },
 
             map: {
-                lodash: 'lodash/lodash.min'
+                lodash: 'lodash/lodash.min',
+                moment: 'moment/min/moment.min',
             }
         };
 

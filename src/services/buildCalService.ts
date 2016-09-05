@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-// import * as moment from 'moment';
+import moment from 'moment'
 
 import {appModule} from '../app';
 
@@ -40,7 +40,7 @@ class BuildCalService {
     }
 
     private buildADay(date: Date, dayOff) {
-        let momentDate = moment(date);
+        let momentDate: moment.Moment = moment(date);
         // var isToday = (date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0));
         let isToday = momentDate.isSame(moment(), 'day');
         var day = {
@@ -56,8 +56,7 @@ class BuildCalService {
             return isSameDay;
         });
 
-        _.forEach(cardsOfToday, function(card) {
-            console.log(card);
+        _.forEach(cardsOfToday, function (card) {
             var board = {
                 name: card.boardName,
                 // _lowername: card.boardName.toLowerCase(),
@@ -71,8 +70,6 @@ class BuildCalService {
             // this.boardsArray.push(board);
             day.cards.push(card);
         });
-
-        console.log(cardsOfToday);
 
         return day;
     };
@@ -105,7 +102,7 @@ class BuildCalService {
          */
 
         while (date.getMonth() === month) {
-            let newDay = this.buildADay(moment(date), false);
+            let newDay = this.buildADay(date, false);
             days.push(newDay);
             date.setDate(date.getDate() + 1);
         }

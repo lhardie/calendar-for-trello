@@ -248,8 +248,10 @@ month.controller('monthCtrl', function ($timeout, $interval,toastr,
     };
 
     $scope.activeBoard = function (card) {
-
-        return $scope.ExistingBoards[card.idBoard].enabled;
+        var existingBoard = $scope.ExistingBoards[card.idBoard];
+        if(existingBoard !== undefined) {
+            return existingBoard.enabled;
+        }
 
     };
 
