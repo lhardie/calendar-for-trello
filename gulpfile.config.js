@@ -29,6 +29,8 @@ var GulpConfig = (function () {
 
             "bower_components/lodash/lodash.min.js",
             "bower_components/moment/moment.js",
+
+
             "bower_components/moment/locales/en-gb.js",
             "bower_components/ngprogress/build/ngProgress.js",
             "bower_components/array-tools/dist/array-tools.js",
@@ -42,7 +44,8 @@ var GulpConfig = (function () {
         ];
 
         this.nodeModulesCopy = [
-            // "lodash"
+            "lodash",
+            "moment"
         ];
 
         // ----------------------------------------------------------

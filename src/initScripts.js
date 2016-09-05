@@ -1,4 +1,3 @@
-require("./legacy/LegacyService");
 require("./js/trelloCal.run");
 require("./js/trelloCal.AppCtrl");
 // require("./js/trelloCal.config");

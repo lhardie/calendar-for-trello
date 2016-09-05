@@ -1,7 +1,7 @@
 'use strict';
 import {appModule} from "../app";
 
-export class ChangeDateService {
+class ChangeDateService {
     token: string;
 
     constructor(private AppKey, private webStorage, private $http: ng.IHttpService) {
