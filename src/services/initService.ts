@@ -15,6 +15,7 @@ class InitService {
     private observer: boolean;
     private autorefresh: boolean;
     private version: string;
+    private TRELLO_CALENDAR_STORAGE_KEY: string = "TrelloCalendarStorage";
 
     constructor(private $q: ng.IQService, private ngProgress, private webStorage, private $http: ng.IHttpService,
                 private $rootScope: ng.IRootScopeService, private $window, private baseUrl, private AppKey: string) {
@@ -40,11 +41,12 @@ class InitService {
         this.ngProgress.start();
         var deferred = this.$q.defer();
         this.token = this.webStorage.get("trello_token");
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
-        var cache = this.webStorage.get("TrelloCalendarStorage");
+        //TODO jblankenhorn 01.09.16 #WTF cache and TrelloCalendarStorage are the same object
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
+        var cache = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
         this.me = this.$http.get("https://api.trello.com/1/members/me?fields=fullName&key=" + this.AppKey + "&token=" + this.token);
         this.colors = this.$http.get("https://api.trello.com/1/members/me/boardBackgrounds?key=" + this.AppKey + "&token=" + this.token);
-        this.$q.all([me, colors]).then((responses) =>{
+        this.$q.all([me, colors]).then((responses) => {
 
             TrelloCalendarStorage.me = responses[0].data;
             TrelloCalendarStorage.colors = {};
@@ -106,7 +108,7 @@ class InitService {
                 "all": TrelloCalendarStorage.cards.all,
                 "my": TrelloCalendarStorage.cards.my
             };
-            this.webStorage.set("TrelloCalendarStorage", TrelloCalendarStorage);
+            this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, TrelloCalendarStorage);
             this.ngProgress.complete();
             deferred.resolve("init");
 
@@ -115,19 +117,25 @@ class InitService {
         });
         return deferred.promise;
     };
+
     /**
      *pullBoards pulls open Boards from Trello
      *fields: name, shortUrl, id, prefs {background,backgroundColor,...}
      * */
     private pullBoards() {
         var deferred = this.$q.defer();
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
-        var temp = this.webStorage.get("TrelloCalendarStorage");
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
+        var temp = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
 
         this.$http.get("https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key=" + this.AppKey + "&token=" + this.token)
             .then((responses) => {
 
                 _.forEach(responses.data, (board) => {
+
+                    if (TrelloCalendarStorage.boards == undefined) {
+                        TrelloCalendarStorage.boards = {};
+                    }
+
                     if (TrelloCalendarStorage.boards[board.id]) {
                         TrelloCalendarStorage.boards[board.id].name = board.name;
                         TrelloCalendarStorage.boards[board.id].shortUrl = board.shortUrl;
@@ -146,31 +154,32 @@ class InitService {
 
                     }
                 });
-                this.webStorage.set("TrelloCalendarStorage", TrelloCalendarStorage);
+                this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, TrelloCalendarStorage);
                 deferred.resolve("boards");
             }, function () {
                 deferred.reject("boards error");
             });
         return deferred.promise;
     };
+
     /**
      *pullLists pulls open Lists from Trello
      *fields: id, name
      * */
     private pullLists() {
         var deferred = this.$q.defer();
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
         var listRequests = [];
         var alllists = [];
         _.forEach(TrelloCalendarStorage.boards, (board) => {
             listRequests.push(this.$http.get("https://api.trello.com/1/boards/" + board.id + "/lists/?fields=name&filter=open&key=" + this.AppKey + "&token=" + this.token));
         });
         this.$q.all(listRequests).then((responses) => {
-            _.forEach(responses, (lists) =>{
+            _.forEach(responses, (lists) => {
                 alllists = alllists.concat(lists.data);
             });
             TrelloCalendarStorage.lists = _.keyBy(alllists, "id");
-            this.webStorage.set("TrelloCalendarStorage", TrelloCalendarStorage);
+            this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, TrelloCalendarStorage);
             deferred.resolve("lists");
         }, function () {
             deferred.reject("lists error");
@@ -178,12 +187,13 @@ class InitService {
         });
         return deferred.promise;
     };
+
     /**
      *switches between pull my/all Cards
      */
     private pullCards() {
         var deferred = this.$q.defer();
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
         if (TrelloCalendarStorage.me.observer && TrelloCalendarStorage.me.observer === true) {
             this.pullAllCards().then(function () {
                 deferred.resolve();
@@ -201,6 +211,7 @@ class InitService {
 
         return deferred.promise;
     };
+
     /**
      *pullMyCards pulls open Cards from Trello
      *if me/observer is false
@@ -208,8 +219,8 @@ class InitService {
      * */
     private pullMyCards() {
         var deferred = this.$q.defer();
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
-        this.$http.get("https://api.trello.com/1/members/me/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=" + this.AppKey + "&token=" + this.token).then((responses) =>{
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
+        this.$http.get("https://api.trello.com/1/members/me/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=" + this.AppKey + "&token=" + this.token).then((responses) => {
             var myCards = responses.data;
             for (var card in myCards) {
                 if (TrelloCalendarStorage.boards[myCards[card].idBoard]) {
@@ -227,7 +238,7 @@ class InitService {
             }
 
             TrelloCalendarStorage.cards.my = _.keyBy(myCards, "id");
-            this.webStorage.set("TrelloCalendarStorage", TrelloCalendarStorage);
+            this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, TrelloCalendarStorage);
             deferred.resolve("myCards");
             this.login.resolve("myCards");
 
@@ -246,13 +257,13 @@ class InitService {
      * */
     private pullAllCards() {
         var deferred = this.$q.defer();
-        var TrelloCalendarStorage = this.webStorage.get("TrelloCalendarStorage");
+        var TrelloCalendarStorage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
         var cardRequests = [];
         var allCards = [];
         _.forEach(TrelloCalendarStorage.boards, (board) => {
             cardRequests.push(this.$http.get("https://api.trello.com/1/boards/" + board.id + "/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=" + this.AppKey + "&token=" + this.token));
         });
-        this.$q.all(cardRequests).then((responses) =>{
+        this.$q.all(cardRequests).then((responses) => {
             _.forEach(responses, (lists) => {
                 allCards = allCards.concat(lists.data);
             });
@@ -272,7 +283,7 @@ class InitService {
                 }
             }
             TrelloCalendarStorage.cards.all = _.keyBy(allCards, "id");
-            this.webStorage.set("TrelloCalendarStorage", TrelloCalendarStorage);
+            this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, TrelloCalendarStorage);
             this.login.resolve("allCards");
             deferred.resolve("allCards");
         }, function () {
@@ -297,7 +308,7 @@ class InitService {
                     this.ngProgress.complete();
                     deferred.reject(error);
                 });
-            }, (error) =>{
+            }, (error) => {
                 this.ngProgress.complete();
                 deferred.reject(error);
             });
@@ -318,7 +329,7 @@ class InitService {
 
         this.pullBoards().then(() => {
             this.pullLists().then(() => {
-                this.$q.all([this.pullMyCards, this.pullAllCards]).then(() =>  {
+                this.$q.all([this.pullMyCards, this.pullAllCards]).then(() => {
                     this.ngProgress.complete();
                     deferred.resolve("update");
                 }, (error) => {
@@ -344,7 +355,7 @@ class InitService {
      */
     public refreshColors() {
         var BoardId;
-        var storage = this.webStorage.get("TrelloCalendarStorage");
+        var storage = this.webStorage.get(this.TRELLO_CALENDAR_STORAGE_KEY);
         for (var x in storage.cards.my) {
             BoardId = storage.cards.my[x].idBoard;
 
@@ -360,7 +371,7 @@ class InitService {
                 storage.cards.all[y].color = storage.boards[BoardId].prefs.backgroundColor;
             }
         }
-        this.webStorage.set("TrelloCalendarStorage", storage);
+        this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, storage);
     };
 
     public init() {
@@ -385,8 +396,8 @@ class InitService {
 
         } else {
             this.token = this.webStorage.get("trello_token");
-            if (!this.webStorage.has("TrelloCalendarStorage")) {
-                this.webStorage.set("TrelloCalendarStorage", {});
+            if (!this.webStorage.has(this.TRELLO_CALENDAR_STORAGE_KEY)) {
+                this.webStorage.set(this.TRELLO_CALENDAR_STORAGE_KEY, {});
                 this.firstInit().then(() => {
                     this.firstInit().then(() => {
                         this.updateAll().then(() => {
@@ -398,11 +409,12 @@ class InitService {
             }
             else {
                 this.updateAll().then(() => {
+                    this.login.resolve("exists");
                 });
-                this.login.resolve("exists");
 
             }
         }
+
         return login.promise;
     }
 

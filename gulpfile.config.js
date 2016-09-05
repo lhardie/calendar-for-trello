@@ -58,7 +58,11 @@ var GulpConfig = (function () {
         ];
 
         this.cssFiles = [
-            "src/**/*.css"
+            "src/**/*.css",
+            "bower_components/angular-material/angular-material.css",
+            "bower_components/ngprogress/ngProgress.css",
+            "bower_components/angular-ui-notification/src/angular-ui-notification.less",
+            "bower_components/angular-toastr/dist/angular-toastr.min.css"
         ];
 
         this.scssFiles = [
