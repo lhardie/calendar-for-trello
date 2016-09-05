@@ -86,9 +86,10 @@ var GulpConfig = (function () {
             "src/**/*.ts"
         ];
 
-            /*["bower_components/bootstrap/dist/fonts/!**!/!*", "fonts"],
-            ["bower_components/font-awesome/fonts/!*.woff", "fonts"]*/
         this.copyFiles = [
+          ["src/assets/*.*", "assets"],
+            // 'angular-ui-notification/src/angular-ui-notification.html'
+
         ];
 
         // ----------------------------------------------------------

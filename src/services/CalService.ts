@@ -8,7 +8,7 @@ class CalServiceConfig {
     public endOffSet: number;
 }
 
-class BuildCalService {
+class CalService {
 
     private boardsArray = [];
     private cards = [];
@@ -151,4 +151,4 @@ class BuildCalService {
 
 }
 
-appModule.service('buildCalService', BuildCalService);
+appModule.service('CalService', CalService);

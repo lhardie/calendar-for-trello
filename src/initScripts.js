@@ -1,9 +1,7 @@
 require("./js/trelloCal.run");
 require("./js/trelloCal.AppCtrl");
-// require("./js/trelloCal.config");
 require("./js/trelloCal.headerCtrl");
-require("./services/archiveCard");
-require("./services/buildCalService");
+require("./services/CalService");
 require("./services/initService");
 require("./services/streamService");
 require("./error-logging/error-logging");

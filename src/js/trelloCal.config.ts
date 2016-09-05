@@ -165,15 +165,10 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
             },
             resolve: {
                 "asInitService": function (initService) {
-                    console.log("asInitService");
-
                     let init = initService.init();
-                    console.log("finished");
-
                     return init;
                 },
                 "getExistingBoardColors": function (localStorageService) {
-                    console.log("getExistingBoardColors");
                     return localStorageService.get("Boards");
                 }
             },

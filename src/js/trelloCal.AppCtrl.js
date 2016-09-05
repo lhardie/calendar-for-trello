@@ -92,7 +92,7 @@ angular.module('trelloCal').controller('AppCtrl', function ($scope, $rootScope, 
 
     }
 )
-    .controller('welcomeCtrl', function (buildCalService, $scope, $mdDialog) {
+    .controller('welcomeCtrl', function (CalService, $scope, $mdDialog) {
         var today = {};
         today.year = new Date().getFullYear();
         today.month = new Date().getMonth();
@@ -112,7 +112,7 @@ angular.module('trelloCal').controller('AppCtrl', function ($scope, $rootScope, 
         }
 
 
-        $scope.days = buildCalService.build(today).days;
+        $scope.days = CalService.build(today).days;
 
 
         function showAdvanced(ev) {

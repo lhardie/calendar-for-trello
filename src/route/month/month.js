@@ -35,7 +35,7 @@ month.directive('myClick', function ($parse) {
 
 
 month.controller('monthCtrl', function ($timeout, $interval,toastr,
-                                        archiveCard, $scope, buildCalService, changeDate, $window,
+                                        $scope, CalService, changeDate, $window,
                                         $stateParams, $location, $mdDialog, localStorageService, orderByFilter,
                                         ngProgress, initService, $q, getExistingBoardColors, $rootScope, webStorage) {
 
@@ -63,9 +63,9 @@ month.controller('monthCtrl', function ($timeout, $interval,toastr,
 
     var routine = function (date, defer) {
         initService.refreshColors();
-        buildCalService.refresh();
+        CalService.refresh();
         $scope.days = [];
-        $scope.days = buildCalService.build(date).days;
+        $scope.days = CalService.build(date).days;
         $scope.date = {
             iso: new Date(year, month),
             monthName: moment.months()[date.month],
@@ -75,7 +75,7 @@ month.controller('monthCtrl', function ($timeout, $interval,toastr,
         $scope.isToday = (date.year === today.year && date.month === today.month);
         $scope.searchText = null;
         $scope.querySearch = querySearch;
-        $scope.boards = buildCalService.boards();
+        $scope.boards = CalService.boards();
         $scope.ExistingBoards = webStorage.get('TrelloCalendarStorage').boards;
         if (defer) {
             defer.resolve();
@@ -236,15 +236,6 @@ month.controller('monthCtrl', function ($timeout, $interval,toastr,
             ngProgress.complete();
         });
 
-    };
-
-    $scope.archiveCard = function (data) {
-        var id = data.id;
-        archiveCard.async(id).then(function () {
-            //success
-        }, function () {
-            //error
-        });
     };
 
     $scope.activeBoard = function (card) {
