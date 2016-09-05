@@ -3,7 +3,6 @@ require("./js/trelloCal.AppCtrl");
 require("./js/trelloCal.headerCtrl");
 require("./services/CalService");
 require("./services/initService");
-require("./services/streamService");
 require("./error-logging/error-logging");
 require("./analytics/analytics");
 require("./route/stream/stream");
