@@ -3,6 +3,20 @@ import moment from 'moment'
 
 import {appModule} from '../app';
 
+export class CalDay {
+
+    constructor(public date: Date, public dayOff: boolean, public cards: Array<any>, public isToday: boolean, public weekday: String) {
+
+    }
+}
+
+export class CalBoard {
+    // _lowername: card.boardName.toLowerCase(),
+    constructor(public name: string, public id: string, public image: string, public email: string, public color: string) {
+
+    }
+}
+
 class CalServiceConfig {
     public startOffset: number;
     public endOffSet: number;
@@ -10,7 +24,7 @@ class CalServiceConfig {
 
 class CalService {
 
-    private boardsArray = [];
+    private boardsArray: Array<CalBoard>;
     private cards = [];
     private config: CalServiceConfig;
 
@@ -39,17 +53,16 @@ class CalService {
         }
     }
 
-    private buildADay(date: Date, dayOff) {
+    private buildADay(date: Date, dayOff): CalDay {
         let momentDate: moment.Moment = moment(date);
         // var isToday = (date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0));
         let isToday = momentDate.isSame(moment(), 'day');
-        var day = {
-            date: momentDate.toDate(),
-            dayOff: dayOff,
-            cards: [],
-            isToday: isToday,
-            weekday: momentDate.format('dddd')
-        };
+        var day: CalDay =new CalDay(momentDate.toDate(),
+            dayOff,
+            [],
+            isToday,
+            momentDate.format('dddd')
+        );
 
         let cardsOfToday = _.filter(this.cards, (card) => {
             let isSameDay = momentDate.isSame(moment(card.dueDay), 'day');
@@ -57,17 +70,15 @@ class CalService {
         });
 
         _.forEach(cardsOfToday, function (card) {
-            var board = {
-                name: card.boardName,
+            let board = new CalBoard(card.boardName,
                 // _lowername: card.boardName.toLowerCase(),
-                id: card.idBoard,
-                image: '#',
-                email: '#',
-                color: card.color
+                card.idBoard,
+                '#',
+                '#',
+                card.color
+            );
 
-            };
-
-            // this.boardsArray.push(board);
+           this.boardsArray.push(board);
             day.cards.push(card);
         });
 
@@ -75,8 +86,8 @@ class CalService {
     };
 
 
-    private getDaysInMonth(year: number, month: number) {
-        let days = [];
+    private getDaysInMonth(year: number, month: number): Array<CalDay> {
+        let days: Array<CalDay> = [];
         var date: Date = new Date(year, month, 1);
         /**
          * get start - offset
