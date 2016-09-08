@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import moment from 'moment'
 
 import {appModule} from '../app';
+import {Dictionary} from "lodash";
 
 export class CalDay {
 
@@ -53,7 +54,30 @@ class CalService {
         }
     }
 
-    private buildADay(date: Date, dayOff): CalDay {
+
+    public build(inDate) {
+        this.boardsArray = [];
+
+        let withDueDate = _.filter(this.cards, (card) => false === _.isUndefined(card.dueDay));
+        let cards = _.groupBy(withDueDate, (card) => moment(card.dueDay).startOf('day').unix());
+
+
+        let days = this.getDaysInMonth(inDate.year, inDate.month, cards);
+
+        return {
+            config: this.config,
+            days: days,
+            boards: this.boardsArray
+        };
+    }
+
+    public boards() {
+        return _.uniqBy(this.boardsArray, function (item) {
+            return 'id:' + item.id + 'name:' + item.name;
+        });
+    }
+
+    private buildADay(date: Date, dayOff, cards: Dictionary<Array<any>>): CalDay {
         let momentDate: moment.Moment = moment(date);
         // var isToday = (date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0));
         let isToday = momentDate.isSame(moment(), 'day');
@@ -64,12 +88,9 @@ class CalService {
             momentDate.format('dddd')
         );
 
-        let cardsOfToday = _.filter(this.cards, (card) => {
-            let isSameDay = momentDate.isSame(moment(card.dueDay), 'day');
-            return isSameDay;
-        });
+        let cardsOfToday =cards[momentDate.startOf('day').unix()];
 
-        _.forEach(cardsOfToday, function (card) {
+        _.forEach(cardsOfToday, (card) => {
             let board = new CalBoard(card.boardName,
                 // _lowername: card.boardName.toLowerCase(),
                 card.idBoard,
@@ -86,7 +107,7 @@ class CalService {
     };
 
 
-    private getDaysInMonth(year: number, month: number): Array<CalDay> {
+    private getDaysInMonth(year: number, month: number, cards: Dictionary<Array<any>>): Array<CalDay> {
         let days: Array<CalDay> = [];
         var date: Date = new Date(year, month, 1);
         /**
@@ -101,7 +122,7 @@ class CalService {
         this.config.startOffset = runs - 1;
         var workDate: Date = new Date(date - 1);
         for (var d = 1; d < runs;) {
-            days.push(this.buildADay(new Date(workDate.setHours(0, 0, 0, 0)), true));
+            days.push(this.buildADay(new Date(workDate.setHours(0, 0, 0, 0)), true, cards));
             workDate.setDate(workDate.getDate() - 1);
 
             // if weekday is 1 push 7 days:
@@ -113,7 +134,7 @@ class CalService {
          */
 
         while (date.getMonth() === month) {
-            let newDay = this.buildADay(date, false);
+            let newDay = this.buildADay(date, false, cards);
             days.push(newDay);
             date.setDate(date.getDate() + 1);
         }
@@ -129,37 +150,12 @@ class CalService {
         }
         this.config.endOffSet = a;
         for (var i = 0; i < a; i++) {
-            days.push(this.buildADay(date, true));
+            days.push(this.buildADay(date, true, cards));
             date.setDate(date.getDate() + 1);
         }
 
         return days;
     }
-
-    public build(inDate) {
-        this.boardsArray = [];
-
-        let cards = _.groupBy(this.cards, 'dueDay');
-
-        delete cards.undefined;
-
-        let days = this.getDaysInMonth(inDate.year, inDate.month);
-
-        return {
-            config: this.config,
-            days: days,
-            boards: this.boardsArray
-        };
-    }
-
-    boards() {
-        return _.uniqBy(this.boardsArray, function (item) {
-            return 'id:' + item.id + 'name:' + item.name;
-        });
-
-
-    }
-
 }
 
 appModule.service('CalService', CalService);
