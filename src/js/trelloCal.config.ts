@@ -152,7 +152,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
 
                 "content@trello.app": {
                     templateUrl: "route/month/month.html",
-                    controller: "monthCtrl",
+                    controller: "monthCtrl as ctrl",
                     data: {
                         pageTitle: "Month View"
                     }

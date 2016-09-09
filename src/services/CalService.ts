@@ -23,7 +23,7 @@ class CalServiceConfig {
     public endOffSet: number;
 }
 
-class CalService {
+export class CalService {
 
     private boardsArray: Array<CalBoard>;
     private cards = [];
