@@ -79,7 +79,7 @@
                     <span class="weekday">{{day.weekday}}</span>
                     <span ng-class="{'todayBtn' :day.isToday}">{{day.date  | date: "d" }}</span>
                 </div>
-                <div class="dayCards" id="{{day.date | date: 'yyyy,MM,dd,'}}" ui-sortable="sortableOptions"
+                <div class="dayCards" id="{{day.date | date: 'yyyy,MM,dd,'}}" ui-sortable="ctrl.sortableOptions"
                      ng-model="day.cards">
 
                     <div ng-repeat="card in day.cards  | filter: activeBoard track by card.id" layout="row">

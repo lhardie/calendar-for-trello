@@ -22,6 +22,7 @@ var GulpConfig = (function () {
             "bower_components/angular-material/angular-material.min.js",
             "bower_components/angular-material-icons/angular-material-icons.min.js",
             "bower_components/angular-toastr/dist/angular-toastr.min.js",
+            "bower_components/angular-toastr/dist/angular-toastr.tpls.min.js",
             "bower_components/angular-sanitize/angular-sanitize.min.js",
             "bower_components/angular-sortable-view/src/angular-sortable-view.min.js",
             "bower_components/angular-ui-router/release/angular-ui-router.min.js",

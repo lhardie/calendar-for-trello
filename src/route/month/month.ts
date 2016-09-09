@@ -62,11 +62,12 @@ class MonthController {
 
     private ExistingBoards;
     private selectall;
-    private tempPost;
+    private tempPost: Array<any>;
     private offline;
     private searchText: string;
     private boards;
 
+    public sortableOptions;
 
     constructor(private $interval: ng.IIntervalService, private toastr,
                 $scope: ng.IScope, private CalService: CalService, private changeDate: ChangeDateService,
@@ -94,6 +95,7 @@ class MonthController {
         }
 
         this.addWatchers($interval, $scope, orderByFilter);
+        this.createSortableOptions();
     }
 
     private addWatchers($interval: angular.IIntervalService, $scope, orderByFilter) {
@@ -118,6 +120,55 @@ class MonthController {
         }, true);
     }
 
+    private createSortableOptions() {
+        let sortableOptionsAny: SortableOptions<any> = {
+            receive: (e, ui) => {
+                var id = ui.item[0].children[1].id.split('-')[0];
+                this.ngProgress.start();
+                var str = e.target.id + ui.item[0].children[1].id.split('-')[1];
+                var newStr = [];
+                angular.forEach(str.split(','), function (value) {
+                    newStr.push(parseInt(value));
+                });
+                if (!newStr[3]) {
+                    newStr[3] = 12;
+                    newStr.push(0);
+                    newStr.push(0);
+                }
+                var targetDate = new Date(newStr[0], newStr[1] - 1, newStr[2], newStr[3], newStr[4]);
+
+                this.tempPost.push([id, targetDate]);
+                this.updateChangeArray();
+
+            },
+            revert: true,
+            placeholder: 'card',
+            connectWith: '.dayCards',
+            over: (event, ui) => {
+                var element = document.getElementById(event.target.id);
+                if (event.target.id !== ui.item[0].parentElement.id) {
+                    var children = element.children;
+                    _.forEach(children, function (child) {
+                        child.style.transform = 'scale(0.8)';
+                    });
+                }
+                element.style.borderColor = '#42548E';
+                element.style.borderStyle = 'dashed';
+                element.style.borderWidth = '3px';
+
+            },
+            out: (event) => {
+                var element = document.getElementById(event.target.id);
+                element.style.borderStyle = 'none';
+                var children = element.children;
+                _.forEach(children, function (child) {
+                    child.style.transform = 'scale(1)';
+                });
+            }
+        };
+
+        this.sortableOptions = sortableOptionsAny;
+    }
 
     public refresh() {
         if (this.offline !== true) {
@@ -157,61 +208,13 @@ class MonthController {
     };
 
 
-    public sortableOptions() {
-        let events: SortableOptions<any> = {
-            receive: function (e, ui) {
-                var id = ui.item[0].children[1].id.split('-')[0];
-                this.ngProgress.start();
-                var str = e.target.id + ui.item[0].children[1].id.split('-')[1];
-                var newStr = [];
-                angular.forEach(str.split(','), function (value) {
-                    newStr.push(parseInt(value));
-                });
-                if (!newStr[3]) {
-                    newStr[3] = 12;
-                    newStr.push(0);
-                    newStr.push(0);
-                }
-                var targetDate = new Date(newStr[0], newStr[1] - 1, newStr[2], newStr[3], newStr[4]);
-
-                this.tempPost.push([id, targetDate]);
-                this.updateChangeArray();
-
-            },
-            revert: true,
-            placeholder: 'card',
-            connectWith: '.dayCards',
-            over: function (event, ui) {
-                var element = document.getElementById(event.target.id);
-                if (event.target.id !== ui.item[0].parentElement.id) {
-                    var children = element.children;
-                    _.forEach(children, function (child) {
-                        child.style.transform = 'scale(0.8)';
-                    });
-                }
-                element.style.borderColor = '#42548E';
-                element.style.borderStyle = 'dashed';
-                element.style.borderWidth = '3px';
-
-            },
-            out: function (event) {
-                var element = document.getElementById(event.target.id);
-                element.style.borderStyle = 'none';
-                var children = element.children;
-                _.forEach(children, function (child) {
-                    child.style.transform = 'scale(1)';
-                });
-            }
-        };
-    };
-
     private updateChangeArray() {
         var promises = [];
-        _.forEach(this.tempPost, function (change) {
+        _.forEach(this.tempPost, (change) => {
             promises.push(this.changeDate.async(change[0], change[1]));
         });
         this.$q.all(promises).then((responses) => {
-            _.forEach(responses, function (change, index) {
+            _.forEach(responses, (change, index) => {
                 this.tempPost.splice(index, 1);
 
             });
@@ -330,6 +333,5 @@ class MonthController {
 
         this.reloadView();
     }
-
 }
 appModule.controller('monthCtrl', MonthController);
