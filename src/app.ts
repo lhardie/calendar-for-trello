@@ -25,14 +25,12 @@ export var appModule = angular.module("trelloCal", [
 
     'trelloCal.analytics',
     'trelloCal.errorLogging',
-    'w11k.angular-seo-header'
+    'w11k.angular-seo-header',
 
-   /*
-    'angular-sortable-view',
-    'ui.select',
-    'ui.sortable', // nicht da??
 
-    */
+    'ui.sortable',
+    'angular-sortable-view'
+
 
 ]);
 

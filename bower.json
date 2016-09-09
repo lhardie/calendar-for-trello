@@ -16,6 +16,8 @@
     "angular-sanitize": "~1.4.12",
     "angular-toastr": "*",
     "angular-ui-router": "0.2.15",
+    "angular-ui-sortable": "^0.14.3",
+    "angular-sortable-view": "^0.0.15",
     "angular-webstorage": "0.14.0",
     "angulartics": "~0.18.0",
     "moment": "~2.10.2",
