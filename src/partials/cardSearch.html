@@ -2,11 +2,11 @@
     <md-input-container>
         <label for="testInput">Card/Board Name...</label>
         <input type="text" id="testInput"
-               ng-model="search.card" md-autofocus>
+               ng-model="ctrl.search.card" md-autofocus>
     </md-input-container>
 </form>
 <div class="nav">
-    <div ng-repeat="card in cards|filter: search.card |orderBy:'name'"
+    <div ng-repeat="card in ctrl.cards|filter: ctrl.search.card |orderBy:'name'"
          layout="row" class="holeCard md-whiteframe-z1">
         <div style="background-color:{{card.color}};display:block ">&nbsp&nbsp&nbsp
         </div>

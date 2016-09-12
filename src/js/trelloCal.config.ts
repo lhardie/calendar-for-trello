@@ -141,13 +141,13 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 "header@trello.app": {
                     abstract: true,
                     templateUrl: "partials/header.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
 
                 },
                 "sidebar@trello.app": {
                     abstract: true,
                     templateUrl: "partials/sidebar.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
                 },
 
                 "content@trello.app": {
@@ -160,7 +160,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 "search@trello.app": {
                     abstract: true,
                     templateUrl: "partials/cardSearch.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
                 }
             },
             resolve: {

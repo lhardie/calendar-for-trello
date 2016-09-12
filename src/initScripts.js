@@ -1,5 +1,4 @@
 require("./js/trelloCal.AppCtrl");
-require("./js/trelloCal.headerCtrl");
 require("./services/CalService");
 require("./services/initService");
 require("./error-logging/error-logging");

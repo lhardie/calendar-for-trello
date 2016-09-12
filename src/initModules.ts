@@ -6,4 +6,5 @@ import "./services/setToken";
 import "./services/streamService";
 import "./route/boards/boards";
 import "./js/trelloCal.config";
+import "./js/trelloCal.headerCtrl";
 import "./js/trelloCal.run";

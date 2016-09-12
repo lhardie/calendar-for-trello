@@ -1,18 +1,18 @@
-<md-subheader class="md-no-sticky" style="background-color: #EDEFF4"><i>Welcome, <strong style="font-weight: 600;">{{name}}</strong>.</i>
+<md-subheader class="md-no-sticky" style="background-color: #EDEFF4"><i>Welcome, <strong style="font-weight: 600;">{{ctrl.name}}</strong>.</i>
 </md-subheader>
 
 <div ng-hide="!overduedCards.length" style="margin:15px;">
-    <div class="overdued md-whiteframe-z1" ng-style="overduedHeader" layout="row" ng-click="openCardOverdued();">
+    <div class="overdued md-whiteframe-z1" ng-style="ctrl.overduedHeader" layout="row" ng-click="ctrl.openCardOverdued();">
         <div style="margin-top: 0px">
-            <ng-md-icon class="ng-md-icon" ng-style="overduedIcon" icon="warning" size="24"></ng-md-icon>
+            <ng-md-icon class="ng-md-icon" ng-style="ctrl.overduedIcon" icon="warning" size="24"></ng-md-icon>
         </div>
-        <div ng-style="overduedTitle" style="margin-top:4px">There are overdue cards</div>
+        <div ng-style="ctrl.overduedTitle" style="margin-top:4px">There are overdue cards</div>
     </div>
-    <div ng-style="overduedContent" class=" nav card-content" id="{{day.date | date: 'yyyy,MM,dd,'}}"
-         ui-sortable="sortableOptions" ng-model="cards">
+    <div ng-style="ctrl.overduedContent" class=" nav card-content" id="{{ctrl.day.date | date: 'yyyy,MM,dd,'}}"
+         ui-sortable="ctrl.sortableOptions" ng-model="ctrl.cards">
 
         <div ng-animate="'animate'"
-             ng-repeat="card in overduedCards=(cards |filter: isOverdue|filter: cardSelected)|orderBy:'due'"
+             ng-repeat="card in overduedCards=(ctrl.cards |filter: ctrl.isOverdue|filter: ctrl.cardSelected)|orderBy:'due'"
              layout="row" class="md-whiteframe-z1 holeCard">
             <div style="background-color:{{card.color}};display:block;">&nbsp&nbsp&nbsp
             </div>
@@ -33,17 +33,17 @@
 
 </div>
 <div ng-hide="!nodueCards.length" style="margin:15px;">
-    <div class="nodue md-whiteframe-z1" ng-style="nodueHeader" layout="row" ng-click="openCardnoDue();">
+    <div class="nodue md-whiteframe-z1" ng-style="ctrl.nodueHeader" layout="row" ng-click="ctrl.openCardnoDue();">
         <div style="margin-top: 0px">
-            <ng-md-icon class="ng-md-icon" ng-style="nodueIcon" icon="access_time" size="24"></ng-md-icon>
+            <ng-md-icon class="ng-md-icon" ng-style="ctrl.nodueIcon" icon="access_time" size="24"></ng-md-icon>
         </div>
-        <div ng-style="nodueTitle" style="margin-top:4px">Cards without due date</div>
+        <div ng-style="ctrl.nodueTitle" style="margin-top:4px">Cards without due date</div>
     </div>
-    <div ng-style="nodueContent" class=" nav card-content" id="{{day.date | date: 'yyyy,MM,dd,'}}"
+    <div ng-style="ctrl.nodueContent" class=" nav card-content" id="{{ctrl.day.date | date: 'yyyy,MM,dd,'}}"
          ui-sortable="sortableOptions" ng-model="cards">
 
 
-        <div ng-repeat="card in nodueCards=(cards |filter: isNoduedate|filter: cardSelected )|orderBy:'dateLastActivity'"
+        <div ng-repeat="card in nodueCards=(ctrl.cards |filter: ctrl.isNoduedate|filter: ctrl.cardSelected )|orderBy:'dateLastActivity'"
              layout="row" class="holeCard md-whiteframe-z1">
             <div style="background-color:{{card.color}};display:block ">&nbsp&nbsp&nbsp
             </div>
@@ -64,21 +64,21 @@
 </div>
 
 
-<md-list-item ng-click="goTo('app/month')">
+<md-list-item ng-click="ctrl.goTo('app/month')">
     <ng-md-icon class="ng-md-icon" icon="today" style="fill: #666" size="24"></ng-md-icon>
     <div class="md-list-item-text">
         <p> Month </p>
     </div>
 </md-list-item>
 
-<md-list-item ng-click="goTo('app/boards')">
+<md-list-item ng-click="ctrl.goTo('app/boards')">
     <ng-md-icon class="ng-md-icon" icon="my_library_books" style="fill: #666" size="24"></ng-md-icon>
     <div class="md-list-item-text">
         <p> Board Settings </p>
     </div>
 </md-list-item>
 
-<md-list-item ng-click="goTo('app/about')">
+<md-list-item ng-click="ctrl.goTo('app/about')">
     <ng-md-icon class="ng-md-icon" icon="info" style="fill: #666" size="24"></ng-md-icon>
     <div class="md-list-item-text">
         <p> About </p>
