@@ -1,7 +1,7 @@
 <md-toolbar ui-view="header" class="header md-whiteframe-z3" layout="row" class="headBar"
-            md-swipe-right="openSidenav('left')" md-swipe-left="closeSidenav('left')"
+            md-swipe-right="ctrl.openSidenav('left')" md-swipe-left="ctrl.closeSidenav('left')"
             style="height: 62px;position:fixed;">
-    <h2 class="md-toolbar-tools" style="position: relative;" ng-click="toHome()">Calendar for
+    <h2 class="md-toolbar-tools" style="position: relative;" ng-click="ctrl.toHome()">Calendar for
         <img style="float:right;padding-left:10px;"
              src="https://d78fikflryjgj.cloudfront.net/images/50b4ebc64391dc394a38e73aed57f0e2/header-logo.png"/>
     </h2>
@@ -11,20 +11,20 @@
     <div style="margin:25px;margin-top:0px" flex>
         <div class="calNav">
             <h2 layout="row" style="margin-top:10px;" class="md-subhead" layout-align="space-between end">
-                <md-button class="md-raised md-primary mini" aria-label="previous month" ng-click="move(-1)">
+                <md-button class="md-raised md-primary mini" aria-label="previous month" ng-click="ctrl.move(-1)">
                     <ng-md-icon class="ng-md-icon" icon="navigate_before" style="fill: #fff" size="22"></ng-md-icon>
                 </md-button>
-                <md-button class="md-flat md-primary mini " ng-click="toToday()" aria-label="next month"
+                <md-button class="md-flat md-primary mini " ng-click="ctrl.toToday()" aria-label="next month"
                            style="white-space: nowrap;">
-                    <span>today{{isOnline}}</span>
+                    <span>today{{ctrl.isOnline}}</span>
                 </md-button>
-                <md-button class="md-raised md-primary mini" aria-label="next month" ng-click="move(1)">
+                <md-button class="md-raised md-primary mini" aria-label="next month" ng-click="ctrl.move(1)">
                     <ng-md-icon class="ng-md-icon" icon="navigate_next" style="fill: #fff" size="22"></ng-md-icon>
                 </md-button>
-                <span class="month" style="white-space: nowrap;margin-right: 10px;" flex>{{date.monthName}}, {{date.year}}</span>
+                <span class="month" style="white-space: nowrap;margin-right: 10px;" flex>{{ctrl.date.monthName()}}, {{ctrl.date.year}}</span>
 
-                <md-button ng-if="offline!=true" aria-label="Refresh Button" class="calendarOption md-icon-button"
-                           ng-click="refresh()">
+                <md-button ng-if="ctrl.offline!=true" aria-label="Refresh Button" class="calendarOption md-icon-button"
+                           ng-click="ctrl.refresh()">
                     <ng-md-icon icon="refresh" class="calendarOption-icon" size="22"></ng-md-icon>
                 </md-button>
 
@@ -82,7 +82,7 @@
         <div class="listView">
             <div class="day header" ng-repeat="wd in weekdays"><span class="short">{{wd[0]}}</span><span
                     class="long">{{wd[1]}}</span></div>
-            <div ng-repeat="day in days track by day.date" class="day"
+            <div ng-repeat="day in ctrl.days track by day.date" class="day"
                  ng-class="{'dayOff': day.dayOff, 'dayOn' : !day.dayOff, 'has' : day.cards.length >= 1}">
                 <div class="dayCounter">
                     <span class="weekday">{{day.weekday}}</span>

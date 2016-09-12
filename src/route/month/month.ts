@@ -47,7 +47,7 @@ monthModule.directive('myClick', function ($parse) {
     };
 });
 
-class CalDate {
+export class CalDate {
 
     constructor(public year: number, public month: number) {
 

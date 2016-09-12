@@ -90,7 +90,7 @@ var GulpConfig = (function () {
         ];
 
         this.copyFiles = [
-          ["src/assets/*.*", "assets"],
+          ["src/assets/**/*.*", "assets"],
             // 'angular-ui-notification/src/angular-ui-notification.html'
 
         ];
