@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import {appModule} from '../app';
 import {Dictionary} from "lodash";
+import {WebStorageAdapter} from "./WebStorageAdapter";
 
 export class CalDay {
 
@@ -29,7 +30,7 @@ export class CalService {
     private cards = [];
     private config: CalServiceConfig;
 
-    constructor(private webStorage) {
+    constructor(private WebStorageAdapter: WebStorageAdapter) {
         'ngInject';
         this.config = new CalServiceConfig();
 
@@ -38,15 +39,15 @@ export class CalService {
     public refresh() {
         this.cards = [];
         var card;
-        if (this.webStorage.get('TrelloCalendarStorage').me.observer === true) {
-            var all = (this.webStorage.get('TrelloCalendarStorage')).cards.all;
+        if (this.WebStorageAdapter.getStorage().me.observer === true) {
+            var all = this.WebStorageAdapter.getStorage().cards.all;
             for (card in all) {
                 this.cards.push(all[card]);
             }
 
         }
         else {
-            var my = (this.webStorage.get('TrelloCalendarStorage')).cards.my;
+            var my = this.WebStorageAdapter.getStorage().cards.my;
             for (card in my) {
                 this.cards.push(my[card]);
             }

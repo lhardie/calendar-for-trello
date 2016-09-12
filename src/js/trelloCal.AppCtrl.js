@@ -1,5 +1,5 @@
 'use strict';
-angular.module('trelloCal').controller('AppCtrl', function ($scope, $rootScope, $http, $log, ngProgress, initService, $mdSidenav, webStorage) {
+angular.module('trelloCal').controller('AppCtrl', function ($scope, $rootScope, $http, $log, ngProgress, initService, $mdSidenav, WebStorageAdapter) {
 
         window.Offline.options = {
             checks: {xhr: {url: '/'}},
@@ -47,8 +47,7 @@ angular.module('trelloCal').controller('AppCtrl', function ($scope, $rootScope, 
             });
         }
 
-        if (webStorage.has('TrelloCalendarStorage')) {
-
+        if (WebStorageAdapter.hasStorage()) {
 
             ngProgress.color('#CF513D');
             $rootScope.$on('$stateChangeSuccess', function () {

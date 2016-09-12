@@ -41,7 +41,7 @@
                         <md-menu-item ng-repeat="board in ctrl.ExistingBoards |orderBy: 'name'" class="filterMenu">
                             <div class="colorPicker" style="background-color: {{board.prefs.backgroundColor}}"></div>
 
-                            <div my-click="filterClick(board.id)" class="menuItemElip">
+                            <div my-click="ctrl.filterClick(board.id)" class="menuItemElip">
                                 <div layout="row">
                                     <p flex>{{board.name}}</p>
                                     <ng-md-icon ng-if="!board.enabled" icon="check_box_outline_blank"

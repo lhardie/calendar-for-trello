@@ -1,10 +1,10 @@
 'use strict';
-angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, webStorage, $http, ngProgress, changeDate, $mdDialog, $scope, $mdSidenav, $state, initService, $window, $location, $mdBottomSheet, $rootScope) {
+angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, WebStorageAdapter, $http, ngProgress, changeDate, $mdDialog, $scope, $mdSidenav, $state, initService, $window, $location, $mdBottomSheet, $rootScope) {
 
     $scope.cards = [];
     var syncicon = '';
-    if (webStorage.get('TrelloCalendarStorage').me.autorefresh) {
-        if (webStorage.get('TrelloCalendarStorage').me.autorefresh === true) {
+    if (WebStorageAdapter.getStorage().me.autorefresh) {
+        if (WebStorageAdapter.getStorage().me.autorefresh === true) {
             syncicon = 'sync';
         }
         else {
@@ -17,22 +17,22 @@ angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, webSt
 
 
     var tempcards = [];
-    for (var x in webStorage.get('TrelloCalendarStorage').cards.my) {
-        tempcards.push(webStorage.get('TrelloCalendarStorage').cards.my[x]);
+    for (var x in WebStorageAdapter.getStorage().cards.my) {
+        tempcards.push(WebStorageAdapter.getStorage().cards.my[x]);
     }
     $scope.cards = tempcards;
 
     $rootScope.$on('rebuild', function () {
         var tempcards = [];
-        for (var x in webStorage.get('TrelloCalendarStorage').cards.my) {
-            tempcards.push(webStorage.get('TrelloCalendarStorage').cards.my[x]);
+        for (var x in WebStorageAdapter.getStorage().cards.my) {
+            tempcards.push(WebStorageAdapter.getStorage().cards.my[x]);
         }
         $scope.cards = tempcards;
     });
     /**filter for Overviews**/
     $scope.cardSelected = function (card) {
-        if (_.find(webStorage.get('TrelloCalendarStorage').boards, {'id': card.idBoard})) {
-            return _.find(webStorage.get('TrelloCalendarStorage').boards, {'id': card.idBoard}).enabled;
+        if (_.find(WebStorageAdapter.getStorage().boards, {'id': card.idBoard})) {
+            return _.find(WebStorageAdapter.getStorage().boards, {'id': card.idBoard}).enabled;
         }
         return false;
     };
@@ -75,9 +75,9 @@ angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, webSt
                 $scope.logout();
                 break;
             case 'refresh':
-                var storage = webStorage.get('TrelloCalendarStorage');
+                var storage = WebStorageAdapter.getStorage();
                 storage.me.autorefresh = !storage.me.autorefresh;
-                webStorage.set('TrelloCalendarStorage', storage);
+                WebStorageAdapter.setStorage(storage);
                 if (storage.me.autorefresh === true) {
                     syncicon = 'sync';
                 }
@@ -96,7 +96,7 @@ angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, webSt
                 window.open(url, '_blank');
                 break;
             case 'reset':
-                webStorage.remove('TrelloCalendarStorage');
+                WebStorageAdapter.removeStorage();
                 $window.location.reload();
                 break;
         }
@@ -104,9 +104,9 @@ angular.module('trelloCal').controller('headerCtrl', function ($q, AppKey, webSt
     };
 
     /**welcome Text**/
-    if (webStorage.get('TrelloCalendarStorage').me) {
-        $scope.name = webStorage.get('TrelloCalendarStorage').me.fullName;
-        $scope.id = webStorage.get('TrelloCalendarStorage').me.id;
+    if (WebStorageAdapter.getStorage().me) {
+        $scope.name = WebStorageAdapter.getStorage().me.fullName;
+        $scope.id = WebStorageAdapter.getStorage().me.id;
     } else {
         $scope.name = 'please login';
     }

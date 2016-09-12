@@ -1,0 +1,615 @@
+{
+  "me": {
+    "id": "53a8265abc1e018f06e09cb2",
+    "fullName": "Jan Blankenhorn",
+    "observer": false,
+    "colorizeCards": true,
+    "version": "0.1.41",
+    "autorefresh": true
+  },
+  "colors": {
+    "blue": {
+      "id": "blue",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#0079BF"
+    },
+    "orange": {
+      "id": "orange",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#D29034"
+    },
+    "green": {
+      "id": "green",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#519839"
+    },
+    "red": {
+      "id": "red",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#B04632"
+    },
+    "purple": {
+      "id": "purple",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#89609E"
+    },
+    "pink": {
+      "id": "pink",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#CD5A91"
+    },
+    "lime": {
+      "id": "lime",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#4BBF6B"
+    },
+    "sky": {
+      "id": "sky",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#00AECC"
+    },
+    "grey": {
+      "id": "grey",
+      "type": "default",
+      "tile": false,
+      "brightness": "dark",
+      "color": "#838C91"
+    }
+  },
+  "boards": {
+    "54bfda784986c21266515278": {
+      "name": "Falkstock 2015",
+      "id": "54bfda784986c21266515278",
+      "shortUrl": "https://trello.com/b/7nCdvsfG",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "members",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "54c0a5c20d64be4db6ed2156",
+        "backgroundImage": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/3132x1596/981794daa30f1dfdca66685fcfd09407/Falkstock_7-122.jpg",
+        "backgroundImageScaled": [
+          {
+            "width": 140,
+            "height": 100,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/140x100/fd005f1e9f32c62942f84773ca1771e8/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 256,
+            "height": 192,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/256x192/0db2f3bb8dd6eee55e073be98ba42c9e/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 480,
+            "height": 480,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/480x480/0edae00e1eb4a47816d5715bce00c430/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 960,
+            "height": 960,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/960x960/5468b065e62275af00f7d09e25d976bd/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 1024,
+            "height": 1024,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/1024x1024/ca06745520353e3a6d5793a2f91bbaa2/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 2048,
+            "height": 2048,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/2048x2048/2cb549b7a4c6bd454ee197671a66630e/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 1280,
+            "height": 1280,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/1280x1280/aed269219683e46b4826cc72fc0a5dd7/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 1920,
+            "height": 1920,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/1920x1920/f1ed7230593783ebd3a0a10c82c73f2d/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 2560,
+            "height": 1600,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/2560x1600/0cb040bbc225e9851e0f1fcc54b07439/Falkstock_7-122.jpg"
+          },
+          {
+            "width": 3132,
+            "height": 1596,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/54bfda6f76963ddc6502fc9e/3132x1596/981794daa30f1dfdca66685fcfd09407/Falkstock_7-122.jpg"
+          }
+        ],
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "canBePublic": true,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "53c79e62913bd91709448a59": {
+      "name": "Jan",
+      "id": "53c79e62913bd91709448a59",
+      "shortUrl": "https://trello.com/b/qV2KGjVu",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": false,
+        "background": "53cdfefee1723d7a37310ab0",
+        "backgroundImage": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/3829x2553/d74dd05fccbef8dd955a359a8a0e666c/_MG_4663.jpg",
+        "backgroundImageScaled": [
+          {
+            "width": 140,
+            "height": 100,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/140x100/ae84a32516fb4af28d1704aa5a839efc/_MG_4663.jpg"
+          },
+          {
+            "width": 256,
+            "height": 192,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/256x192/6a82bcafbc2b77359350597704f97049/_MG_4663.jpg"
+          },
+          {
+            "width": 480,
+            "height": 480,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/480x480/29fca5d471cf1f66d7adf8f66cd50210/_MG_4663.jpg"
+          },
+          {
+            "width": 960,
+            "height": 960,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/960x960/90f7a439641cd9d91a79a4c74a318eb6/_MG_4663.jpg"
+          },
+          {
+            "width": 1024,
+            "height": 1024,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/1024x1024/5c09779ae2d950ca7c1f6ab9f458f8b4/_MG_4663.jpg"
+          },
+          {
+            "width": 2048,
+            "height": 2048,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/2048x2048/ac7ce3aa514892e2946f64ed1b4472d5/_MG_4663.jpg"
+          },
+          {
+            "width": 1280,
+            "height": 1280,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/1280x1280/85ef2b59addc584e37c38d939652ad14/_MG_4663.jpg"
+          },
+          {
+            "width": 1920,
+            "height": 1920,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/1920x1920/a5a2a77774779f687b2343444153eba4/_MG_4663.jpg"
+          },
+          {
+            "width": 2560,
+            "height": 1600,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/2560x1600/d33807401eef0c44b0fc8edd39687abe/_MG_4663.jpg"
+          },
+          {
+            "width": 3829,
+            "height": 2553,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53a8265abc1e018f06e09cb2/3829x2553/d74dd05fccbef8dd955a359a8a0e666c/_MG_4663.jpg"
+          }
+        ],
+        "backgroundTile": false,
+        "backgroundBrightness": "light",
+        "canBePublic": true,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "573aaf7d58efe61845bd557b": {
+      "name": "Jan-Test",
+      "id": "573aaf7d58efe61845bd557b",
+      "shortUrl": "https://trello.com/b/Dxb8GXMc",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "blue",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#0079BF",
+        "canBePublic": true,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "559e3cb52efe3ea2f12144ed": {
+      "name": "theCodeCampus / Homepage",
+      "id": "559e3cb52efe3ea2f12144ed",
+      "shortUrl": "https://trello.com/b/BKMiXd9k",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": false,
+        "background": "orange",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#D29034",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "53c5437e781ede291565d4e8": {
+      "name": "theCodeCampus / Orga Schulungen",
+      "id": "53c5437e781ede291565d4e8",
+      "shortUrl": "https://trello.com/b/F8bjALUw",
+      "prefs": {
+        "permissionLevel": "org",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": true,
+        "background": "pink",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#CD5A91",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "5742f0132ec42f9e35346267": {
+      "name": "w11k / CRM",
+      "id": "5742f0132ec42f9e35346267",
+      "shortUrl": "https://trello.com/b/2LCbjgKb",
+      "prefs": {
+        "permissionLevel": "org",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "53c9747dc78dd8eb2a669760",
+        "backgroundImage": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/2048x2048/0c4513f3ca6d081baebf422416dd0678/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg",
+        "backgroundImageScaled": [
+          {
+            "width": 140,
+            "height": 100,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/140x100/5305ff2fd0a3ca2c8c6297e03dddebd7/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 256,
+            "height": 192,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/256x192/cc625fa40455b2971eab1f14a26dd8a8/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 480,
+            "height": 480,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/480x480/ed174dfe8f7174fd4f00096d88dd1c58/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 960,
+            "height": 960,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/960x960/c0ec8fca633406aed264cd262bb7a052/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 1024,
+            "height": 1024,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/1024x1024/93046aed22c39bf3c74e646855246af6/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 2048,
+            "height": 2048,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/2048x2048/0c4513f3ca6d081baebf422416dd0678/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 1280,
+            "height": 1280,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/1280x1280/b54d09d9280517c01aea572e817b2739/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 1920,
+            "height": 1920,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/1920x1920/7ec1a9d6ff82cba25f599e633a632528/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          },
+          {
+            "width": 2560,
+            "height": 1600,
+            "url": "https://trello-backgrounds.s3.amazonaws.com/53c3ed33e55269ec07313afb/2560x1600/4eb5d1a0538262aa9f933dea7e40465a/Penguins-of-madagascar-wallpaper-penguins-of-madagascar-7388029-2560-1600.jpg"
+          }
+        ],
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "55267ce7997450bb52ca8b21": {
+      "name": "w11k / Intern",
+      "id": "55267ce7997450bb52ca8b21",
+      "shortUrl": "https://trello.com/b/fhAn5BjA",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "members",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": true,
+        "background": "red",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#B04632",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "53c3efbf0c4225c5501068f3": {
+      "name": "w11k / Management Team",
+      "id": "53c3efbf0c4225c5501068f3",
+      "shortUrl": "https://trello.com/b/gYd2yAK3",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": true,
+        "background": "grey",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#838C91",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "53d0c2f689c092e388f33b15": {
+      "name": "w11k / Projektplanung",
+      "id": "53d0c2f689c092e388f33b15",
+      "shortUrl": "https://trello.com/b/ejq0eybn",
+      "prefs": {
+        "permissionLevel": "org",
+        "voting": "members",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "pirate",
+        "calendarFeedEnabled": true,
+        "background": "red",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#B04632",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "55349cfebcccf75c3ee9aff6": {
+      "name": "w11k / SEO",
+      "id": "55349cfebcccf75c3ee9aff6",
+      "shortUrl": "https://trello.com/b/PIkHMd9T",
+      "prefs": {
+        "permissionLevel": "org",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "rain",
+        "backgroundImage": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/rain/full.jpg",
+        "backgroundImageScaled": [
+          {
+            "width": 2400,
+            "height": 1600,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/rain/large.jpg"
+          },
+          {
+            "width": 1024,
+            "height": 683,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/rain/medium.jpg"
+          },
+          {
+            "width": 320,
+            "height": 213,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/rain/small.jpg"
+          }
+        ],
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": null,
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "542ba38c5be362907aca4463": {
+      "name": "w11k / Sales (crm)",
+      "id": "542ba38c5be362907aca4463",
+      "shortUrl": "https://trello.com/b/eNE2zFCA",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": true,
+        "background": "lime",
+        "backgroundImage": null,
+        "backgroundImageScaled": null,
+        "backgroundTile": false,
+        "backgroundBrightness": "dark",
+        "backgroundColor": "#4BBF6B",
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "57556b61e19d5314b22361ab": {
+      "name": "w11k / Strategie",
+      "id": "57556b61e19d5314b22361ab",
+      "shortUrl": "https://trello.com/b/faxknnuh",
+      "prefs": {
+        "permissionLevel": "org",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": true,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "hex",
+        "backgroundImage": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/hex.png",
+        "backgroundImageScaled": null,
+        "backgroundTile": true,
+        "backgroundBrightness": "dark",
+        "backgroundColor": null,
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    },
+    "560e745a154e6f52ab2328fb": {
+      "name": "w11k-tcc / Marketing",
+      "id": "560e745a154e6f52ab2328fb",
+      "shortUrl": "https://trello.com/b/uktpKonH",
+      "prefs": {
+        "permissionLevel": "private",
+        "voting": "disabled",
+        "comments": "members",
+        "invitations": "members",
+        "selfJoin": false,
+        "cardCovers": true,
+        "cardAging": "regular",
+        "calendarFeedEnabled": false,
+        "background": "mountain",
+        "backgroundImage": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/mountain/full.jpg",
+        "backgroundImageScaled": [
+          {
+            "width": 2400,
+            "height": 1696,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/mountain/large.jpg"
+          },
+          {
+            "width": 1024,
+            "height": 724,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/mountain/medium.jpg"
+          },
+          {
+            "width": 320,
+            "height": 227,
+            "url": "https://d2k1ftgv7pobq7.cloudfront.net/images/backgrounds/mountain/small.jpg"
+          }
+        ],
+        "backgroundTile": false,
+        "backgroundBrightness": "light",
+        "backgroundColor": null,
+        "canBePublic": false,
+        "canBeOrg": true,
+        "canBePrivate": true,
+        "canInvite": true
+      },
+      "enabled": true
+    }
+  },
+  "cards": {
+    "all": {
+      "557884225cb184267df868c3": {
+        "id": "557884225cb184267df868c3",
+        "idList": "54bffd09ba9ead46cd12d91d",
+        "name": "Ansagen",
+        "dateLastActivity": "2015-06-10T18:38:38.752Z",
+        "idBoard": "54bfda784986c21266515278",
+        "shortUrl": "https://trello.com/c/dyKLyftu",
+        "due": null,
+        "boardName": "Falkstock 2015",
+        "dueDay": "Wed, 31 Dec 1969 23:00:00 GMT",
+        "boardUrl": "https://trello.com/b/7nCdvsfG",
+        "listName": "TODO's"
+      }
+    }
+  },
+  "lists": {
+    "54bffd09ba9ead46cd12d91d": {
+      "id": "54bffd09ba9ead46cd12d91d",
+      "name": "TODO's"
+    }
+  }
+}

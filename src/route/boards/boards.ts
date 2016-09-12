@@ -6,18 +6,18 @@ class BoardsCtrl {
     colors = [];
 
     /* @ngInject */
-    constructor(private $scope, private $rootScope, private webStorage, private initService) {
+    constructor(private $scope, private $rootScope, private WebStorageAdapter, private initService) {
 
-        this.storage = webStorage.get('TrelloCalendarStorage');
+        this.storage = WebStorageAdapter.getStorage();
 
-        $scope.colorizeCards = webStorage.get('TrelloCalendarStorage').me.colorizeCards;
+        $scope.colorizeCards = WebStorageAdapter.getStorage().me.colorizeCards;
         this.updateScope();
 
     }
 
 
     updateScope() {
-        this.webStorage.set('TrelloCalendarStorage', this.storage);
+        this.WebStorageAdapter.setStorage(this.storage);
         this.initService.refreshColors();
         this.$rootScope.$broadcast('rebuild');
         this.$scope.boards = [];

@@ -1,12 +1,13 @@
 "use strict";
 import {appModule} from "../app";
+import {WebStorageAdapter} from "./WebStorageAdapter";
 
 export class SetTokenService {
     private token: string;
 
-    constructor(private webStorage) {
+    constructor(private WebStorageAdapter: WebStorageAdapter) {
         "ngInject";
-        let token = webStorage.get("trello_token");
+        let token = WebStorageAdapter.getToken();
         console.log("current token: " + token);
 
         this.token = token;
@@ -14,7 +15,7 @@ export class SetTokenService {
 
     set(token) {
         console.log("setToken: " + token);
-        this.webStorage.set("trello_token", token);
+        this.WebStorageAdapter.setToken(token);
     }
 }
 

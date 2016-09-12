@@ -9,9 +9,9 @@ class StreamService {
     request:any;
     data:Dictionary<any[]>;
 
-    constructor(private webStorage, private $q: ng.IQService, private $http: ng.IHttpService, private $rootScope: ng.IRootScopeService, private localStorageService, private baseUrl, private AppKey, private initService) {
+    constructor(private WebStorageAdapter, private $q: ng.IQService, private $http: ng.IHttpService, private $rootScope: ng.IRootScopeService, private localStorageService, private baseUrl, private AppKey, private initService) {
         "ngInject";
-        this.token = webStorage.get('trello_token');
+        this.token = WebStorageAdapter.getToken();
         this.request = $q.defer();
     }
 
@@ -36,7 +36,7 @@ class StreamService {
 
     };
 
-    public get() {
+    public getStorage() {
         this.initService.init().then(function (initData) {
             if (!this.data) {
                 var requests = [];

@@ -7,9 +7,10 @@ import {CalService} from "../../services/CalService";
 import {ChangeDateService} from "../../services/changeDate";
 import SortableEvents = angular.ui.SortableEvents;
 import SortableOptions = angular.ui.SortableOptions;
+import {WebStorageAdapter} from "../../services/WebStorageAdapter";
 
-var month = angular.module('trelloCal.month', []);
-month.config(/*ngInject*/ function (toastrConfig) {
+let monthModule = angular.module('trelloCal.month', []);
+monthModule.config(/*ngInject*/ function (toastrConfig) {
     angular.extend(toastrConfig, {
         autoDismiss: false,
         containerId: 'toast-container',
@@ -23,11 +24,15 @@ month.config(/*ngInject*/ function (toastrConfig) {
     });
 });
 
+interface IMyClickAttrbitutes extends ng.IAttributes{
+    myClick:any;
+}
+
 // props: https://github.com/angular/material/issues/4334#issuecomment-152551028
-month.directive('myClick', function ($parse) {
+monthModule.directive('myClick', function ($parse) {
     return {
         restrict: 'A',
-        compile: function ($element, attrs) {
+        compile: function ($element: JQuery, attrs: IMyClickAttrbitutes) {
             var fn = $parse(attrs.myClick, null, true);
             return function myClick(scope, element) {
                 element.on('click', function (event) {
@@ -60,7 +65,7 @@ class MonthController {
     private weekdays;
     private isToday;
 
-    private ExistingBoards;
+    private ExistingBoards: Array<Board>;
     private selectall;
     private tempPost: Array<any>;
     private offline;
@@ -74,7 +79,7 @@ class MonthController {
                 private $window: ng.IWindowService,
                 private orderByFilter, private ngProgress, private initService, private $q: ng.IQService,
                 private $rootScope: ng.IRootScopeService,
-                private webStorage) {
+                private WebStorageAdapter: WebStorageAdapter) {
         "ngInject";
 
 
@@ -84,7 +89,7 @@ class MonthController {
         this.isToday = (this.date.year === this.today.year && this.date.month === this.today.month);
 
         this.tempPost = [];
-        this.ExistingBoards = this.webStorage.get('TrelloCalendarStorage').boards;
+        this.ExistingBoards = this.WebStorageAdapter.getStorage().boards;
 
         /**top legende**/
         this.weekdays = [];
@@ -99,7 +104,7 @@ class MonthController {
     }
 
     private addWatchers($interval: angular.IIntervalService, $scope, orderByFilter) {
-        if (this.webStorage.get('TrelloCalendarStorage').me.autorefresh) {
+        if (this.WebStorageAdapter.getStorage().me.autorefresh) {
             $interval(() => {
                 this.refresh();
             }, 30000, 0, false);
@@ -145,10 +150,10 @@ class MonthController {
             placeholder: 'card',
             connectWith: '.dayCards',
             over: (event, ui) => {
-                var element = document.getElementById(event.target.id);
+                var element: HTMLElement = document.getElementById(event.target.id);
                 if (event.target.id !== ui.item[0].parentElement.id) {
                     var children = element.children;
-                    _.forEach(children, function (child) {
+                    _.forEach(children, function (child: HTMLElement) {
                         child.style.transform = 'scale(0.8)';
                     });
                 }
@@ -161,7 +166,7 @@ class MonthController {
                 var element = document.getElementById(event.target.id);
                 element.style.borderStyle = 'none';
                 var children = element.children;
-                _.forEach(children, function (child) {
+                _.forEach(children, function (child: HTMLElement) {
                     child.style.transform = 'scale(1)';
                 });
             }
@@ -199,7 +204,7 @@ class MonthController {
         this.isToday = (date.year === this.today.year && date.month === this.today.month);
         this.searchText = null;
         this.boards = this.CalService.boards();
-        this.ExistingBoards = this.webStorage.get('TrelloCalendarStorage').boards;
+        this.ExistingBoards = this.WebStorageAdapter.getStorage().boards;
         if (defer) {
             defer.resolve();
 
@@ -280,7 +285,7 @@ class MonthController {
     };
 
     public activeBoard(card) {
-        var existingBoard = this.ExistingBoards[card.idBoard];
+        var existingBoard: Board = this.ExistingBoards[card.idBoard];
         if (existingBoard !== undefined) {
             return existingBoard.enabled;
         }
@@ -289,16 +294,16 @@ class MonthController {
 
 
     public filterClick(id) {
-        let temp = _.find(this.webStorage.get('TrelloCalendarStorage').boards, {'id': id}).enabled;
-        var Storage = this.webStorage.get('TrelloCalendarStorage');
-        Storage.boards[id].enabled = !temp;
-        this.webStorage.set('TrelloCalendarStorage', Storage);
+        let temp = _.find(this.WebStorageAdapter.getStorage().boards, {'id': id}).enabled;
+        var storage = this.WebStorageAdapter.getStorage();
+        storage.boards[id].enabled = !temp;
+        this.WebStorageAdapter.setStorage(storage);
         this.reloadView();
     };
 
 
     public allSelectClick() {
-        var Storage = this.webStorage.get('TrelloCalendarStorage');
+        var Storage = this.WebStorageAdapter.getStorage();
         var board;
         if (this.selectall) {
             for (board in Storage.boards) {
@@ -312,14 +317,14 @@ class MonthController {
         }
         this.selectall = !this.selectall;
 
-        this.webStorage.set('TrelloCalendarStorage', Storage);
+        this.WebStorageAdapter.setStorage(Storage);
         this.reloadView();
     };
 
     public observeClick() {
-        var temp = this.webStorage.get('TrelloCalendarStorage');
+        var temp = this.WebStorageAdapter.getStorage();
         temp.me.observer = !temp.me.observer;
-        this.webStorage.set('TrelloCalendarStorage', temp);
+        this.WebStorageAdapter.setStorage(temp);
         if (temp.me.observer === true) {
             if (_.isEmpty(temp.cards.all)) {
                 this.reloadView();

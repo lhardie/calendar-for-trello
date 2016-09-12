@@ -1,5 +1,5 @@
 'use strict';
-angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, webStorage, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey) {
+angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, ngProgress, WebStorageAdapter, $http, $mdDialog, $rootScope, $window, baseUrl, AppKey) {
 
 
 		/**
@@ -7,7 +7,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 */
 
 		var key = AppKey;
-		var token = webStorage.get('trello_token');
+		var token = WebStorageAdapter.getToken();
 		var login, me, data, colors;
 		login = $q.defer();
 
@@ -23,9 +23,9 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		var firstInit = function () {
 			ngProgress.start();
 			var deferred = $q.defer();
-			token = webStorage.get('trello_token');
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
-			var cache = webStorage.get('TrelloCalendarStorage');
+			token = WebStorageAdapter.getToken();
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
+			var cache = WebStorageAdapter.getStorage();
 			me = $http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + key + '&token=' + token);
 			colors = $http.get('https://api.trello.com/1/members/me/boardBackgrounds?key=' + key + '&token=' + token);
 			$q.all([me, colors]).then(function (responses) {
@@ -90,7 +90,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 					'all': TrelloCalendarStorage.cards.all,
 					'my': TrelloCalendarStorage.cards.my
 				};
-				webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
+				WebStorageAdapter.setStorage(TrelloCalendarStorage);
 				ngProgress.complete();
 				deferred.resolve('init');
 
@@ -105,8 +105,8 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 * */
 		var pullBoards = function () {
 			var deferred = $q.defer();
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
-			var temp = webStorage.get('TrelloCalendarStorage');
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
+			var temp = WebStorageAdapter.getStorage();
 
 			$http.get('https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key=' + key + '&token=' + token)
 				.then(function (responses) {
@@ -130,7 +130,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 
 						}
 					});
-					webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
+					WebStorageAdapter.setStorage(TrelloCalendarStorage);
 					deferred.resolve('boards');
 				}, function () {
 					deferred.reject('boards error');
@@ -143,7 +143,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 * */
 		var pullLists = function () {
 			var deferred = $q.defer();
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
 			var listRequests = [];
 			var alllists = [];
 			_.forEach(TrelloCalendarStorage.boards, function (board) {
@@ -154,7 +154,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 					alllists = alllists.concat(lists.data);
 				});
 				TrelloCalendarStorage.lists = _.keyBy(alllists, 'id');
-				webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
+				WebStorageAdapter.setStorage(TrelloCalendarStorage);
 				deferred.resolve('lists');
 			}, function () {
 				deferred.reject('lists error');
@@ -167,7 +167,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 */
 		var pullCards = function () {
 			var deferred = $q.defer();
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
 			if (TrelloCalendarStorage.me.observer && TrelloCalendarStorage.me.observer === true) {
 				pullAllCards().then(function () {
 					deferred.resolve();
@@ -192,7 +192,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 * */
 		var pullMyCards = function () {
 			var deferred = $q.defer();
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
 			$http.get('https://api.trello.com/1/members/me/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key=' + key + '&token=' + token).then(function (responses) {
 				var myCards = responses.data;
 				for (var card in myCards) {
@@ -211,7 +211,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 				}
 
 				TrelloCalendarStorage.cards.my = _.keyBy(myCards, 'id');
-				webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
+				WebStorageAdapter.setStorage(TrelloCalendarStorage);
 				deferred.resolve('myCards');
 				login.resolve('myCards');
 
@@ -229,7 +229,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 * */
 		var pullAllCards = function () {
 			var deferred = $q.defer();
-			var TrelloCalendarStorage = webStorage.get('TrelloCalendarStorage');
+			var TrelloCalendarStorage = WebStorageAdapter.getStorage();
 			var cardRequests = [];
 			var allCards = [];
 			_.forEach(TrelloCalendarStorage.boards, function (board) {
@@ -255,7 +255,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 					}
 				}
 				TrelloCalendarStorage.cards.all = _.keyBy(allCards, 'id');
-				webStorage.set('TrelloCalendarStorage', TrelloCalendarStorage);
+				WebStorageAdapter.setStorage(TrelloCalendarStorage);
 				login.resolve('allCards');
 				deferred.resolve('allCards');
 			}, function () {
@@ -324,7 +324,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 		 */
 		var refreshColors = function () {
 			var BoardId;
-			var storage = webStorage.get('TrelloCalendarStorage');
+			var storage = WebStorageAdapter.getStorage();
 			for (var x in storage.cards.my) {
 				BoardId = storage.cards.my[x].idBoard;
 
@@ -340,13 +340,13 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 					storage.cards.all[y].color = storage.boards[BoardId].prefs.backgroundColor;
 				}
 			}
-			webStorage.set('TrelloCalendarStorage', storage);
+			WebStorageAdapter.setStorage(storage);
 		};
 
 		return {
 			init: function () {
 
-				if (!webStorage.has('trello_token')) {
+				if (!WebStorageAdapter.hasToken()) {
 					if ($rootScope.mobil) {
 						var redirect = baseUrl + '/app/token?do=settoken';
 						var ref = window.open('https://trello.com/1/authorize?response_type=token&scope=read,write&key=' + key + '&redirect_uri=' + redirect + '&callback_method=fragment&expiration=never&name=Calendar+for+Trello', '_blank', 'location=no', 'toolbar=no');
@@ -365,12 +365,19 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 
 
 				} else {
-					token = webStorage.get('trello_token');
-					if (!webStorage.has('TrelloCalendarStorage')) {
-						webStorage.set('TrelloCalendarStorage', {});
+					token = WebStorageAdapter.getToken();
+					console.log('token');
+
+					if (!WebStorageAdapter.hasStorage()) {
+						console.log('noStorage');
+						WebStorageAdapter.initStorage();
+						console.log('1');
 						firstInit().then(function () {
+						console.log('2');
 							firstInit().then(function () {
+						console.log('3');
 								updateAll().then(function () {
+						console.log('4');
 									ngProgress.complete();
 									login.resolve('not exist');
 								});
@@ -401,7 +408,7 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 
 			remove: function () {
 				data = null;
-				webStorage.set('trello_token', null);
+				WebStorageAdapter.setToken(null);
 			},
 			refreshColors: function () {
 				refreshColors();

@@ -4,9 +4,9 @@ import {appModule} from "../app";
 export class ChangeDateService {
     token: string;
 
-    constructor(private AppKey, private webStorage, private $http: ng.IHttpService) {
+    constructor(private AppKey, private WebStorageAdapter, private $http: ng.IHttpService) {
         "ngInject";
-        this.token = webStorage.get('trello_token');
+        this.token = WebStorageAdapter.getToken();
 
     }
 
