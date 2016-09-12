@@ -23,7 +23,8 @@
     "moment": "~2.10.2",
     "ngprogress": "~1.0.7",
     "stacktrace-js": "~0.6.4",
-    "w11k.angular-seo-header": "*"
+    "w11k.angular-seo-header": "*",
+    "offline": "^0.7.17"
   },
   "devDependencies": {},
   "resolutions": {

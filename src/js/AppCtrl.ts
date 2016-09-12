@@ -13,7 +13,7 @@ export class AppCtrl {
     private keyHandler: Function;
     constructor(private $scope: ng.IScope, private $rootScope: ng.IRootScopeService,
                 private ngProgress, private initService, private $mdSidenav: ISidenavService,
-                private WebStorageAdapter: WebStorageAdapter, private $window: ng.IWindowService) {
+                private WebStorageAdapter: WebStorageAdapter) {
         "ngInject";
 
         console.log('AppCtrl');

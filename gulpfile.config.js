@@ -36,6 +36,7 @@ var GulpConfig = (function () {
 
             "bower_components/moment/locales/en-gb.js",
             "bower_components/ngprogress/build/ngProgress.js",
+            "bower_components/offline/offline.min.js",
             "bower_components/array-tools/dist/array-tools.js",
             "bower_components/w11k.angular-seo-header/angular-seo-header.js",
             //Error-Logging:
