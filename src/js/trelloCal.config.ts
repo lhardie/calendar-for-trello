@@ -103,8 +103,8 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
             url: "",
             views: {
                 //This view contains elements that are common to the welcome and index states
-                "headerView": {
-                    templateUrl: "header.tpl.html"
+                "dropView": {
+                    templateUrl: "partials/drop.html"
                 }
             }
         })
@@ -113,7 +113,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
             views: {
                 "mainView@trello": {
                     controller: "welcomeCtrl as ctrl",
-                    templateUrl: "welcome.tpl.html"
+                    templateUrl: "partials/welcome.html"
                 }
             },
             data: {
@@ -131,7 +131,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
             views: {
                 "mainView@trello": {
                     abstract: true,
-                    templateUrl: "trello.html"
+                    templateUrl: "partials/trello.html"
                 }
             }
         })
@@ -233,13 +233,13 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 "header@trello.app": {
                     abstract: true,
                     templateUrl: "partials/header.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
 
                 },
                 "sidebar@trello.app": {
                     abstract: true,
                     templateUrl: "partials/sidebar.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
                 },
 
                 "content": {
@@ -252,7 +252,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 "search": {
                     abstract: true,
                     templateUrl: "partials/cardSearch.html",
-                    controller: "headerCtrl"
+                    controller: "headerCtrl as ctrl"
                 }
             },
             data: {

@@ -1,13 +1,13 @@
 <md-backdrop class="md-sidenav-backdrop md-opaque md-default-theme md-sidenav-backdrop-custom disabled"
-             ng-click="checkClosingForm()"></md-backdrop>
+             ng-click="ctrl.checkClosingForm()"></md-backdrop>
 
 <md-sidenav flex class="md-sidenav-left md-whiteframe-z2 md-sidenav"
             md-component-id="left"
             style="background-color: #EDEFF4;overflow: visible;position:fixed;"
-            md-swipe-left="closeSidenav('left')">
+            md-swipe-left="ctrl.closeSidenav('left')">
     <div>
         <md-toolbar layout="row" class="headBar md-whiteframe-z2" style="margin-bottom: 5px;" ng-style="toolbar">
-            <h2 class="md-toolbar-tools" style="position: relative" hide-gt-lg ng-click="toHome()">Calendar for
+            <h2 class="md-toolbar-tools" style="position: relative" hide-gt-lg ng-click="ctrl.toHome()">Calendar for
                 <img style="float:right;padding-left:10px;"
                      src="https://d78fikflryjgj.cloudfront.net/images/50b4ebc64391dc394a38e73aed57f0e2/header-logo.png"/>
             </h2>
@@ -35,13 +35,10 @@
 
 <div layout="row" flex style="background-color: white">
     <md-toolbar ui-view="header" class="header md-whiteframe-z3" layout="row" class="headBar"
-                md-swipe-right="openSidenav('left')" md-swipe-left="closeSidenav('left')"
+                md-swipe-right="ctrl.openSidenav('left')" md-swipe-left="ctrl.closeSidenav('left')"
                 style="height: 62px;position:fixed;" ng-style="toolbar">
-
     </md-toolbar>
-    <!-- <span hide show-gt-lg show-lg style="min-width:304px;float:left;position: relative;">
 
-    </span> -->
     <md-content ui-view="content" class="md-padding"
                 style="padding:0px;margin:0px;margin-top:62px;width:100%;background-color: #fff"></md-content>
 </div>

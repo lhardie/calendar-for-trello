@@ -23,6 +23,8 @@ export class HeaderCtrl {
     private more;
     private syncicon;
     private login;
+    private keepOpen: boolean;
+    private checkClosingForm: Function;
 
     constructor(private WebStorageAdapter: WebStorageAdapter, private ngProgress,
                 private changeDate: ChangeDateService, private $mdDialog: IDialogService,
@@ -30,6 +32,8 @@ export class HeaderCtrl {
                 private $location: ng.ILocationService,
                 private $mdBottomSheet: IBottomSheetService, private $rootScope: ng.IRootScopeService) {
         "ngInject";
+
+        this.keepOpen = false;
 
         this.cards = [];
         if (this.WebStorageAdapter.getStorage().me.autorefresh) {
@@ -79,6 +83,12 @@ export class HeaderCtrl {
         } else {
             this.name = 'please login';
         }
+
+        this.checkClosingForm = () => {
+            if (true) {
+                this.toggleRight();
+            }
+        };
     }
 
 
@@ -263,6 +273,18 @@ export class HeaderCtrl {
 
         }
     };
+
+    public toggleRight() {
+        this.$mdSidenav('right').toggle().then(() => {
+            this.keepOpen = !this.keepOpen;
+            if (this.keepOpen) {
+                angular.element('md-backdrop.md-sidenav-backdrop-custom').removeClass('disabled');
+            }
+            else {
+                angular.element('md-backdrop.md-sidenav-backdrop-custom').addClass('disabled');
+            }
+        });
+    }
 }
 
 appModule.controller('headerCtrl', HeaderCtrl);

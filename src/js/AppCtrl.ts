@@ -5,20 +5,24 @@ import ISidenavService = angular.material.ISidenavService;
 import {WebStorageAdapter} from "../services/WebStorageAdapter";
 import IDialogService = angular.material.IDialogService;
 
+interface MyWindow extends Window {
+    Offline: any;
+}
+
+declare var window: MyWindow;
+
 export class AppCtrl {
     private offline: boolean;
     private toolbar;
-    private keepOpen: boolean;
-    private checkClosingForm: Function;
+
     private keyHandler: Function;
+
     constructor(private $scope: ng.IScope, private $rootScope: ng.IRootScopeService,
                 private ngProgress, private initService, private $mdSidenav: ISidenavService,
                 private WebStorageAdapter: WebStorageAdapter) {
         "ngInject";
 
-        console.log('AppCtrl');
-
-        window.Offline.options = {
+        let options: OfflineOptions = {
             checks: {xhr: {url: '/'}},
             checkOnLoad: false,
             interceptRequests: false,
@@ -26,6 +30,7 @@ export class AppCtrl {
             requests: true,
             game: false
         };
+        window.Offline.options = options;
 
         window.addEventListener('offline', () => {
             window.Offline.on('down', () => {
@@ -74,27 +79,8 @@ export class AppCtrl {
                     this.ngProgress.complete();
                 });
             });
-            this.keepOpen = false;
 
-            this.checkClosingForm = () => {
-                if (true) {
-                    this.toggleRight();
-                }
-            };
         }
-    }
-
-
-    public toggleRight() {
-        this.$mdSidenav('right').toggle().then(() => {
-            this.keepOpen = !this.keepOpen;
-            if (this.keepOpen) {
-                angular.element('md-backdrop.md-sidenav-backdrop-custom').removeClass('disabled');
-            }
-            else {
-                angular.element('md-backdrop.md-sidenav-backdrop-custom').addClass('disabled');
-            }
-        });
     }
 
 

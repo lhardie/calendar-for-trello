@@ -7,7 +7,8 @@
     "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160810191828",
     "angular-ui-sortable": "registry:dt/angular-ui-sortable#0.13.0+20160317120654",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
-    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#43b6bf88758852b9ab713a9b011487f047f94f4e"
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#43b6bf88758852b9ab713a9b011487f047f94f4e",
+    "offline-js": "registry:dt/offline-js#0.7.14+20160316155526"
   },
   "dependencies": {
     "lodash": "registry:npm/lodash#4.0.0+20160723033700"

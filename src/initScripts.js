@@ -1,4 +1,3 @@
-require("./services/CalService");
 require("./services/initService");
 require("./error-logging/error-logging");
 require("./analytics/analytics");
