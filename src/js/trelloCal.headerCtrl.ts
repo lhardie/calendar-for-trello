@@ -47,18 +47,10 @@ export class HeaderCtrl {
         }
 
 
-        var tempcards = [];
-        for (var x in this.WebStorageAdapter.getStorage().cards.my) {
-            tempcards.push(this.WebStorageAdapter.getStorage().cards.my[x]);
-        }
-        this.cards = tempcards;
+        this.setCardsFromWebStorage();
 
         $rootScope.$on('rebuild', () => {
-            var tempcards = [];
-            for (var x in this.WebStorageAdapter.getStorage().cards.my) {
-                tempcards.push(this.WebStorageAdapter.getStorage().cards.my[x]);
-            }
-            this.cards = tempcards;
+            this.setCardsFromWebStorage();
         });
 
 
@@ -87,6 +79,14 @@ export class HeaderCtrl {
                 this.toggleRight();
             }
         };
+    }
+
+    private setCardsFromWebStorage() {
+        var tempcards: Array<Card> = [];
+        for (var x in this.WebStorageAdapter.getStorage().cards.my) {
+            tempcards.push(this.WebStorageAdapter.getStorage().cards.my[x]);
+        }
+        this.cards = tempcards;
     }
 
 

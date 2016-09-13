@@ -26,8 +26,7 @@ class BoardsCtrl {
         }
         this.$scope.boards.sort(function (a, b) {
             var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
-            if (nameA < nameB) //sort string ascending
-            {
+            if (nameA < nameB) {//sort string ascending
                 return -1;
             }
             if (nameA > nameB) {
