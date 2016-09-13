@@ -22,11 +22,17 @@ export class AppCtrl {
                 private WebStorageAdapter: WebStorageAdapter) {
         "ngInject";
 
+        let checks: OfflineChecks = {
+            xhr: {url: '/'}
+        };
         let options: OfflineOptions = {
-            checks: {xhr: {url: '/'}},
+            checks: checks,
             checkOnLoad: false,
             interceptRequests: false,
-            reconnect: false,
+            reconnect: {
+                initialDelay: 0,
+                delay: 0
+            },
             requests: true,
             game: false
         };
@@ -85,9 +91,10 @@ export class AppCtrl {
 
 
     public drop(item) {
-        console.log('item: ', item.id);
+        console.log('drop');
+        // console.log('item: ', item.id);
         //console.log('item: ',);
-        console.log(document.getElementById(item.id + '-12,0,0').parentNode.parentNode.id);
+        // console.log(document.getElementById(item.id + '-12,0,0').parentNode.parentNode.id);
     }
 
 }

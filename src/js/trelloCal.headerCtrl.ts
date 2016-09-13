@@ -207,7 +207,7 @@ export class HeaderCtrl {
                             this.$mdDialog.alert()
                                 .parent(angular.element(document.body))
                                 .title('Oops, something went wrong.')
-                                .content('please check your connection and reload this page')
+                                .textContent('please check your connection and reload this page')
                                 .ariaLabel('Connection Error')
                                 .ok('reload')
                             //  .targetEvent(ev)

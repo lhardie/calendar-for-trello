@@ -110,18 +110,18 @@ export class CalService {
 
     private getDaysInMonth(year: number, month: number, cards: Dictionary<Array<any>>): Array<CalDay> {
         let days: Array<CalDay> = [];
-        var date: Date = new Date(year, month, 1);
+        var firstDayInMonth: Date = new Date(year, month, 1);
         /**
          * get start - offset
          */
-        var runs = moment(date).isoWeekday();
+        var runs = moment(firstDayInMonth).isoWeekday();
 
         if (runs === 1) {
             // if week starts with monday, add 7 days
             runs = 8;
         }
         this.config.startOffset = runs - 1;
-        var workDate: Date = new Date(date - 1);
+        var workDate: Date = moment(firstDayInMonth).add(-1, "day").toDate();
         for (var d = 1; d < runs;) {
             days.push(this.buildADay(new Date(workDate.setHours(0, 0, 0, 0)), true, cards));
             workDate.setDate(workDate.getDate() - 1);
@@ -134,10 +134,10 @@ export class CalService {
          * get days
          */
 
-        while (date.getMonth() === month) {
-            let newDay = this.buildADay(date, false, cards);
+        while (firstDayInMonth.getMonth() === month) {
+            let newDay = this.buildADay(firstDayInMonth, false, cards);
             days.push(newDay);
-            date.setDate(date.getDate() + 1);
+            firstDayInMonth.setDate(firstDayInMonth.getDate() + 1);
         }
 
         /**
@@ -151,8 +151,8 @@ export class CalService {
         }
         this.config.endOffSet = a;
         for (var i = 0; i < a; i++) {
-            days.push(this.buildADay(date, true, cards));
-            date.setDate(date.getDate() + 1);
+            days.push(this.buildADay(firstDayInMonth, true, cards));
+            firstDayInMonth.setDate(firstDayInMonth.getDate() + 1);
         }
 
         return days;

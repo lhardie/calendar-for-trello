@@ -45,7 +45,7 @@ export class WebStorageAdapter {
         this.webStorage.set(TRELLO_CALENDAR_STORAGE, storage);
     }
 
-    public removeStorage(storage: TrelloCalendarStorage) {
+    public removeStorage() {
         return this.webStorage.remove(TRELLO_CALENDAR_STORAGE);
     }
 
