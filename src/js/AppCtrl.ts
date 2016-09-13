@@ -1,8 +1,8 @@
 'use strict';
 
-import {appModule} from "../app";
+import {appModule} from '../app';
 import ISidenavService = angular.material.ISidenavService;
-import {WebStorageAdapter} from "../services/WebStorageAdapter";
+import {WebStorageAdapter} from '../services/WebStorageAdapter';
 import IDialogService = angular.material.IDialogService;
 
 interface MyWindow extends Window {
@@ -20,7 +20,7 @@ export class AppCtrl {
     constructor(private $scope: ng.IScope, private $rootScope: ng.IRootScopeService,
                 private ngProgress, private initService, private $mdSidenav: ISidenavService,
                 private WebStorageAdapter: WebStorageAdapter) {
-        "ngInject";
+        'ngInject';
 
         let checks: OfflineChecks = {
             xhr: {url: '/'}
@@ -40,7 +40,7 @@ export class AppCtrl {
 
         window.addEventListener('offline', () => {
             window.Offline.on('down', () => {
-                console.debug('Trello Calendar is offline now.');
+                console.log('Trello Calendar is offline now.');
                 this.offline = true;
                 this.toolbar = {'background-color': '#B04632'};
                 $scope.$apply();
@@ -50,7 +50,7 @@ export class AppCtrl {
         });
         window.addEventListener('online', () => {
             window.Offline.on('up', () => {
-                console.debug('Trello Calendar is online now.');
+                console.log('Trello Calendar is online now.');
 
                 this.toolbar = {'background-color': '#42548E'};
                 this.offline = false;

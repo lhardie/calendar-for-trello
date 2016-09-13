@@ -1,11 +1,11 @@
 'use strict';
-import {appModule} from "../app";
+import {appModule} from '../app';
 
 export class ChangeDateService {
     token: string;
 
     constructor(private AppKey, private WebStorageAdapter, private $http: ng.IHttpService) {
-        "ngInject";
+        'ngInject';
         this.token = WebStorageAdapter.getToken();
 
     }

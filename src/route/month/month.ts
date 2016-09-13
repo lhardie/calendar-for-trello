@@ -1,13 +1,13 @@
 'use strict';
 import * as _ from 'lodash';
-import moment from 'moment'
+import moment from 'moment';
 
-import {appModule} from "../../app";
-import {CalService} from "../../services/CalService";
-import {ChangeDateService} from "../../services/changeDate";
+import {appModule} from '../../app';
+import {CalService} from '../../services/CalService';
+import {ChangeDateService} from '../../services/changeDate';
 import SortableEvents = angular.ui.SortableEvents;
 import SortableOptions = angular.ui.SortableOptions;
-import {WebStorageAdapter} from "../../services/WebStorageAdapter";
+import {WebStorageAdapter} from '../../services/WebStorageAdapter';
 
 let monthModule = angular.module('trelloCal.month', []);
 monthModule.config(/*ngInject*/ function (toastrConfig) {
@@ -24,7 +24,7 @@ monthModule.config(/*ngInject*/ function (toastrConfig) {
     });
 });
 
-interface IMyClickAttrbitutes extends ng.IAttributes{
+interface IMyClickAttrbitutes extends ng.IAttributes {
     myClick:any;
 }
 
@@ -80,7 +80,7 @@ class MonthController {
                 private orderByFilter, private ngProgress, private initService, private $q: ng.IQService,
                 private $rootScope: ng.IRootScopeService,
                 private WebStorageAdapter: WebStorageAdapter) {
-        "ngInject";
+        'ngInject';
 
 
         let newDate = new Date();
@@ -133,7 +133,7 @@ class MonthController {
                 var str = e.target.id + ui.item[0].children[1].id.split('-')[1];
                 var newStr = [];
                 angular.forEach(str.split(','), function (value) {
-                    newStr.push(parseInt(value));
+                    newStr.push(parseInt(value, 2));
                 });
                 if (!newStr[3]) {
                     newStr[3] = 12;
@@ -183,8 +183,7 @@ class MonthController {
                     this.ngProgress.complete();
                 }
             );
-        }
-        else {
+        } else {
             console.log('offline');
         }
     }
@@ -329,8 +328,7 @@ class MonthController {
             if (_.isEmpty(temp.cards.all)) {
                 this.reloadView();
             }
-        }
-        else {
+        } else {
             if (_.isEmpty(temp.cards.my)) {
                 this.reloadView();
             }

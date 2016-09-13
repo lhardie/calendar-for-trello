@@ -1,9 +1,9 @@
-export var appModule = angular.module("trelloCal", [
+export var appModule = angular.module('trelloCal', [
 
     'ui.router',
     'ngMaterial',
     // Dependencies
-    "ngAnimate",
+    'ngAnimate',
     'ngMdIcons',
     'ngSanitize',
     'ngProgress',
@@ -37,7 +37,8 @@ export var appModule = angular.module("trelloCal", [
 
 // get current URL with IE FIX
 if (!window.location.origin) {
-    window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+    window.location.origin = window.location.protocol + '//'
+        + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
 }
 
 

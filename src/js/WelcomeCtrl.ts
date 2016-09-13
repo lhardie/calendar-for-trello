@@ -1,10 +1,10 @@
 'use strict';
-import moment from 'moment'
+import moment from 'moment';
 
-import {appModule} from "../app";
-import {CalService} from "../services/CalService";
+import {appModule} from '../app';
+import {CalService} from '../services/CalService';
 import IDialogService = angular.material.IDialogService;
-import {CalDate} from "../route/month/month";
+import {CalDate} from '../route/month/month';
 
 
 class WelcomeCtrl {
@@ -16,7 +16,7 @@ class WelcomeCtrl {
     private today;
 
     constructor(private CalService: CalService, private $mdDialog: IDialogService) {
-        "ngInject";
+        'ngInject';
 
         let newDate = new Date();
         this.date = new CalDate(newDate.getFullYear(), newDate.getMonth());
@@ -47,7 +47,7 @@ class WelcomeCtrl {
             fullscreen: useFullScreen
 
         }).then((answer) => {
-            this.status = 'You said the information was "' + answer + '".';
+            this.status = 'You said the information was ' + answer + '.';
         }, () => {
             this.status = 'You cancelled the dialog.';
         });

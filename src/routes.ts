@@ -1,12 +1,12 @@
-import {appModule} from "./app";
+import {appModule} from './app';
 /*
 
 appModule.config(($stateProvider: any, $urlRouterProvider: any) => {
-    "ngInject";
+    'ngInject';
 
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise('/home');
 
-    $stateProvider.state("home", {url: "/home", templateUrl: "home/home.html"});
+    $stateProvider.state('home', {url: '/home', templateUrl: 'home/home.html'});
 
 });
 */

@@ -1,6 +1,6 @@
 'use strict';
-import {appModule} from "../app";
-import {WebStorageAdapter} from "../services/WebStorageAdapter";
+import {appModule} from '../app';
+import {WebStorageAdapter} from '../services/WebStorageAdapter';
 
 export interface TrelloCalRootScope extends ng.IRootScopeService {
     mobil: boolean;

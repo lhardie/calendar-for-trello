@@ -1,8 +1,8 @@
 'use strict';
 import * as _ from 'lodash';
-import {appModule} from "../app";
-import {WebStorageAdapter} from "../services/WebStorageAdapter";
-import {ChangeDateService} from "../services/changeDate";
+import {appModule} from '../app';
+import {WebStorageAdapter} from '../services/WebStorageAdapter';
+import {ChangeDateService} from '../services/changeDate';
 import IBottomSheetService = angular.material.IBottomSheetService;
 import ISidenavService = angular.material.ISidenavService;
 import IDialogService = angular.material.IDialogService;
@@ -31,7 +31,7 @@ export class HeaderCtrl {
                 private $mdSidenav: ISidenavService, private initService, private $window: ng.IWindowService,
                 private $location: ng.ILocationService,
                 private $mdBottomSheet: IBottomSheetService, private $rootScope: ng.IRootScopeService) {
-        "ngInject";
+        'ngInject';
 
         this.keepOpen = false;
 
@@ -39,12 +39,10 @@ export class HeaderCtrl {
         if (this.WebStorageAdapter.getStorage().me.autorefresh) {
             if (this.WebStorageAdapter.getStorage().me.autorefresh === true) {
                 this.syncicon = 'sync';
-            }
-            else {
+            } else {
                 this.syncicon = 'sync_disabled';
             }
-        }
-        else {
+        } else {
             this.syncicon = 'sync_disabled';
         }
 
@@ -93,7 +91,7 @@ export class HeaderCtrl {
 
 
     /**filter for Overviews**/
-   public cardSelected = (card) =>{
+   public cardSelected = (card) => {
         let boards = this.WebStorageAdapter.getStorage().boards;
         if (_.find(boards, {'id': card.idBoard})) {
             return _.find(this.WebStorageAdapter.getStorage().boards, {'id': card.idBoard}).enabled;
@@ -138,8 +136,7 @@ export class HeaderCtrl {
                 this.WebStorageAdapter.setStorage(storage);
                 if (storage.me.autorefresh === true) {
                     this.syncicon = 'sync';
-                }
-                else {
+                } else {
                     this.syncicon = 'sync_disabled';
                 }
                 this.actions = [
@@ -247,8 +244,7 @@ export class HeaderCtrl {
             this.overduedTitle = {color: 'white'};
             this.overduedContent = {height: 'auto'};
             //this.overduedContent = {'max-height': '160px',height:'auto','overflow-y':'scroll'};
-        }
-        else {
+        } else {
             this.overduedHeader = null;
             this.overduedIcon = null;
             this.overduedTitle = null;
@@ -264,8 +260,7 @@ export class HeaderCtrl {
             this.nodueTitle = {color: 'white'};
             this.nodueContent = {height: 'auto'};
 
-        }
-        else {
+        } else {
             this.nodueHeader = null;
             this.nodueIcon = null;
             this.nodueTitle = null;
@@ -279,8 +274,7 @@ export class HeaderCtrl {
             this.keepOpen = !this.keepOpen;
             if (this.keepOpen) {
                 angular.element('md-backdrop.md-sidenav-backdrop-custom').removeClass('disabled');
-            }
-            else {
+            } else {
                 angular.element('md-backdrop.md-sidenav-backdrop-custom').addClass('disabled');
             }
         });

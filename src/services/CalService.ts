@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import moment from 'moment'
+import moment from 'moment';
 
 import {appModule} from '../app';
-import {Dictionary} from "lodash";
-import {WebStorageAdapter} from "./WebStorageAdapter";
+import {Dictionary} from 'lodash';
+import {WebStorageAdapter} from './WebStorageAdapter';
 
 export class CalDay {
 
@@ -13,7 +13,6 @@ export class CalDay {
 }
 
 export class CalBoard {
-    // _lowername: card.boardName.toLowerCase(),
     constructor(public name: string, public id: string, public image: string, public email: string, public color: string) {
 
     }
@@ -82,14 +81,14 @@ export class CalService {
         let momentDate: moment.Moment = moment(date);
         // var isToday = (date.setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0));
         let isToday = momentDate.isSame(moment(), 'day');
-        var day: CalDay =new CalDay(momentDate.toDate(),
+        var day: CalDay = new CalDay(momentDate.toDate(),
             dayOff,
             [],
             isToday,
             momentDate.format('dddd')
         );
 
-        let cardsOfToday =cards[momentDate.startOf('day').unix()];
+        let cardsOfToday = cards[momentDate.startOf('day').unix()];
 
         _.forEach(cardsOfToday, (card) => {
             let board = new CalBoard(card.boardName,
@@ -107,8 +106,9 @@ export class CalService {
         return day;
     };
 
+   private getDaysInMonth(year: number, month: number, cards: Dictionary<Array<any>>): Array<CalDay> {
 
-    private getDaysInMonth(year: number, month: number, cards: Dictionary<Array<any>>): Array<CalDay> {
+
         let days: Array<CalDay> = [];
         var firstDayInMonth: Date = new Date(year, month, 1);
         /**
@@ -121,8 +121,8 @@ export class CalService {
             runs = 8;
         }
         this.config.startOffset = runs - 1;
-        var workDate: Date = moment(firstDayInMonth).add(-1, "day").toDate();
-        for (var d = 1; d < runs;) {
+        var workDate: Date = moment(firstDayInMonth).add(-1, 'day').toDate();
+        for (var d = 1; d < runs; ) {
             days.push(this.buildADay(new Date(workDate.setHours(0, 0, 0, 0)), true, cards));
             workDate.setDate(workDate.getDate() - 1);
 

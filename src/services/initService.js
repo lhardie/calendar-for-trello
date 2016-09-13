@@ -366,18 +366,12 @@ angular.module('trelloCal').factory('initService', /*ngInject*/  function ($q, n
 
 				} else {
 					token = WebStorageAdapter.getToken();
-					console.log('token');
 
 					if (!WebStorageAdapter.hasStorage()) {
-						console.log('noStorage');
 						WebStorageAdapter.initStorage();
-						console.log('1');
 						firstInit().then(function () {
-						console.log('2');
 							firstInit().then(function () {
-						console.log('3');
 								updateAll().then(function () {
-						console.log('4');
 									ngProgress.complete();
 									login.resolve('not exist');
 								});

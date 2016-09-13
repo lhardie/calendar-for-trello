@@ -1,4 +1,4 @@
-import {appModule} from "../app";
+import {appModule} from '../app';
 
 const TRELLO_CALENDAR_STORAGE = 'TrelloCalendarStorage';
 const TRELLO_TOKEN = 'trello_token';
@@ -25,7 +25,7 @@ export class Me {
 
 export class WebStorageAdapter {
     constructor(private webStorage) {
-        "ngInject"
+        'ngInject';
 
     }
 
@@ -57,7 +57,7 @@ export class WebStorageAdapter {
         return this.webStorage.get(TRELLO_TOKEN);
     }
 
-    public setToken(token: string){
+    public setToken(token: string) {
         this.webStorage.set(TRELLO_TOKEN, token);
     }
 
