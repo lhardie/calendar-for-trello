@@ -83,8 +83,11 @@ export class HeaderCtrl {
 
     private setCardsFromWebStorage() {
         var tempcards: Array<Card> = [];
-        for (var x in this.WebStorageAdapter.getStorage().cards.my) {
-            tempcards.push(this.WebStorageAdapter.getStorage().cards.my[x]);
+        let myCards = this.WebStorageAdapter.getStorage().cards.my;
+        for (var x in myCards) {
+            if (myCards.hasOwnProperty(x)) {
+                tempcards.push(myCards[x]);
+            }
         }
         this.cards = tempcards;
     }

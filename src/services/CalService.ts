@@ -41,14 +41,17 @@ export class CalService {
         if (this.WebStorageAdapter.getStorage().me.observer === true) {
             var all = this.WebStorageAdapter.getStorage().cards.all;
             for (card in all) {
-                this.cards.push(all[card]);
+                if (all.hasOwnProperty(card)) {
+                    this.cards.push(all[card]);
+                }
             }
 
-        }
-        else {
+        } else {
             var my = this.WebStorageAdapter.getStorage().cards.my;
             for (card in my) {
-                this.cards.push(my[card]);
+                if (my.hasOwnProperty(card)) {
+                    this.cards.push(my[card]);
+                }
             }
 
         }
