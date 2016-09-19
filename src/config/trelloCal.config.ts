@@ -185,51 +185,6 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 }
             }
         })
-        .state('trello.app.settings', {
-            url: '/settings',
-            views: {
-                'header@trello.app': {
-                    abstract: true,
-                    templateUrl: 'partials/header.html',
-                    controller: 'headerCtrl as ctrl'
-
-                },
-                'sidebar@trello.app': {
-                    abstract: true,
-                    templateUrl: 'partials/sidebar.html',
-                    controller: 'headerCtrl as ctrl'
-                },
-
-                'content@trello.app': {
-                    templateUrl: 'route/settings/settings.html',
-                    controller: 'settingsCtrl as ctrl',
-                    data: {
-                        pageTitle: 'Week View'
-                    }
-                },
-                'search@trello.app': {
-                    abstract: true,
-                    templateUrl: 'partials/cardSearch.html',
-                    controller: 'headerCtrl as ctrl'
-                }
-            },
-            resolve: {
-                'asInitService': function (initService) {
-
-                    return initService.init();
-                }
-            },
-            data: {
-                head: {
-                    title: 'Settings',
-                    robots: 'index,follow',
-                    keywords: ['Trello', 'Calendar', 'all', 'boards', 'w11k', 'theCodeCampus', 'cards', 'calendar'],
-                    description: description,
-                    canonical: 'https://www.calendar-for-trello.com/app/settings'
-                }
-            }
-
-        })
         .state('trello.app.about', {
             url: '/about',
             views: {

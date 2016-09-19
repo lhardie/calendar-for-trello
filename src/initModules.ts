@@ -7,7 +7,6 @@ import './route/AppCtrl';
 import './route/HeaderCtrl';
 import './route/WelcomeCtrl';
 import './route/boards/boards';
-import './route/settings/settings';
 import './route/month/month';
 import './config/trelloCal.config';
 import './config/trelloCal.run';
