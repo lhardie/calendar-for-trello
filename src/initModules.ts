@@ -8,6 +8,7 @@ import './route/HeaderCtrl';
 import './route/WelcomeCtrl';
 import './route/boards/boards';
 import './route/month/month';
+import './route/about/about';
 import './config/trelloCal.config';
 import './config/trelloCal.run';
 import './config/analytics/analytics';
