@@ -202,7 +202,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
 
                 'content@trello.app': {
                     templateUrl: 'route/settings/settings.html',
-                    controller: 'settingsCtrl',
+                    controller: 'settingsCtrl as ctrl',
                     data: {
                         pageTitle: 'Week View'
                     }

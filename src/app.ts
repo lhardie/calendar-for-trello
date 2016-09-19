@@ -16,8 +16,6 @@ export var appModule = angular.module('trelloCal', [
 
     'trelloCal.month',
     'trelloCal.boards',
-    'trelloCal.settings',
-
 
     // Other
 
