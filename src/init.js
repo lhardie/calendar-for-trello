@@ -1,8 +1,8 @@
 // Import ES6/TypeScript modules
 require("./initModules");
 
-// Load plain JavaScript 'script files'
-require("./initScripts");
+// // Load plain JavaScript 'script files'
+// require("./initScripts");
 
 
 function bootstrapAngular() {

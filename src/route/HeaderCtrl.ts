@@ -6,6 +6,7 @@ import {ChangeDateService} from '../services/changeDate';
 import IBottomSheetService = angular.material.IBottomSheetService;
 import ISidenavService = angular.material.ISidenavService;
 import IDialogService = angular.material.IDialogService;
+import {InitService} from '../services/initService';
 
 export class HeaderCtrl {
     private overduedHeader;
@@ -28,7 +29,7 @@ export class HeaderCtrl {
 
     constructor(private WebStorageAdapter: WebStorageAdapter, private ngProgress,
                 private changeDate: ChangeDateService, private $mdDialog: IDialogService,
-                private $mdSidenav: ISidenavService, private initService, private $window: ng.IWindowService,
+                private $mdSidenav: ISidenavService, private initService: InitService, private $window: ng.IWindowService,
                 private $location: ng.ILocationService,
                 private $mdBottomSheet: IBottomSheetService, private $rootScope: ng.IRootScopeService) {
         'ngInject';

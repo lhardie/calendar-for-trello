@@ -8,6 +8,8 @@ import {ChangeDateService} from '../../services/changeDate';
 import SortableEvents = angular.ui.SortableEvents;
 import SortableOptions = angular.ui.SortableOptions;
 import {WebStorageAdapter} from '../../services/WebStorageAdapter';
+import {CalDate} from "../../models/calendar";
+import {InitService} from '../../services/initService';
 
 let monthModule = angular.module('trelloCal.month', []);
 monthModule.config(/*ngInject*/ function (toastrConfig) {
@@ -47,16 +49,7 @@ monthModule.directive('myClick', function ($parse) {
     };
 });
 
-export class CalDate {
 
-    constructor(public year: number, public month: number) {
-
-    }
-
-    monthName() {
-        return moment.months()[this.month];
-    }
-}
 
 class MonthController {
     private today: CalDate;
@@ -77,7 +70,7 @@ class MonthController {
     constructor(private $interval: ng.IIntervalService, private toastr,
                 $scope: ng.IScope, private CalService: CalService, private changeDate: ChangeDateService,
                 private $window: ng.IWindowService,
-                private orderByFilter, private ngProgress, private initService, private $q: ng.IQService,
+                private orderByFilter, private ngProgress, private initService: InitService, private $q: ng.IQService,
                 private $rootScope: ng.IRootScopeService,
                 private WebStorageAdapter: WebStorageAdapter) {
         'ngInject';

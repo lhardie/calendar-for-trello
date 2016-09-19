@@ -1,4 +1,5 @@
 'use strict';
+import {InitService} from '../../services/initService';
 class BoardsCtrl {
 
     storage: any;
@@ -6,7 +7,7 @@ class BoardsCtrl {
     colors = [];
 
     /* @ngInject */
-    constructor(private $scope, private $rootScope, private WebStorageAdapter, private initService) {
+    constructor(private $scope, private $rootScope, private WebStorageAdapter, private initService: InitService) {
 
         this.storage = WebStorageAdapter.getStorage();
 

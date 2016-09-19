@@ -1,6 +1,7 @@
 'use strict';
 import {appModule} from '../app';
 import {SetTokenService} from '../services/setToken';
+import {InitService} from '../services/initService';
 
 appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider,
                                         $stateProvider: angular.ui.IStateProvider, $mdThemingProvider, $locationProvider) {
@@ -167,7 +168,7 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 }
             },
             resolve: {
-                'asInitService': function (initService) {
+                'asInitService': function (initService: InitService) {
                     let init = initService.init();
                     return init;
                 },

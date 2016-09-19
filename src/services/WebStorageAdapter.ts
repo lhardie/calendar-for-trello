@@ -5,6 +5,7 @@ const TRELLO_TOKEN = 'trello_token';
 
 export class TrelloCalendarStorage {
     public boards: Array<Board>;
+    public lists: Array<any>;
     public me: Me;
     public cards: Cards;
 }

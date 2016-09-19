@@ -4,7 +4,7 @@ import moment from 'moment';
 import {appModule} from '../app';
 import {CalService} from '../services/CalService';
 import IDialogService = angular.material.IDialogService;
-import {CalDate} from '../route/month/month';
+import {CalDate} from '../models/calendar';
 
 
 class WelcomeCtrl {

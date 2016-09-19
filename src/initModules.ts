@@ -1,8 +1,10 @@
 import './app';
+import './models/calendar';
 import './services/WebStorageAdapter';
 import './services/CalService';
 import './services/changeDate';
 import './services/setToken';
+import './services/initService';
 import './route/AppCtrl';
 import './route/HeaderCtrl';
 import './route/WelcomeCtrl';

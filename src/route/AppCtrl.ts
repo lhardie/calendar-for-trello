@@ -4,6 +4,7 @@ import {appModule} from '../app';
 import ISidenavService = angular.material.ISidenavService;
 import {WebStorageAdapter} from '../services/WebStorageAdapter';
 import IDialogService = angular.material.IDialogService;
+import {InitService} from '../services/initService';
 
 interface MyWindow extends Window {
     Offline: any;
@@ -18,7 +19,7 @@ export class AppCtrl {
     private keyHandler: Function;
 
     constructor(private $scope: ng.IScope, private $rootScope: ng.IRootScopeService,
-                private ngProgress, private initService, private $mdSidenav: ISidenavService,
+                private ngProgress, private initService: InitService, private $mdSidenav: ISidenavService,
                 private WebStorageAdapter: WebStorageAdapter) {
         'ngInject';
 
