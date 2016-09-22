@@ -1,27 +1,31 @@
 import {appModule} from '../app';
+import {Dictionary} from 'lodash';
 
-const TRELLO_CALENDAR_STORAGE = 'TrelloCalendarStorage';
+const TOKEN_OFFLINE = 'trello_calendar_offline';
+const TOKEN_ME = 'trello_calendar_me';
 const TRELLO_TOKEN = 'trello_token';
 
 export class TrelloCalendarStorage {
-    public boards: Array<Board>;
-    public lists: Array<any>;
+    public boards: Dictionary<Board> = {};
+    public lists: Dictionary<any>;
     public me: Me;
     public cards: Cards;
 }
 
 export class Cards {
-    all: Array<Card>;
-    my: Array<Card>;
+    all: Dictionary<Card>;
+    my: Dictionary<Card>;
 }
 
 export class Me {
-    id: string;
-    fullName: string;
-    observer: boolean;
-    colorizeCards: boolean;
+    observer: boolean = false;
+    colorizeCards: boolean = true;
+    autorefresh: boolean = true;
     version: string;
-    autorefresh: boolean;
+
+    constructor(public fullName?: string, public id?: string) {
+
+    }
 }
 
 export class WebStorageAdapter {
@@ -31,7 +35,7 @@ export class WebStorageAdapter {
     }
 
     public hasStorage() {
-        return this.webStorage.has(TRELLO_CALENDAR_STORAGE);
+        return this.webStorage.has(TOKEN_OFFLINE);
     }
 
     public initStorage() {
@@ -39,15 +43,15 @@ export class WebStorageAdapter {
     }
 
     public getStorage(): TrelloCalendarStorage {
-        return this.webStorage.get(TRELLO_CALENDAR_STORAGE);
+        return this.webStorage.get(TOKEN_OFFLINE);
     }
 
     public setStorage(storage: TrelloCalendarStorage) {
-        this.webStorage.set(TRELLO_CALENDAR_STORAGE, storage);
+        this.webStorage.set(TOKEN_OFFLINE, storage);
     }
 
     public removeStorage() {
-        return this.webStorage.remove(TRELLO_CALENDAR_STORAGE);
+        return this.webStorage.remove(TOKEN_OFFLINE);
     }
 
     hasToken() {

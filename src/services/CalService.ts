@@ -26,7 +26,6 @@ class CalServiceConfig {
 export class CalService {
 
     private boardsArray: Array<CalBoard>;
-    private cards = [];
     private config: CalServiceConfig;
 
     constructor(private WebStorageAdapter: WebStorageAdapter) {
@@ -35,14 +34,14 @@ export class CalService {
 
     }
 
-    public refresh() {
-        this.cards = [];
+    private loadCardsFromWebStorage() {
+        let cards = [];
         var card;
         if (this.WebStorageAdapter.getStorage().me.observer === true) {
             var all = this.WebStorageAdapter.getStorage().cards.all;
             for (card in all) {
                 if (all.hasOwnProperty(card)) {
-                    this.cards.push(all[card]);
+                    cards.push(all[card]);
                 }
             }
 
@@ -50,30 +49,28 @@ export class CalService {
             var my = this.WebStorageAdapter.getStorage().cards.my;
             for (card in my) {
                 if (my.hasOwnProperty(card)) {
-                    this.cards.push(my[card]);
+                    cards.push(my[card]);
                 }
             }
-
         }
+
+        return cards;
     }
 
 
-    public build(inDate) {
+    public days(inDate) {
+        let cards = this.loadCardsFromWebStorage();
         this.boardsArray = [];
 
-        let withDueDate = _.filter(this.cards, (card) => false === _.isUndefined(card.dueDay));
-        let cards = _.groupBy(withDueDate, (card) => moment(card.dueDay).startOf('day').unix());
+        let withDueDate = _.filter(cards, (card) => false === _.isUndefined(card.dueDay));
+        let cardsGrouped = _.groupBy(withDueDate, (card) => moment(card.dueDay).startOf('day').unix());
+        let days = this.getDaysInMonth(inDate.year, inDate.month, cardsGrouped);
 
-
-        let days = this.getDaysInMonth(inDate.year, inDate.month, cards);
-
-        return {
-            config: this.config,
-            days: days,
-            boards: this.boardsArray
-        };
+        return days;
     }
 
+
+    //TODO jblankenhorn 22.09.16 Refactor: This method is using a lot of sideeffects from buildADay
     public boards() {
         return _.uniqBy(this.boardsArray, function (item) {
             return 'id:' + item.id + 'name:' + item.name;

@@ -199,7 +199,7 @@ export class HeaderCtrl {
             var targetDate = new Date(newStr[0], newStr[1] - 1, newStr[2], newStr[3], newStr[4]);
 
             this.changeDate.async(id, targetDate).then(() => {
-                    this.initService.updateDate(id, targetDate);
+                    this.initService.updateDate();
                     this.ngProgress.complete();
                 },
                 () => {

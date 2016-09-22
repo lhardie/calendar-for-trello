@@ -1,25 +1,19 @@
 'use strict';
 import * as _ from 'lodash';
-import moment from 'moment';
-import {WebStorageAdapter, Cards} from './WebStorageAdapter';
+import {WebStorageAdapter, Cards, Me, TrelloCalendarStorage} from './WebStorageAdapter';
 import {appModule} from '../app';
+import IHttpPromise = angular.IHttpPromise;
+import {TrelloCalRootScope} from '../config/trelloCal.run';
 
 
 export class InitService {
     private token;
-    private login;
-    private me;
-    private data;
-    private colorizeCards = true;
-    private observer = false;
-    private autorefresh = true;
-    private version: string = '0.1.41';
 
     constructor(private $q: ng.IQService, private ngProgress, private WebStorageAdapter: WebStorageAdapter,
                 private $http: ng.IHttpService,
-                private $rootScope: ng.IRootScopeService, private $window: ng.IWindowService,
+                private $rootScope: TrelloCalRootScope, private $window: ng.IWindowService,
                 private baseUrl, private AppKey) {
-        "ngInject";
+        'ngInject';
 
         /**
          *Init variables
@@ -27,7 +21,6 @@ export class InitService {
 
         // let key = AppKey;
         this.token = WebStorageAdapter.getToken();
-        this.login = $q.defer();
     }
 
     /**
@@ -38,67 +31,54 @@ export class InitService {
         this.ngProgress.start();
         let deferred = this.$q.defer();
         let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        let cache = this.WebStorageAdapter.getStorage();
-        this.me = this.$http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token);
-        // this.colors = this.$http.get('https://api.trello.com/1/members/me/boardBackgrounds?key=' + this.AppKey + '&token=' + this.token);
-        // this.$q.all([this.me, this.colors]).then((responses) => {
-        this.me.then((responses) => {
+        // let cache = this.WebStorageAdapter.getStorage();
+        this.$http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token)
+            .then((response) => {
 
-            TrelloCalendarStorage.me = responses[0].data;
-         /*   TrelloCalendarStorage.colors = {};
-            for (let x in responses[1].data) {
-                if (responses[1].data[x].type === 'default') {
-                    TrelloCalendarStorage.colors[responses[1].data[x].id] = responses[1].data[x];
-                }
-            }*/
+            let meFromTrello: TrelloMe = response.data as TrelloMe;
+            let meFromCache = TrelloCalendarStorage.me;
 
-            if (cache.me) {
-                if (cache.me.observer === undefined) {
-                    TrelloCalendarStorage.me.observer = this.observer;
-                } else {
-                    TrelloCalendarStorage.me.observer = cache.me.observer;
-                }
-                if (cache.me.colorizeCards === undefined) {
-                    TrelloCalendarStorage.me.colorizeCards = this.colorizeCards;
-                } else {
-                    TrelloCalendarStorage.me.colorizeCards = cache.me.colorizeCards;
-                }
-                if (cache.me.version === undefined) {
-                    TrelloCalendarStorage.me.version = this.version;
-                } else {
-                    TrelloCalendarStorage.me.version = cache.me.version;
-                }
-                if (cache.me.autorefresh === undefined) {
-                    TrelloCalendarStorage.me.autorefresh = this.autorefresh;
-                    console.log('refresh init ');
 
-                } else {
-                    TrelloCalendarStorage.me.autorefresh = cache.me.autorefresh;
+            if (meFromCache) {
+                let tempMe = new Me();
+                if (meFromCache.observer === undefined) {
+                    TrelloCalendarStorage.me.observer = tempMe.observer;
+                }
+                if (meFromCache.colorizeCards === undefined) {
+                    TrelloCalendarStorage.me.colorizeCards = tempMe.colorizeCards;
+                }
+                if (meFromCache.version === undefined) {
+                    TrelloCalendarStorage.me.version = tempMe.version;
+                }
+                if (meFromCache.autorefresh === undefined) {
+                    TrelloCalendarStorage.me.autorefresh = tempMe.autorefresh;
+                }
 
+                if (meFromCache.fullName === undefined) {
+                    TrelloCalendarStorage.me.fullName = meFromTrello.fullName;
+                }
+
+                if (meFromCache.id === undefined) {
+                    TrelloCalendarStorage.me.id = meFromTrello.id;
                 }
             } else {
-                TrelloCalendarStorage.me.observer = this.observer;
-                TrelloCalendarStorage.me.colorizeCards = this.colorizeCards;
-                TrelloCalendarStorage.me.version = this.version;
-                TrelloCalendarStorage.me.autorefresh = this.autorefresh;
+                TrelloCalendarStorage.me = new Me(meFromTrello.fullName, meFromTrello.id);
             }
 
+
             if (!TrelloCalendarStorage.boards) {
-                TrelloCalendarStorage.boards = [];
+                TrelloCalendarStorage.boards = {};
             }
             if (!TrelloCalendarStorage.cards) {
                 TrelloCalendarStorage.cards = new Cards();
             }
             if (!TrelloCalendarStorage.cards.all) {
-                TrelloCalendarStorage.cards.all = [];
+                TrelloCalendarStorage.cards.all = {};
             }
             if (!TrelloCalendarStorage.cards.my) {
-                TrelloCalendarStorage.cards.my = [];
+                TrelloCalendarStorage.cards.my = {};
             }
-            TrelloCalendarStorage.cards = {
-                'all': TrelloCalendarStorage.cards.all,
-                'my': TrelloCalendarStorage.cards.my
-            };
+
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
             this.ngProgress.complete();
             deferred.resolve('init');
@@ -124,9 +104,9 @@ export class InitService {
             + this.AppKey + '&token=' + this.token)
             .then((responses) => {
 
-                _.forEach(responses.data, (board) => {
+                _.forEach(responses.data, (board: Board) => {
                     let boardFromStorage: Board = TrelloCalendarStorage.boards[board.id];
-                    if (boardFromStorage) {
+                    if (boardFromStorage !== undefined) {
                         boardFromStorage.name = board.name;
                         boardFromStorage.shortUrl = board.shortUrl;
                         boardFromStorage.id = board.id;
@@ -138,11 +118,14 @@ export class InitService {
                         }
 
                     } else {
+                        board.enabled = true;
                         TrelloCalendarStorage.boards[board.id] = board;
-                        boardFromStorage.enabled = true;
-
+                        // console.log(board);
+                        // console.log(TrelloCalendarStorage);
                     }
                 });
+
+                // console.log(TrelloCalendarStorage);
                 this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
                 deferred.resolve('boards');
             }, () => {
@@ -158,15 +141,15 @@ export class InitService {
     private pullLists() {
         let deferred = this.$q.defer();
         let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        let listRequests = [];
+        let listRequests: Array<IHttpPromise<TrelloList>> = [];
         let alllists = [];
         _.forEach(TrelloCalendarStorage.boards, (board) => {
             listRequests.push(this.$http.get('https://api.trello.com/1/boards/'
                 + board.id + '/lists/?fields=name&filter=open&key=' + this.AppKey + '&token=' + this.token));
         });
         this.$q.all(listRequests).then((responses) => {
-            _.forEach(responses, (lists) => {
-                alllists = alllists.concat(lists.data);
+            _.forEach(responses, (response) => {
+                alllists = alllists.concat(response.data);
             });
             TrelloCalendarStorage.lists = _.keyBy(alllists, 'id');
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
@@ -183,8 +166,8 @@ export class InitService {
      */
     private pullCards() {
         let deferred = this.$q.defer();
-        let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        if (TrelloCalendarStorage.me.observer && TrelloCalendarStorage.me.observer === true) {
+        let me = this.WebStorageAdapter.getStorage().me;
+        if (me.observer && me.observer === true) {
             this.pullAllCards().then(() => {
                 deferred.resolve();
             }, (error) => {
@@ -212,26 +195,16 @@ export class InitService {
         this.$http.get('https://api.trello.com/1/members/me/cards/' +
             '?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key='
             + this.AppKey + '&token=' + this.token).then((responses) => {
-            let myCards = responses.data;
-            for (let card in myCards) {
-                if (TrelloCalendarStorage.boards[myCards[card].idBoard]) {
-                    myCards[card].boardName = (TrelloCalendarStorage.boards[myCards[card].idBoard]).name;
-                    let dueDay = myCards[card].due;
-                    myCards[card].dueDay = new Date(new Date(dueDay).setHours(0, 0, 0, 0)).toUTCString();
-                    myCards[card].color = (TrelloCalendarStorage.boards[myCards[card].idBoard]).prefs.backgroundColor;
-                    myCards[card].boardUrl = (TrelloCalendarStorage.boards[myCards[card].idBoard]).shortUrl;
+            let myCards: Array<Card> = responses.data as Array<Card>;
 
-                }
-                if (TrelloCalendarStorage.lists[myCards[card].idList]) {
-                    myCards[card].listName = (TrelloCalendarStorage.lists[myCards[card].idList]).name;
-                }
+            myCards.forEach((card) => {
+                this.enrichCard(TrelloCalendarStorage, card);
+            });
 
-            }
 
             TrelloCalendarStorage.cards.my = _.keyBy(myCards, 'id');
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
             deferred.resolve('myCards');
-            this.login.resolve('myCards');
 
         }, () => {
             deferred.reject('myCards error');
@@ -241,6 +214,20 @@ export class InitService {
 
     };
 
+    private enrichCard(TrelloCalendarStorage: TrelloCalendarStorage, card: Card) {
+        if (TrelloCalendarStorage.boards[card.idBoard]) {
+            card.boardName = (TrelloCalendarStorage.boards[card.idBoard]).name;
+            let dueDay = card.due;
+            card.dueDay = new Date(new Date(dueDay).setHours(0, 0, 0, 0)).toUTCString();
+            card.color = (TrelloCalendarStorage.boards[card.idBoard]).prefs.backgroundColor;
+            card.boardUrl = (TrelloCalendarStorage.boards[card.idBoard]).shortUrl;
+
+        }
+        if (TrelloCalendarStorage.lists[card.idList]) {
+            card.listName = (TrelloCalendarStorage.lists[card.idList]).name;
+        }
+    }
+
     /**
      *pullAllCards pulls open Cards from Trello
      *if me/observer is true
@@ -249,7 +236,7 @@ export class InitService {
     private pullAllCards() {
         let deferred = this.$q.defer();
         let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        let cardRequests = [];
+        let cardRequests: Array<IHttpPromise<Card>> = [];
         let allCards = [];
         _.forEach(TrelloCalendarStorage.boards, (board) => {
             cardRequests.push(this.$http.get('https://api.trello.com/1/boards/' + board.id
@@ -261,23 +248,11 @@ export class InitService {
                 allCards = allCards.concat(lists.data);
             });
 
-            for (let card in allCards) {
-
-                if (TrelloCalendarStorage.boards[allCards[card].idBoard]) {
-
-                    allCards[card].boardName = (TrelloCalendarStorage.boards[allCards[card].idBoard]).name;
-                    let dueDay = allCards[card].due;
-                    allCards[card].dueDay = new Date(new Date(dueDay).setHours(0, 0, 0, 0)).toUTCString();
-                    allCards[card].color = (TrelloCalendarStorage.boards[allCards[card].idBoard]).prefs.backgroundColor;
-                    allCards[card].boardUrl = (TrelloCalendarStorage.boards[allCards[card].idBoard]).shortUrl;
-                }
-                if (TrelloCalendarStorage.lists[allCards[card].idList]) {
-                    allCards[card].listName = (TrelloCalendarStorage.lists[allCards[card].idList]).name;
-                }
-            }
+            allCards.forEach((card) => {
+                this.enrichCard(TrelloCalendarStorage, card);
+            });
             TrelloCalendarStorage.cards.all = _.keyBy(allCards, 'id');
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
-            this.login.resolve('allCards');
             deferred.resolve('allCards');
         }, () => {
             deferred.reject('allCards error');
@@ -288,7 +263,7 @@ export class InitService {
     /**
      * update() updates boards, lists, and cards
      */
-    private update() {
+    public refresh() {
         this.ngProgress.start();
         let deferred = this.$q.defer();
         this.pullBoards().then(() => {
@@ -316,7 +291,7 @@ export class InitService {
 
     };
 
-    private updateAll() {
+    public refreshAll() {
         this.ngProgress.start();
         let deferred = this.$q.defer();
 
@@ -349,19 +324,26 @@ export class InitService {
     public refreshColors() {
         let BoardId;
         let storage = this.WebStorageAdapter.getStorage();
-        for (let x in storage.cards.my) {
-            BoardId = storage.cards.my[x].idBoard;
 
-            if (storage.boards[BoardId]) {
-                storage.cards.my[x].color = storage.boards[BoardId].prefs.backgroundColor;
+        let myCards = storage.cards.my;
+        for (let x in myCards) {
+            if (myCards.hasOwnProperty(x)) {
+                BoardId = myCards[x].idBoard;
+
+                if (storage.boards[BoardId]) {
+                    myCards[x].color = storage.boards[BoardId].prefs.backgroundColor;
+                }
             }
-
         }
-        for (let y in storage.cards.all) {
-            BoardId = storage.cards.all[y].idBoard;
 
-            if (storage.boards[BoardId]) {
-                storage.cards.all[y].color = storage.boards[BoardId].prefs.backgroundColor;
+        let allCards = storage.cards.all;
+        for (let y in allCards) {
+            if (allCards.hasOwnProperty(y)) {
+                BoardId = allCards[y].idBoard;
+
+                if (storage.boards[BoardId]) {
+                    allCards[y].color = storage.boards[BoardId].prefs.backgroundColor;
+                }
             }
         }
         this.WebStorageAdapter.setStorage(storage);
@@ -375,13 +357,13 @@ export class InitService {
                 let redirect = this.baseUrl + '/app/token?do=settoken';
                 let ref = window.open('https://trello.com/1/authorize?response_type=token&scope=read,write&key='
                     + this.AppKey + '&redirect_uri=' + redirect + '&callback_method=fragment' +
-                    '&expiration=never&name=Calendar+for+Trello', '_blank', 'location=no', 'toolbar=no');
+                    '&expiration=never&name=Calendar+for+Trello', '_blank', 'location=no, toolbar=no');
                 ref.addEventListener('loadstart', (event) => {
                     if (event.url.indexOf('/#token=') > -1) {
                         this.token = event.url.substring((event.url.indexOf('/#token=') + 8));
                         ref.close();
                         this.firstInit().then(() => {
-                            this.updateAll();
+                            this.refreshAll();
                         });
                     }
                 });
@@ -396,44 +378,22 @@ export class InitService {
                 this.WebStorageAdapter.initStorage();
                 this.firstInit().then(() => {
                     this.firstInit().then(() => {
-                        this.updateAll().then(() => {
+                        this.refreshAll().then(() => {
                             this.ngProgress.complete();
-                            this.login.resolve('not exist');
                         });
                     });
                 });
             } else {
-                this.updateAll().then(() => {});
-                this.login.resolve('exists');
+                this.refreshAll().then(() => {
+                    // NO OP
+                });
 
             }
         }
-        return this.login.promise;
-    }
-
-    public refresh() {
-        this.login = this.$q.defer();
-        this.update().then(() => {},
-            () => {
-                console.log('failed refresh');
-            });
-
-        return this.login.promise;
     }
 
     public remove() {
-        this.data = null;
         this.WebStorageAdapter.setToken(null);
-    }
-
-    public refreshAll() {
-        this.login = this.$q.defer();
-        this.updateAll().then(() => {
-            },
-            () => {
-                console.log('failed refreshAll');
-            });
-        return this.login.promise;
     }
 
     public updateDate() {

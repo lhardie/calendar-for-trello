@@ -31,7 +31,7 @@ class WelcomeCtrl {
         }
 
 
-        this.days = CalService.build(this.today).days;
+        this.days = CalService.days(this.today);
         this.showAdvanced();
     }
 

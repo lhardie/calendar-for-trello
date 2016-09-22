@@ -10,6 +10,7 @@ import SortableOptions = angular.ui.SortableOptions;
 import {WebStorageAdapter} from '../../services/WebStorageAdapter';
 import {CalDate} from "../../models/calendar";
 import {InitService} from '../../services/initService';
+import {Dictionary} from 'lodash';
 
 let monthModule = angular.module('trelloCal.month', []);
 monthModule.config(/*ngInject*/ function (toastrConfig) {
@@ -58,7 +59,7 @@ class MonthController {
     private weekdays;
     private isToday;
 
-    private ExistingBoards: Array<Board>;
+    private ExistingBoards: Dictionary<Board>;
     private selectall;
     private tempPost: Array<any>;
     private offline;
@@ -92,11 +93,11 @@ class MonthController {
             this.weekdays[i] = [short, long];
         }
 
-        this.addWatchers($interval, $scope, orderByFilter);
+        this.addWatchersAndLoadData($interval, $scope, orderByFilter);
         this.createSortableOptions();
     }
 
-    private addWatchers($interval: angular.IIntervalService, $scope, orderByFilter) {
+    private addWatchersAndLoadData($interval: angular.IIntervalService, $scope, orderByFilter) {
         if (this.WebStorageAdapter.getStorage().me.autorefresh) {
             $interval(() => {
                 this.refresh();
@@ -104,12 +105,12 @@ class MonthController {
         }
 
         $scope.$on('rebuild', () => {
-            this.routine(this.date);
+            this.refreshData(this.date);
         });
         this.selectall = true;
 
         $scope.$on('updateChange', this.updateChangeArray);
-        this.routine(this.date);
+        this.refreshData(this.date);
 
         $scope.$watch('days', () => {
             _.forEach(this.days, (day) => {
@@ -187,11 +188,10 @@ class MonthController {
         this.ngProgress.complete();
     }
 
-    private routine(date, defer?) {
+    //TODO jblankenhorn 22.09.16 what does it really do?
+    private refreshData(date, defer?) {
         this.initService.refreshColors();
-        this.CalService.refresh();
-        this.days = [];
-        this.days = this.CalService.build(date).days;
+        this.days = this.CalService.days(date);
         this.date = new CalDate(date.year, date.month);
         this.isToday = (date.year === this.today.year && date.month === this.today.month);
         this.searchText = null;
@@ -225,7 +225,7 @@ class MonthController {
 
     public toToday() {
         this.date = this.today;
-        this.routine(this.date);
+        this.refreshData(this.date);
     };
 
 
@@ -270,7 +270,7 @@ class MonthController {
         }
 
         this.date = new CalDate(year, month);
-        this.routine(this.date, defer);
+        this.refreshData(this.date, defer);
         defer.promise.then(() => {
             this.ngProgress.complete();
         });
