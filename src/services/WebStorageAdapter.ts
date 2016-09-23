@@ -39,7 +39,8 @@ export class WebStorageAdapter {
         return this.webStorage.has(TOKEN_OFFLINE);
     }
 
-    public initStorage() {
+    public init() {
+        this.setColors({});
         this.setStorage(new TrelloCalendarStorage());
     }
 

@@ -197,7 +197,7 @@ export class InitService {
 
     public init() {
 
-        if (!this.WebStorageAdapter.hasToken()) {
+        if (false === this.WebStorageAdapter.hasToken()) {
             if (this.$rootScope.mobil) {
                 let redirect = this.baseUrl + '/app/token?do=settoken';
                 let ref = window.open('https://trello.com/1/authorize?response_type=token&scope=read,write&key='
@@ -219,20 +219,17 @@ export class InitService {
                     '&scope=read%2Cwrite%2Caccount&expiration=never&name=Calendar+for+Trello';
             }
         } else {
-            if (!this.WebStorageAdapter.hasStorage()) {
-                this.WebStorageAdapter.initStorage();
+            if (false === this.WebStorageAdapter.hasStorage()) {
+                this.WebStorageAdapter.init();
                 this.firstInit().then(() => {
-                    this.firstInit().then(() => {
-                        this.refresh(true).then(() => {
-                            this.ngProgress.complete();
-                        });
+                    this.refresh(true).then(() => {
+                        this.ngProgress.complete();
                     });
                 });
             } else {
                 this.refresh(true).then(() => {
-                    // NO OP
+                    this.ngProgress.complete();
                 });
-
             }
         }
     }

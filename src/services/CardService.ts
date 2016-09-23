@@ -27,15 +27,16 @@ export class CardService {
 
 
         if (all || me.observer === true) {
-            requests.push(this.pullAllCards);
+            requests.push(this.pullAllCards());
         }
 
         if (all || me.observer === false) {
-            requests.push(this.pullMyCards);
+            requests.push(this.pullMyCards());
         }
 
-        this.$q.all(requests).then(() => {
-            deferred.resolve('update');
+        this.$q.all(requests).then((results) => {
+            deferred.resolve('update' + results);
+
         }, (error) => {
             deferred.reject(error);
         });
@@ -59,7 +60,6 @@ export class CardService {
             myCards.forEach((card) => {
                 this.enrichCard(TrelloCalendarStorage, card);
             });
-
 
             TrelloCalendarStorage.cards.my = _.keyBy(myCards, 'id');
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
@@ -98,6 +98,7 @@ export class CardService {
             });
             TrelloCalendarStorage.cards.all = _.keyBy(allCards, 'id');
             this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
+
             deferred.resolve('allCards');
         }, () => {
             deferred.reject('allCards error');
