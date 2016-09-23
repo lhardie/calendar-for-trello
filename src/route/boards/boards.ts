@@ -1,17 +1,22 @@
 'use strict';
 import {InitService} from '../../services/initService';
+import {TrelloCalendarStorage, WebStorageAdapter} from '../../services/WebStorageAdapter';
+import {Dictionary} from 'lodash';
+import {ColorService} from '../../services/ColorService';
 class BoardsCtrl {
 
-    private storage: any;
+    private storage: TrelloCalendarStorage;
     private boards = [];
-    private colors = [];
+    private colors:Dictionary<TrelloColor>;
     private colorizeCards;
 
     /* @ngInject */
-    constructor(private $rootScope, private WebStorageAdapter, private initService: InitService) {
+    constructor(private $rootScope, private WebStorageAdapter: WebStorageAdapter,
+                private ColorService: ColorService) {
 
         this.storage = WebStorageAdapter.getStorage();
         this.colorizeCards = WebStorageAdapter.getStorage().me.colorizeCards;
+        this.colors = WebStorageAdapter.getColors();
         this.update();
 
     }
@@ -19,7 +24,7 @@ class BoardsCtrl {
 
     private update() {
         this.WebStorageAdapter.setStorage(this.storage);
-        this.initService.refreshColors();
+        this.ColorService.updateCardColorsInLocalStorage();
         this.$rootScope.$broadcast('rebuild');
         this.boards = [];
         for (var x in this.storage.boards) {
@@ -36,28 +41,22 @@ class BoardsCtrl {
             return 0; //default return value (no sorting)
         });
         this.colorizeCards = this.storage.me.colorizeCards;
-        this.colors = [];
+
+        /*this.colors = [];
         for (var y in this.storage.colors) {
             this.colors.push(this.storage.colors[y]);
-        }
+        }*/
 
     }
 
-
-    // changeColorize(x) {
-    //     this.storage.me.colorizeCards = x;
-    //     this.updateScope();
-    // };
-
-
-    announceClick(index, id) {
-        this.storage.boards[id].prefs.backgroundColor = this.colors[index].color;
-        this.storage.boards[id].prefs.background = this.colors[index].id;
+    setColor(colorId, boardId) {
+        this.storage.boards[boardId].prefs.backgroundColor = this.colors[colorId].color;
+        this.storage.boards[boardId].prefs.background = this.colors[colorId].id;
         this.update();
     };
 
     change(index, state) {
-        this.colors[index].enabled = state;
+        // this.colors[index].enabled = state;
         this.storage.boards[this.boards[index].id].enabled = state;
         this.update();
     };

@@ -3,14 +3,15 @@ import {Dictionary} from 'lodash';
 
 const TOKEN_OFFLINE = 'trello_calendar_offline';
 const TRELLO_TOKEN = 'trello_token';
+const TRELLO_COLORS = 'trello_colors';
 
 export class TrelloCalendarStorage {
     public boards: Dictionary<Board> = {};
     public lists: Dictionary<any>;
     public me: Me = new Me();
     public cards: Cards = new Cards();
-    public colors: Dictionary<string>;
 }
+
 
 export class Cards {
     all: Dictionary<Card> = {};
@@ -64,6 +65,17 @@ export class WebStorageAdapter {
 
     public setToken(token: string) {
         this.webStorage.set(TRELLO_TOKEN, token);
+    }
+    hasColors() {
+        return this.webStorage.has(TRELLO_COLORS);
+    }
+
+    public getColors(): Dictionary<TrelloColor> {
+        return this.webStorage.get(TRELLO_COLORS);
+    }
+
+    public setColors(colors: Dictionary<TrelloColor>) {
+        this.webStorage.set(TRELLO_COLORS, colors);
     }
 
 

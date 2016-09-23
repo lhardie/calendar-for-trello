@@ -8,16 +8,9 @@
             <h1 class="md-toolbar-tools" >
                 <span>Board Settings</span>
             </h1>
-            <!--<span class="checkboxText">-->
-            <!--colorize:-->
-            <!--</span>-->
-
-            <!--<md-checkbox ng-model="colorizeCards" ng-change="changeColorize(colorizeCards)" aria-label="colorize Cards" >-->
-            <!--</md-checkbox>-->
-
         </md-toolbar>
-        <md-content style="background-color: #EDEFF4;" layout-padding ng-repeat="board in ctrl.boards | orderBy: 'name'">
 
+        <md-content style="background-color: #EDEFF4;" layout-padding ng-repeat="board in ctrl.boards | orderBy: 'name'">
             <ng-md-icon icon="assignment" size="30"></ng-md-icon>
 
             <p> {{board.name}}</p>
@@ -26,9 +19,9 @@
 
                 <md-input-container ng-if="ctrl.colorizeCards" class="animate-if">
                     <md-select ng-model="board.prefs.backgroundColor" aria-label="ColorPicker" style="background-color:{{board.prefs.backgroundColor}}; ">
-                        <md-option class="option" ng-repeat="item in ctrl.colors" ng-click="ctrl.announceClick($index,board.id)"
-                                   value="{{item.color}}" style="background-color:{{item.color}};color:#ffffff;padding-left:10px">
-                            {{item.id}}
+                        <md-option class="option" ng-repeat="color in ctrl.colors" ng-click="ctrl.setColor(color.id,board.id)"
+                                   value="{{color.color}}" style="background-color:{{color.color}};color:#ffffff;padding-left:10px">
+                            {{color.id}}
                         </md-option>
                     </md-select>
                 </md-input-container>

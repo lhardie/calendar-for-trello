@@ -2,6 +2,7 @@ import './app';
 import './models/calendar';
 import './services/WebStorageAdapter';
 import './services/CalendarService';
+import './services/ColorService';
 import './services/changeDate';
 import './services/setToken';
 import './services/initService';

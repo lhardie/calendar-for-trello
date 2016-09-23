@@ -11,6 +11,7 @@ import {WebStorageAdapter} from '../../services/WebStorageAdapter';
 import {CalDate} from "../../models/calendar";
 import {InitService} from '../../services/initService';
 import {Dictionary} from 'lodash';
+import {ColorService} from '../../services/ColorService';
 
 let monthModule = angular.module('trelloCal.month', []);
 monthModule.config(/*ngInject*/ function (toastrConfig) {
@@ -70,7 +71,7 @@ class MonthController {
 
     constructor(private $interval: ng.IIntervalService, private toastr,
                 $scope: ng.IScope, private CalendarService: CalendarService, private changeDate: ChangeDateService,
-                private $window: ng.IWindowService,
+                private $window: ng.IWindowService, private ColorService: ColorService,
                 private orderByFilter, private ngProgress, private initService: InitService, private $q: ng.IQService,
                 private $rootScope: ng.IRootScopeService,
                 private WebStorageAdapter: WebStorageAdapter) {
@@ -188,7 +189,7 @@ class MonthController {
 
     //TODO jblankenhorn 22.09.16 what does it really do?
     private refreshData(date, defer?) {
-        this.initService.refreshColors();
+        this.ColorService.updateCardColorsInLocalStorage();
         this.days = this.CalendarService.days(date);
         this.currentDate = new CalDate(date.year, date.month);
         this.isToday = (date.year === this.today.year && date.month === this.today.month);
