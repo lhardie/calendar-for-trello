@@ -5,13 +5,16 @@ import {appModule} from '../app';
 import IHttpPromise = angular.IHttpPromise;
 import {TrelloCalRootScope} from '../config/trelloCal.run';
 import {ColorService} from './ColorService';
+import {CardService} from './CardService';
 
+export const TRELLO_API_URL = 'https://api.trello.com/1';
 
 export class InitService {
     private token;
 
     constructor(private $q: ng.IQService, private ngProgress, private WebStorageAdapter: WebStorageAdapter,
                 private $http: ng.IHttpService, private ColorService: ColorService,
+                private CardService: CardService,
                 private $rootScope: TrelloCalRootScope, private $window: ng.IWindowService,
                 private baseUrl, private AppKey) {
         'ngInject';
@@ -35,7 +38,7 @@ export class InitService {
         let deferred = this.$q.defer();
         let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
 
-        let mePromise = this.$http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token);
+        let mePromise = this.$http.get(TRELLO_API_URL + '/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token);
 
         mePromise.then((response) => {
 
@@ -105,7 +108,7 @@ export class InitService {
         let temp = this.WebStorageAdapter.getStorage();
 
         this.$http.get(
-            'https://api.trello.com/1/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key='
+             TRELLO_API_URL + '/members/me/boards/?fields=name,shortUrl,prefs&filter=open&key='
             + this.AppKey + '&token=' + this.token)
             .then((responses) => {
 
@@ -149,7 +152,7 @@ export class InitService {
         let listRequests: Array<IHttpPromise<TrelloList>> = [];
         let alllists = [];
         _.forEach(TrelloCalendarStorage.boards, (board) => {
-            listRequests.push(this.$http.get('https://api.trello.com/1/boards/'
+            listRequests.push(this.$http.get(TRELLO_API_URL + '/boards/'
                 + board.id + '/lists/?fields=name&filter=open&key=' + this.AppKey + '&token=' + this.token));
         });
         this.$q.all(listRequests).then((responses) => {
@@ -166,104 +169,7 @@ export class InitService {
         return deferred.promise;
     };
 
-    /**
-     *switches between pull my/all Cards
-     */
-    private pullCards() {
-        let deferred = this.$q.defer();
-        let me = this.WebStorageAdapter.getStorage().me;
-        if (me.observer && me.observer === true) {
-            this.pullAllCards().then(() => {
-                deferred.resolve();
-            }, (error) => {
-                deferred.reject(error);
-            });
-        } else {
-            this.pullMyCards().then(() => {
-                deferred.resolve();
-            }, (error) => {
-                deferred.reject(error);
-            });
-        }
-
-        return deferred.promise;
-    };
-
-    /**
-     *pullMyCards pulls open Cards from Trello
-     *if me/observer is false
-     *fields: id, name,idList,dateLastActivity,shortUrl,due,idBoard
-     * */
-    private pullMyCards() {
-        let deferred = this.$q.defer();
-        let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        this.$http.get('https://api.trello.com/1/members/me/cards/' +
-            '?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key='
-            + this.AppKey + '&token=' + this.token).then((responses) => {
-            let myCards: Array<Card> = responses.data as Array<Card>;
-
-            myCards.forEach((card) => {
-                this.enrichCard(TrelloCalendarStorage, card);
-            });
-
-
-            TrelloCalendarStorage.cards.my = _.keyBy(myCards, 'id');
-            this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
-            deferred.resolve('myCards');
-
-        }, () => {
-            deferred.reject('myCards error');
-        });
-
-        return deferred.promise;
-
-    };
-
-    private enrichCard(TrelloCalendarStorage: TrelloCalendarStorage, card: Card) {
-        if (TrelloCalendarStorage.boards[card.idBoard]) {
-            card.boardName = (TrelloCalendarStorage.boards[card.idBoard]).name;
-            let dueDay = card.due;
-            card.dueDay = new Date(new Date(dueDay).setHours(0, 0, 0, 0)).toUTCString();
-            card.color = (TrelloCalendarStorage.boards[card.idBoard]).prefs.backgroundColor;
-            card.boardUrl = (TrelloCalendarStorage.boards[card.idBoard]).shortUrl;
-
-        }
-        if (TrelloCalendarStorage.lists[card.idList]) {
-            card.listName = (TrelloCalendarStorage.lists[card.idList]).name;
-        }
-    }
-
-    /**
-     *pullAllCards pulls open Cards from Trello
-     *if me/observer is true
-     *fields: id, name,idList,dateLastActivity,shortUrl,due,idBoard
-     * */
-    private pullAllCards() {
-        let deferred = this.$q.defer();
-        let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        let cardRequests: Array<IHttpPromise<Card>> = [];
-        let allCards = [];
-        _.forEach(TrelloCalendarStorage.boards, (board) => {
-            cardRequests.push(this.$http.get('https://api.trello.com/1/boards/' + board.id
-                + '/cards/?fields=idList,name,dateLastActivity,shortUrl,due,idBoard&filter=open&key='
-                + this.AppKey + '&token=' + this.token));
-        });
-        this.$q.all(cardRequests).then((responses) => {
-            _.forEach(responses, (lists) => {
-                allCards = allCards.concat(lists.data);
-            });
-
-            allCards.forEach((card) => {
-                this.enrichCard(TrelloCalendarStorage, card);
-            });
-            TrelloCalendarStorage.cards.all = _.keyBy(allCards, 'id');
-            this.WebStorageAdapter.setStorage(TrelloCalendarStorage);
-            deferred.resolve('allCards');
-        }, () => {
-            deferred.reject('allCards error');
-        });
-        return deferred.promise;
-    };
+   
 
     /**
      * update() updates boards, lists, and cards
@@ -273,7 +179,7 @@ export class InitService {
         let deferred = this.$q.defer();
         this.pullBoards().then(() => {
             this.pullLists().then(() => {
-                this.pullCards().then(() => {
+                this.CardService.pullCards().then(() => {
                     deferred.resolve('update');
                     this.ngProgress.complete();
 
@@ -302,7 +208,7 @@ export class InitService {
 
         this.pullBoards().then(() => {
             this.pullLists().then(() => {
-                this.$q.all([this.pullMyCards, this.pullAllCards]).then(() => {
+                this.$q.all([this.CardService.pullMyCards, this.CardService.pullAllCards]).then(() => {
                     this.ngProgress.complete();
                     deferred.resolve('update');
                 }, (error) => {
