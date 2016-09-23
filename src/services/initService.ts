@@ -23,7 +23,6 @@ export class InitService {
          *Init variables
          */
 
-        // let key = AppKey;
         this.token = WebStorageAdapter.getToken();
     }
 
@@ -174,19 +173,12 @@ export class InitService {
     /**
      * update() updates boards, lists, and cards
      */
-    public refresh() {
+    public refresh(all: boolean = false) {
         this.ngProgress.start();
         let deferred = this.$q.defer();
         this.pullBoards().then(() => {
             this.pullLists().then(() => {
-                this.CardService.pullCards().then(() => {
-                    deferred.resolve('update');
-                    this.ngProgress.complete();
-
-                }, (error) => {
-                    this.ngProgress.complete();
-                    deferred.reject(error);
-                });
+                this.CardService.pullCards(all);
             }, (error) => {
                 this.ngProgress.complete();
                 deferred.reject(error);
@@ -201,35 +193,6 @@ export class InitService {
         return deferred.promise;
 
     };
-
-    public refreshAll() {
-        this.ngProgress.start();
-        let deferred = this.$q.defer();
-
-        this.pullBoards().then(() => {
-            this.pullLists().then(() => {
-                this.$q.all([this.CardService.pullMyCards, this.CardService.pullAllCards]).then(() => {
-                    this.ngProgress.complete();
-                    deferred.resolve('update');
-                }, (error) => {
-                    this.ngProgress.complete();
-                    deferred.reject(error);
-                });
-            }, (error) => {
-                this.ngProgress.complete();
-                deferred.reject(error);
-            });
-
-        }, (error) => {
-            this.ngProgress.complete();
-            console.log(error);
-            deferred.reject(error);
-        }); //runs pullLists() and  pullCards();
-
-        return deferred.promise;
-    };
-
-
 
 
     public init() {
@@ -245,7 +208,7 @@ export class InitService {
                         this.token = event.url.substring((event.url.indexOf('/#token=') + 8));
                         ref.close();
                         this.firstInit().then(() => {
-                            this.refreshAll();
+                            this.refresh(true);
                         });
                     }
                 });
@@ -260,13 +223,13 @@ export class InitService {
                 this.WebStorageAdapter.initStorage();
                 this.firstInit().then(() => {
                     this.firstInit().then(() => {
-                        this.refreshAll().then(() => {
+                        this.refresh(true).then(() => {
                             this.ngProgress.complete();
                         });
                     });
                 });
             } else {
-                this.refreshAll().then(() => {
+                this.refresh(true).then(() => {
                     // NO OP
                 });
 

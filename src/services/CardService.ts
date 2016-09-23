@@ -20,22 +20,25 @@ export class CardService {
     /**
      *switches between pull my/all Cards
      */
-    public pullCards() {
+    public pullCards(all: boolean = false) {
         let deferred = this.$q.defer();
         let me = this.WebStorageAdapter.getStorage().me;
-        if (me.observer && me.observer === true) {
-            this.pullAllCards().then(() => {
-                deferred.resolve();
-            }, (error) => {
-                deferred.reject(error);
-            });
-        } else {
-            this.pullMyCards().then(() => {
-                deferred.resolve();
-            }, (error) => {
-                deferred.reject(error);
-            });
+        let requests = [];
+
+
+        if (all || me.observer === true) {
+            requests.push(this.pullAllCards);
         }
+
+        if (all || me.observer === false) {
+            requests.push(this.pullMyCards);
+        }
+
+        this.$q.all(requests).then(() => {
+            deferred.resolve('update');
+        }, (error) => {
+            deferred.reject(error);
+        });
 
         return deferred.promise;
     };

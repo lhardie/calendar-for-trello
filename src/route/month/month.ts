@@ -123,7 +123,7 @@ class MonthController {
                 var str = e.target.id + ui.item[0].children[1].id.split('-')[1];
                 var newStr = [];
                 angular.forEach(str.split(','), function (value) {
-                    newStr.push(parseInt(value, 2));
+                    newStr.push(parseInt(value, 0));
                 });
                 if (!newStr[3]) {
                     newStr[3] = 12;

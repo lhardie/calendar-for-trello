@@ -56,7 +56,7 @@ export class AppCtrl {
                 this.toolbar = {'background-color': '#42548E'};
                 this.offline = false;
                 $rootScope.$broadcast('updateChange');
-                initService.refreshAll();
+                initService.refresh(true);
 
             });
 
