@@ -2,19 +2,19 @@ import {appModule} from '../app';
 import {Dictionary} from 'lodash';
 
 const TOKEN_OFFLINE = 'trello_calendar_offline';
-const TOKEN_ME = 'trello_calendar_me';
 const TRELLO_TOKEN = 'trello_token';
 
 export class TrelloCalendarStorage {
     public boards: Dictionary<Board> = {};
     public lists: Dictionary<any>;
-    public me: Me;
-    public cards: Cards;
+    public me: Me = new Me();
+    public cards: Cards = new Cards();
+    public colors: Dictionary<string>;
 }
 
 export class Cards {
-    all: Dictionary<Card>;
-    my: Dictionary<Card>;
+    all: Dictionary<Card> = {};
+    my: Dictionary<Card> = {};
 }
 
 export class Me {

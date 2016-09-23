@@ -231,16 +231,16 @@ appModule.config(/*ngInject*/ function ($httpProvider: ng.IHttpProvider, $urlRou
                 'header': {
                     abstract: true,
                     templateUrl: 'partials/header.html',
-                    controller: 'headerCtrl'
+                    controller: 'headerCtrl as ctrl'
                 },
                 'sidebar': {
                     abstract: true,
                     templateUrl: 'partials/sidebar.html',
-                    controller: 'headerCtrl'
+                    controller: 'headerCtrl as ctrl'
                 },
                 'content': {
                     templateUrl: 'route/boards/boards.html',
-                    controller: 'boardsCtrl',
+                    controller: 'boardsCtrl as ctrl',
                     data: {
                         pageTitle: 'Boards'
                     }

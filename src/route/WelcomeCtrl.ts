@@ -2,7 +2,7 @@
 import moment from 'moment';
 
 import {appModule} from '../app';
-import {CalService} from '../services/CalService';
+import {CalendarService} from '../services/CalendarService';
 import IDialogService = angular.material.IDialogService;
 import {CalDate} from '../models/calendar';
 
@@ -15,7 +15,7 @@ class WelcomeCtrl {
     private date;
     private today;
 
-    constructor(private CalService: CalService, private $mdDialog: IDialogService) {
+    constructor(private CalendarService: CalendarService, private $mdDialog: IDialogService) {
         'ngInject';
 
         let newDate = new Date();
@@ -31,7 +31,7 @@ class WelcomeCtrl {
         }
 
 
-        this.days = CalService.days(this.today);
+        this.days = CalendarService.days(this.today);
         this.showAdvanced();
     }
 

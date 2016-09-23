@@ -31,11 +31,21 @@ export class InitService {
         this.ngProgress.start();
         let deferred = this.$q.defer();
         let TrelloCalendarStorage = this.WebStorageAdapter.getStorage();
-        // let cache = this.WebStorageAdapter.getStorage();
-        this.$http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token)
-            .then((response) => {
 
-            let meFromTrello: TrelloMe = response.data as TrelloMe;
+        let me = this.$http.get('https://api.trello.com/1/members/me?fields=fullName&key=' + this.AppKey + '&token=' + this.token);
+        let colors = this.$http.get('https://api.trello.com/1/members/me/boardBackgrounds?key=' + this.AppKey + '&token=' + this.token);
+        this.$q.all([me, colors]).then((responses) => {
+
+            TrelloCalendarStorage.me = responses[0].data;
+            TrelloCalendarStorage.colors = {};
+            for (let x in responses[1].data) {
+                if (responses[1].data[x].type === 'default') {
+                    TrelloCalendarStorage.colors[responses[1].data[x].id] = responses[1].data[x];
+                }
+            }
+
+
+            let meFromTrello: TrelloMe = responses[0].data as TrelloMe;
             let meFromCache = TrelloCalendarStorage.me;
 
 
@@ -66,6 +76,9 @@ export class InitService {
             }
 
 
+            if (!TrelloCalendarStorage.colors) {
+                TrelloCalendarStorage.colors = {};
+            }
             if (!TrelloCalendarStorage.boards) {
                 TrelloCalendarStorage.boards = {};
             }

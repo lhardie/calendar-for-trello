@@ -2,30 +2,30 @@
 import {InitService} from '../../services/initService';
 class BoardsCtrl {
 
-    storage: any;
-    boards = [];
-    colors = [];
+    private storage: any;
+    private boards = [];
+    private colors = [];
+    private colorizeCards;
 
     /* @ngInject */
-    constructor(private $scope, private $rootScope, private WebStorageAdapter, private initService: InitService) {
+    constructor(private $rootScope, private WebStorageAdapter, private initService: InitService) {
 
         this.storage = WebStorageAdapter.getStorage();
-
-        $scope.colorizeCards = WebStorageAdapter.getStorage().me.colorizeCards;
-        this.updateScope();
+        this.colorizeCards = WebStorageAdapter.getStorage().me.colorizeCards;
+        this.update();
 
     }
 
 
-    updateScope() {
+    private update() {
         this.WebStorageAdapter.setStorage(this.storage);
         this.initService.refreshColors();
         this.$rootScope.$broadcast('rebuild');
-        this.$scope.boards = [];
+        this.boards = [];
         for (var x in this.storage.boards) {
-            this.$scope.boards.push(this.storage.boards[x]);
+            this.boards.push(this.storage.boards[x]);
         }
-        this.$scope.boards.sort(function (a, b) {
+        this.boards.sort(function (a, b) {
             var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
             if (nameA < nameB) {//sort string ascending
                 return -1;
@@ -35,31 +35,31 @@ class BoardsCtrl {
             }
             return 0; //default return value (no sorting)
         });
-        this.$scope.colorizeCards = this.storage.me.colorizeCards;
-        this.$scope.colors = [];
+        this.colorizeCards = this.storage.me.colorizeCards;
+        this.colors = [];
         for (var y in this.storage.colors) {
-            this.$scope.colors.push(this.storage.colors[y]);
+            this.colors.push(this.storage.colors[y]);
         }
 
     }
 
 
-    changeColorize(x) {
-        this.storage.me.colorizeCards = x;
-        this.updateScope();
-    };
+    // changeColorize(x) {
+    //     this.storage.me.colorizeCards = x;
+    //     this.updateScope();
+    // };
 
 
     announceClick(index, id) {
-        this.storage.boards[id].prefs.backgroundColor = this.$scope.colors[index].color;
-        this.storage.boards[id].prefs.background = this.$scope.colors[index].id;
-        this.updateScope();
+        this.storage.boards[id].prefs.backgroundColor = this.colors[index].color;
+        this.storage.boards[id].prefs.background = this.colors[index].id;
+        this.update();
     };
 
     change(index, state) {
-        this.$scope.colors[index].enabled = state;
-        this.storage.boards[this.$scope.boards[index].id].enabled = state;
-        this.updateScope();
+        this.colors[index].enabled = state;
+        this.storage.boards[this.boards[index].id].enabled = state;
+        this.update();
     };
 
 }

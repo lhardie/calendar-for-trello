@@ -1,7 +1,7 @@
 import './app';
 import './models/calendar';
 import './services/WebStorageAdapter';
-import './services/CalService';
+import './services/CalendarService';
 import './services/changeDate';
 import './services/setToken';
 import './services/initService';

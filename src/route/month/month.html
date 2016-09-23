@@ -12,7 +12,7 @@
                 <md-button class="md-raised md-primary mini" aria-label="next month" ng-click="ctrl.move(1)">
                     <ng-md-icon class="ng-md-icon" icon="navigate_next" style="fill: #fff" size="22"></ng-md-icon>
                 </md-button>
-                <span class="month" style="white-space: nowrap;margin-right: 10px;" flex>{{ctrl.date.monthName()}}, {{ctrl.date.year}}</span>
+                <span class="month" style="white-space: nowrap;margin-right: 10px;" flex>{{ctrl.currentDate.monthName()}}, {{ctrl.currentDate.year}}</span>
 
                 <md-button ng-if="ctrl.offline!=true" aria-label="Refresh Button" class="calendarOption md-icon-button"
                            ng-click="ctrl.refresh()">

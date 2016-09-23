@@ -16,7 +16,7 @@
             <!--</md-checkbox>-->
 
         </md-toolbar>
-        <md-content style="background-color: #EDEFF4;" layout-padding ng-repeat="board in boards | orderBy: 'name'">
+        <md-content style="background-color: #EDEFF4;" layout-padding ng-repeat="board in ctrl.boards | orderBy: 'name'">
 
             <ng-md-icon icon="assignment" size="30"></ng-md-icon>
 
@@ -24,15 +24,16 @@
 
             <div class="right" style="background-color: #EDEFF4;">
 
-                <md-input-container ng-if="colorizeCards" class="animate-if">
+                <md-input-container ng-if="ctrl.colorizeCards" class="animate-if">
                     <md-select ng-model="board.prefs.backgroundColor" aria-label="ColorPicker" style="background-color:{{board.prefs.backgroundColor}}; ">
-                        <md-option class="option" ng-repeat="item in colors" ng-click="announceClick($index,board.id)" value="{{item.color}}" style="background-color:{{item.color}};color:#ffffff;padding-left:10px">
+                        <md-option class="option" ng-repeat="item in ctrl.colors" ng-click="ctrl.announceClick($index,board.id)"
+                                   value="{{item.color}}" style="background-color:{{item.color}};color:#ffffff;padding-left:10px">
                             {{item.id}}
                         </md-option>
                     </md-select>
                 </md-input-container>
 
-                <md-switch ng-model="board.enabled" ng-change="change($index, board.enabled)" aria-label="enable board"
+                <md-switch ng-model="board.enabled" ng-change="ctrl.change($index, board.enabled)" aria-label="enable board"
                            style="background-color: #EDEFF4;float:right;margin:0px;padding:4px;margin-top:3px">
 
                 </md-switch>

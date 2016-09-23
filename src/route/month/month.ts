@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import moment from 'moment';
 
 import {appModule} from '../../app';
-import {CalService} from '../../services/CalService';
+import {CalendarService} from '../../services/CalendarService';
 import {ChangeDateService} from '../../services/changeDate';
 import SortableEvents = angular.ui.SortableEvents;
 import SortableOptions = angular.ui.SortableOptions;
@@ -54,14 +54,14 @@ monthModule.directive('myClick', function ($parse) {
 
 class MonthController {
     private today: CalDate;
-    private date: CalDate;
+    private currentDate: CalDate;
     private days;
     private weekdays;
     private isToday;
 
     private ExistingBoards: Dictionary<Board>;
-    private selectall;
-    private tempPost: Array<any>;
+    private tempPost: Array<any> = [];
+    private selectall: boolean = true;
     private offline;
     private searchText: string;
     private boards;
@@ -69,7 +69,7 @@ class MonthController {
     public sortableOptions;
 
     constructor(private $interval: ng.IIntervalService, private toastr,
-                $scope: ng.IScope, private CalService: CalService, private changeDate: ChangeDateService,
+                $scope: ng.IScope, private CalendarService: CalendarService, private changeDate: ChangeDateService,
                 private $window: ng.IWindowService,
                 private orderByFilter, private ngProgress, private initService: InitService, private $q: ng.IQService,
                 private $rootScope: ng.IRootScopeService,
@@ -78,12 +78,8 @@ class MonthController {
 
 
         let newDate = new Date();
-        this.date = new CalDate(newDate.getFullYear(), newDate.getMonth());
+        this.currentDate = new CalDate(newDate.getFullYear(), newDate.getMonth());
         this.today = new CalDate(newDate.getFullYear(), newDate.getMonth());
-        this.isToday = (this.date.year === this.today.year && this.date.month === this.today.month);
-
-        this.tempPost = [];
-        this.ExistingBoards = this.WebStorageAdapter.getStorage().boards;
 
         /**top legende**/
         this.weekdays = [];
@@ -105,12 +101,11 @@ class MonthController {
         }
 
         $scope.$on('rebuild', () => {
-            this.refreshData(this.date);
+            this.refreshData(this.currentDate);
         });
-        this.selectall = true;
 
         $scope.$on('updateChange', this.updateChangeArray);
-        this.refreshData(this.date);
+        this.refreshData(this.currentDate);
 
         $scope.$watch('days', () => {
             _.forEach(this.days, (day) => {
@@ -172,7 +167,10 @@ class MonthController {
     public refresh() {
         if (this.offline !== true) {
             this.ngProgress.start();
+            // first load Date from Trello to Webstorage
             this.initService.refresh().then(() => {
+
+                //2nd put it here
                     this.$rootScope.$broadcast('rebuild');
                     this.ngProgress.complete();
                 }
@@ -191,19 +189,16 @@ class MonthController {
     //TODO jblankenhorn 22.09.16 what does it really do?
     private refreshData(date, defer?) {
         this.initService.refreshColors();
-        this.days = this.CalService.days(date);
-        this.date = new CalDate(date.year, date.month);
+        this.days = this.CalendarService.days(date);
+        this.currentDate = new CalDate(date.year, date.month);
         this.isToday = (date.year === this.today.year && date.month === this.today.month);
         this.searchText = null;
-        this.boards = this.CalService.boards();
+        this.boards = this.CalendarService.boards();
         this.ExistingBoards = this.WebStorageAdapter.getStorage().boards;
         if (defer) {
             defer.resolve();
-
         }
-
     };
-
 
     private updateChangeArray() {
         var promises = [];
@@ -224,8 +219,8 @@ class MonthController {
     }
 
     public toToday() {
-        this.date = this.today;
-        this.refreshData(this.date);
+        this.currentDate = this.today;
+        this.refreshData(this.currentDate);
     };
 
 
@@ -259,8 +254,8 @@ class MonthController {
 
         var defer = this.$q.defer();
 
-        let year = this.date.year;
-        let month = (this.date.month + steps);
+        let year = this.currentDate.year;
+        let month = (this.currentDate.month + steps);
         if (month >= 12) {
             month = 0;
             year++;
@@ -269,8 +264,8 @@ class MonthController {
             year--;
         }
 
-        this.date = new CalDate(year, month);
-        this.refreshData(this.date, defer);
+        this.currentDate = new CalDate(year, month);
+        this.refreshData(this.currentDate, defer);
         defer.promise.then(() => {
             this.ngProgress.complete();
         });
@@ -299,12 +294,15 @@ class MonthController {
         var board;
         if (this.selectall) {
             for (board in Storage.boards) {
-                Storage.boards[board].enabled = true;
+                if (Storage.boards.hasOwnProperty(board)) {
+                    Storage.boards[board].enabled = true;
+                }
             }
-        }
-        else {
+        } else {
             for (board in Storage.boards) {
-                Storage.boards[board].enabled = false;
+                if (Storage.boards.hasOwnProperty(board)) {
+                    Storage.boards[board].enabled = false;
+                }
             }
         }
         this.selectall = !this.selectall;

@@ -23,7 +23,7 @@ class CalServiceConfig {
     public endOffSet: number;
 }
 
-export class CalService {
+export class CalendarService {
 
     private boardsArray: Array<CalBoard>;
     private config: CalServiceConfig;
@@ -36,10 +36,9 @@ export class CalService {
 
     private loadCardsFromWebStorage() {
         let cards = [];
-        var card;
         if (this.WebStorageAdapter.getStorage().me.observer === true) {
             var all = this.WebStorageAdapter.getStorage().cards.all;
-            for (card in all) {
+            for (let card in all) {
                 if (all.hasOwnProperty(card)) {
                     cards.push(all[card]);
                 }
@@ -47,7 +46,7 @@ export class CalService {
 
         } else {
             var my = this.WebStorageAdapter.getStorage().cards.my;
-            for (card in my) {
+            for (let card in my) {
                 if (my.hasOwnProperty(card)) {
                     cards.push(my[card]);
                 }
@@ -159,4 +158,4 @@ export class CalService {
     }
 }
 
-appModule.service('CalService', CalService);
+appModule.service('CalendarService', CalendarService);
