@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import {appModule} from '../app';
 import {Dictionary} from 'lodash';
-import {WebStorageAdapter, TrelloCalendarStorage} from './WebStorageAdapter';
+import {WebStorageAdapter, TrelloCalendarStorage, Me} from './WebStorageAdapter';
 import IHttpPromise = angular.IHttpPromise;
 import {TRELLO_API_URL} from './initService';
 
@@ -22,7 +22,7 @@ export class CardService {
      */
     public pullCards(all: boolean = false) {
         let deferred = this.$q.defer();
-        let me = this.WebStorageAdapter.getStorage().me;
+        let me: Me = this.WebStorageAdapter.getStorage().me;
         let requests = [];
 
 
