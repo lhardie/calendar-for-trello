@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import * as moment from "moment";
-import {Moment} from "moment";
 import {select} from "ng2-redux";
 import {Observable} from "rxjs";
+import * as _ from "lodash"
+import {selectSettingsLanguage} from "../../redux/store/selects";
 
 @Component({
   selector: 'app-calendar-toolbar',
@@ -12,7 +13,7 @@ import {Observable} from "rxjs";
 export class CalendarToolbarComponent implements OnInit {
 
   public headers: string[] = [];
-  @select(state => state.settings.language) public language$: Observable<string>;
+  @select(selectSettingsLanguage) public language$: Observable<string>;
 
   constructor() {
     this.headers = this.build();

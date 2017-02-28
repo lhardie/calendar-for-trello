@@ -4,14 +4,19 @@ import {NgReduxRouter} from "ng2-redux-router";
 const createLogger = require('redux-logger');
 import reducer from '../app/redux/reducers/index';
 import * as moment from "moment";
-import {CalendarType} from "./redux/actions/calendar-actions";
 import {Router} from "@angular/router";
 import {NgRedux, select} from "ng2-redux";
 import {TrelloPullService} from "./services/trello-pull.service";
 import {Settings} from "./models/settings";
 import {Observable} from "rxjs";
-import {SettingsActions} from "./redux/actions/settings-actions";
 import {TrelloAuthService} from "./services/trello-auth.service";
+import {MenuItem} from "./models/menu-item";
+import {environment} from "../environments/environment";
+import {User} from "./models/user";
+import {MdSnackBar} from "@angular/material";
+import {IS_UPDATE} from "../main";
+
+// declare const IS_UPDATE:boolean;
 
 @Component({
   selector: 'app-root',
@@ -20,32 +25,20 @@ import {TrelloAuthService} from "./services/trello-auth.service";
 })
 export class AppComponent implements OnInit {
 
+  @select("settings") public settings$: Observable<Settings>;
+  public settings: Settings = new Settings();
+
   private initStore: RootState = {
     cards: [],
     boards: [],
     user: null,
     calendar: {
-      type: CalendarType.Month,
       days: [],
       date: moment().locale("en")
     },
-    settings: new Settings()
+    settings: new Settings(),
+    lists: {}
   };
-
-  public languages = [
-    {
-      "key": "de",
-      "name": "Deutsch"
-    },
-    {
-      "key": "en",
-      "name": "English"
-    },
-    {
-      "key": "fr",
-      "name": "Français"
-    },
-  ];
 
   ngOnInit() {
     this.settings$.subscribe(
@@ -60,22 +53,26 @@ export class AppComponent implements OnInit {
               private ngReduxRouter: NgReduxRouter,
               public router: Router,
               private trelloPullService: TrelloPullService,
-              private settingsActions: SettingsActions,
-              private trelloAuthService: TrelloAuthService) {
+              private trelloAuthService: TrelloAuthService,
+              private snackBar: MdSnackBar) {
+
+    if (IS_UPDATE) {
+      this.snackBar.open("Calendar for Trello was updated to a new version!", "OK")
+    }
+
+    const logger = environment.production ? [] : [createLogger()];
+
     this.ngRedux.configureStore(
       reducer,
       this.initStore,
-      [createLogger()],
+      [], // logger
       enhancers
     );
     ngReduxRouter.initialize();
-    this.trelloPullService.pull();
+    this.trelloPullService.continuousFetch();
 
     this.settings$.subscribe(settings => this.settings = settings);
   }
-
-  @select(state => state.settings) public settings$: Observable<Settings>;
-  public settings: Settings = new Settings();
 
   refresh() {
     this.trelloPullService.pull();
@@ -85,12 +82,20 @@ export class AppComponent implements OnInit {
     this.trelloAuthService.logout();
   }
 
-  toggleObserverMode() {
-    this.settingsActions.toggleObserverMode();
-    this.trelloPullService.pull();
+  clearData() {
+    this.ngRedux.dispatch({type: "RESET_BOARD_STORE"});
+    this.ngRedux.dispatch({type: "RESET_USER_STORE"});
+    this.ngRedux.dispatch({type: "RESET_CARD_STORE"});
+    this.ngRedux.dispatch({type: "RESET_LIST_STORE"});
+    this.ngRedux.dispatch({type: "REMOVE_BOARD_PREFERENCES"});
+    setTimeout(() => {
+      this.trelloPullService.pull();
+    }, 500);
   }
 
-  public updateLang(locale: string) {
-    this.settingsActions.setLanguage(locale);
+  toIssue() {
+    const win = window.open("https://github.com/w11k/calendar-for-trello/issues", '_blank');
+    win.focus();
   }
+
 }

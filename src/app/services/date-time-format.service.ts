@@ -1,21 +1,12 @@
-import {Injectable, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {select} from "ng2-redux";
+import {Injectable} from '@angular/core';
 
 @Injectable()
-export class DateTimeFormatService implements OnInit {
-  @select(state => state.settings.language) public language$: Observable<string>;
-  private language: string = "en";
-
-  ngOnInit() {
-    this.language$.subscribe(lang => this.language = lang);
-  }
-
+export class DateTimeFormatService {
 
   // returns the correct momentjs format
-  getTimeFormat(): string {
+  getTimeFormat(language: string = "en"): string {
     let format;
-    switch (this.language) {
+    switch (language) {
       case "de":
         format = "HH:mm";
         break;
@@ -23,10 +14,10 @@ export class DateTimeFormatService implements OnInit {
         format = "HH:mm";
         break;
       case "en":
-        format = "hha";
+        format = "hh a";
         break;
       default:
-        format = "hha";
+        format = "hh a";
     }
     return format;
   }

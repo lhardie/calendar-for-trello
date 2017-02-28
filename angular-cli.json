@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.19-3",
+    "version": "1.0.0-beta.23",
     "name": "calendar-for-trello"
   },
   "apps": [
@@ -25,7 +25,8 @@
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "hmr": "environments/environment.hmr.ts"
       }
     }
   ],

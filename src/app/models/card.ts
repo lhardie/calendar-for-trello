@@ -2,7 +2,7 @@ export class Card {
 
   constructor(public id?: string,
               public name?: string,
-              public due?: Date,
+              public due?: Date | string,
               public closed?: boolean,
               public dateLastActivity?: Date,
               public desc?: string,
@@ -24,6 +24,7 @@ export class Card {
               public manualCoverAttachment?: any,
               public badges?: any,
               public descData?: any,
-              public checkItemStates?: any) {
+              public checkItemStates?: any,
+              public dueComplete?: boolean) {
   }
 }

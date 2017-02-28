@@ -3,7 +3,16 @@ import {Moment} from "moment";
 import * as moment from "moment";
 import {select} from "ng2-redux";
 import {Observable} from "rxjs";
-import {CalendarActions, CalendarType, PeriodChange} from "../redux/actions/calendar-actions";
+import {CalendarActions, PeriodChange} from "../redux/actions/calendar-actions";
+import {SettingsActions, CalendarType} from "../redux/actions/settings-actions";
+import {TrelloPullService} from "../services/trello-pull.service";
+import {Settings} from "../models/settings";
+import {MdDialog} from "@angular/material";
+import {AddCardComponent} from "./add-card/add-card.component";
+import {
+  selectCalendarDays, selectSettingsType, selectCalendarDate,
+  selectSettingsLanguage
+} from "../redux/store/selects";
 
 @Component({
   selector: 'app-calendar',
@@ -15,16 +24,26 @@ export class CalendarComponent implements OnInit {
   calendarType: CalendarType;
   CalendarType = CalendarType;
   calendarDate: Moment; // todo remove
-  @select(state => state.calendar.days) public calendar$: Observable<any>;
-  @select(state => state.calendar.date) public calendarDate$: Observable<any>;
-  @select(state => state.calendar.type) public calendarType$: Observable<any>;
-  @select(state => state.settings.language) public language$: Observable<string>;
+  @select(selectCalendarDays) public calendar$: Observable<any>;
+  @select(selectCalendarDate) public calendarDate$: Observable<any>;
+  @select(selectSettingsType) public calendarType$: Observable<any>;
+  @select(selectSettingsLanguage) public language$: Observable<string>;
   public current: string;
 
-  constructor(public calendarActions: CalendarActions) {
+  @select("settings") public settings$: Observable<Settings>;
+  public settings: Settings = new Settings();
+
+  constructor(public calendarActions: CalendarActions, private settingsActions: SettingsActions, public mdDialog: MdDialog, public trelloPullService: TrelloPullService) {
   }
 
   ngOnInit() {
+    this.settings$.subscribe(
+      settings => {
+        this.settings = settings;
+        moment.locale(settings.language);
+      }
+    );
+
     this.calendarDate$.subscribe(
       date => {
         this.calendarDate = date;
@@ -57,8 +76,12 @@ export class CalendarComponent implements OnInit {
   }
 
   public toggleMode() {
-    this.calendarActions.changeCalendarType();
+    this.settingsActions.changeCalendarType();
     this.calendarActions.buildDays(moment(), this.calendarType);
+  }
+
+  public toggleObserverMode() {
+    this.settingsActions.toggleObserverMode();
   }
 
   public determineCurrent(date: Moment, type: CalendarType) {
@@ -72,5 +95,20 @@ export class CalendarComponent implements OnInit {
 
   public toToday(): void {
     this.calendarActions.navigateToDate(moment(), this.calendarType);
+  }
+
+  public addCard() {
+    let dialogRef = this.mdDialog.open(AddCardComponent, {
+      height: '400px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (wasSuccess: boolean) => {
+        if (wasSuccess) {
+          this.trelloPullService.pull();
+        }
+      }
+    )
   }
 }

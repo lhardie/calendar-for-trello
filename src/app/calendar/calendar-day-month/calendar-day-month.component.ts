@@ -1,13 +1,16 @@
-import {Component, OnInit, Input, Renderer, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, Renderer, ElementRef, HostListener} from '@angular/core';
 import {CalendarDay} from "../../models/calendar-day";
 import {select} from "ng2-redux";
 import {Observable} from "rxjs";
 import {Card} from "../../models/card";
-import {Moment} from "moment";
 import * as moment from "moment";
+import * as _ from "lodash"
 import Dictionary = _.Dictionary;
 import {CardActions} from "../../redux/actions/card-actions";
 import {DragDropData} from "ng2-dnd";
+import {Settings} from "../../models/settings";
+import {User} from "../../models/user";
+import {ContextMenuService} from "../context-menu-holder/context-menu.service";
 
 export let CalendarUiDateFormat: string = "DD-MM-YYYY";
 
@@ -18,14 +21,27 @@ export let CalendarUiDateFormat: string = "DD-MM-YYYY";
 })
 export class CalendarDayForMonthComponent implements OnInit {
   @select("cards") public cards$: Observable<Card[]>;
-  @select(state => state.settings.boardVisibilityPrefs) public boardVisibilityPrefs$: Observable<Object>;
+  @select("user") public user$: Observable<User[]>;
+  @select("settings") public settings$: Observable<Settings>;
 
   @Input() public calendarDay: CalendarDay;
   public cards: Card[];
 
   constructor(public cardActions: CardActions,
               private renderer: Renderer,
-              private element: ElementRef) {
+              private element: ElementRef,
+              private contextMenuService: ContextMenuService) {
+  }
+
+
+  @HostListener('contextmenu', ['$event'])
+  onOpenContext(event: MouseEvent) {
+    if (!this.contextMenuService.registration) { // disabled for now, remove to activte !
+      event.preventDefault();
+      let left = event.pageX;
+      let top = event.pageY;
+      this.contextMenuService.registration.move(left, top);
+    }
   }
 
   ngOnInit() {
@@ -39,14 +55,22 @@ export class CalendarDayForMonthComponent implements OnInit {
     }
 
     Observable
-      .combineLatest(this.cards$, this.boardVisibilityPrefs$)
+      .combineLatest(this.cards$, this.settings$, this.user$)
       .subscribe(x => {
         let cards: Card[] = x[0];
-        let visibilityPrefs: Object = x[1];
+        const settings = x[1];
+        const user = x[2];
         this.cards = cards.filter(
-          card => moment(card.due).isSame(this.calendarDay.date, "day") && !visibilityPrefs[card.idBoard]
-        )
+          card => moment(card.due).isSame(this.calendarDay.date, "day") && !settings.boardVisibilityPrefs[card.idBoard]
+        ).filter(this.filterFn.bind(this, settings, user))
       })
+  }
+
+  filterFn(settings: Settings, user: User, card: Card) {
+    if (!settings.observerMode) {
+      return card.idMembers.indexOf(user.id) > -1
+    }
+    return true
   }
 
   onDropSuccess(event: DragDropData) {

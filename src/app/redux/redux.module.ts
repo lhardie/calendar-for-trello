@@ -5,22 +5,24 @@ import {CalendarActions} from "./actions/calendar-actions";
 import {UserActions} from "./actions/user-actions";
 import {BoardActions} from "./actions/board-actions";
 import {CardActions} from "./actions/card-actions";
-import {NgRedux} from "ng2-redux";
+import {NgReduxModule} from "ng2-redux";
 import {NgReduxRouter} from "ng2-redux-router";
+import {ListActions} from "./actions/list-actions";
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    NgReduxModule
   ],
   declarations: [],
   providers: [
-    NgRedux,
     NgReduxRouter,
     CardActions,
     BoardActions,
     UserActions,
     CalendarActions,
-    SettingsActions
+    SettingsActions,
+    ListActions,
   ]
 })
 export class ReduxModule {

@@ -1,0 +1,50 @@
+<h1 md-dialog-title>Lets get started - connect to Trello</h1>
+
+<div md-dialog-content>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign.xs="start">
+    <div fxFlex="50%">
+      <p>
+        Trello is a productivity tool that helps you to
+        organize projects by creating individual lists,
+        boards and cards. Manage your projects in teams,
+        get more flexible and improve your workflow.
+      </p>
+
+      <p>
+        The Trello Calendar extends Trello and allows you to
+        organize cards across <strong>multiple boards within one calendar</strong> view.
+      </p>
+
+      <p>
+        This calendar is open source and available at GitHub. All accrued data is stored on your device only. <a
+        (click)="toAbout()">Read more</a>.
+      </p>
+
+      <p>
+        <i>
+          <small>Disclaimer</small>
+        </i> <br>
+        <small> We are not affiliated, associated, authorized,
+          endorsed by or in any way officiallyconnected to
+          Trello, Inc. All of your data will be stored locally
+          and nothing will be transfered to our server.
+        </small>
+      </p>
+    </div>
+    <div fxFlex="50%">
+      <img src="assets/calendar-sm.png" alt="Trello Calendar in Action">
+    </div>
+  </div>
+
+
+  <app-w11k-info></app-w11k-info>
+
+</div>
+
+<div md-dialog-actions>
+  <button md-raised-button color="primary" (click)="login()">
+    Lets get started - Connect to Trello
+  </button>
+
+</div>

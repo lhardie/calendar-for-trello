@@ -15,6 +15,14 @@ export default (state: Card[] = initialState, action: any) => {
         }
         return Object.assign({}, card)
       });
+    case CardActions.MARK_CARD_DONE:
+      return state.map(card => {
+        if (action.payload.id !== card.id) {
+          return card
+        }
+        return Object.assign({}, card, {dueComplete: !action.payload.dueComplete})
+      });
+
     case CardActions.UPDATE_DUE:
       return state.map(card => {
         if (action.id !== card.id) {
@@ -41,6 +49,13 @@ export default (state: Card[] = initialState, action: any) => {
       return state.filter(card => card.id !== action.id);
     case CardActions.RESET_CARD_STORE:
       return initialState;
+    case CardActions.UPDATE_CARDS_OF_BOARD:
+      // remove all cards from board
+      // add fresh loaded cards
+      // return store
+      let newStore = state.filter(card => card.idBoard !== action.payload.boardId);
+      newStore.push(...action.payload.cards);
+      return newStore;
     default:
       return state;
   }

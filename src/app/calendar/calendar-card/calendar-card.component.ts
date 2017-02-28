@@ -1,8 +1,11 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, HostBinding} from '@angular/core';
 import {Card} from "../../models/card";
 import {select} from "ng2-redux";
 import {Observable} from "rxjs";
 import {Board} from "../../models/board";
+import * as _ from "lodash"
+import {List} from "../../models/list";
+import {selectBoardColorPrefs} from "../../redux/store/selects";
 
 @Component({
   selector: 'app-calendar-card',
@@ -11,21 +14,36 @@ import {Board} from "../../models/board";
 })
 export class CalendarCardComponent implements OnInit {
 
+  public list: List;
+  public board: Board;
+
+  @select(selectBoardColorPrefs) public boardColorPrefs$: Observable<Object>;
+  @select("boards") public boards$: Observable<Board[]>;
+  @select("lists") public lists$: Observable<Object>;
+
+  @HostBinding('style.border-left-color') borderLeft;
+  @HostBinding('class.dueComplete') dueComplete;
   @Input() public card: Card;
-  color: string;
-  @select(state => state.settings.boardColorPrefs) public boardColorPrefs$: Observable<Object>;
-  @select(state => state.boards) public boards$: Observable<Object>;
 
   constructor() {
   }
 
+  call() {
+    console.log(1)
+  }
+
   ngOnInit() {
     Observable
-      .combineLatest(this.boardColorPrefs$, this.boards$)
+      .combineLatest(this.boardColorPrefs$, this.boards$, this.lists$)
       .subscribe(x => {
-        let boardColorPrefs = x[0];
-        let board = _.find(x[1], (board: Board) => board.id === this.card.idBoard);
-        this.color = boardColorPrefs[this.card.idBoard] || (board ? board.prefs.backgroundColor : null);
-      })
+        const boardColorPrefs = x[0];
+        const boards: Board[] = x[1];
+        const lists = x[2];
+        this.list = lists ? lists[this.card.idList] : "";
+        this.board = _.find(boards, (board: Board) => board.id === this.card.idBoard);
+        this.borderLeft = boardColorPrefs[this.card.idBoard] || (this.board ? this.board.prefs.backgroundColor : null);
+      });
+
+    this.dueComplete = this.card.dueComplete;
   }
 }
